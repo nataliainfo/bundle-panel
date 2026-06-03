@@ -680,6 +680,21 @@
       color: #7b4ea6;
     }
 
+    /* ═══ USER DROPDOWN ═══ */
+    #user-dropdown { position: fixed; background: #fff; border-radius: 6px; box-shadow: 0px 9px 28px 8px rgba(0,0,0,.05),0px 6px 16px rgba(0,0,0,.08),0px 3px 6px -4px rgba(0,0,0,.12); min-width: 240px; z-index: 9999; display: none; overflow: hidden; }
+    #user-dropdown.visible { display: block; }
+    .udrop-profile { padding: 14px 16px 12px; }
+    .udrop-name { font-weight: 600; font-size: 14px; line-height: 20px; color: #323232; }
+    .udrop-email { font-size: 12px; line-height: 18px; color: #747474; margin-top: 2px; }
+    .udrop-divider { height: 1px; background: #eaeaea; margin: 2px 0; }
+    .udrop-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px; font-size: 14px; color: #323232; cursor: pointer; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: 400; background: none; border: none; width: 100%; text-align: left; transition: background .15s, color .15s; }
+    .udrop-item:hover { background: #f5f9fe; color: #378ef0; }
+    .udrop-item .material-icons-outlined { font-size: 20px; color: #505050; flex-shrink: 0; transition: color .15s; }
+    .udrop-item:hover .material-icons-outlined { color: #378ef0; }
+    .udrop-badge { margin-left: auto; background: #33ab84; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; flex-shrink: 0; }
+    .udrop-sair { padding: 10px 16px 12px; font-size: 14px; color: #505050; cursor: pointer; display: block; text-decoration: none; font-family: 'Open Sans', sans-serif; transition: color .15s; }
+    .udrop-sair:hover { color: #d93025; }
+
     </style>
   </head>
 
@@ -1087,6 +1102,46 @@
           setTimeout(() => t.remove(), 3000);
         });
       });
+    </script>
+
+    <!-- User dropdown -->
+    <div id="user-dropdown">
+      <div class="udrop-profile">
+        <p class="udrop-name">Marcus Roggero</p>
+        <p class="udrop-email">marcus@infoprice.co</p>
+      </div>
+      <div class="udrop-divider"></div>
+      <a class="udrop-item" href="#">
+        <span class="material-icons-outlined">settings</span>
+        Configurações
+      </a>
+      <a class="udrop-item" href="gerenciar-usuarios.html">
+        <span class="material-icons-outlined">people</span>
+        Pessoas
+        <span class="udrop-badge">CONVIDAR</span>
+      </a>
+      <div class="udrop-divider"></div>
+      <a class="udrop-sair" href="#">Sair</a>
+    </div>
+    <script>
+      (function(){
+        var btn = document.getElementById('userBtn');
+        var menu = document.getElementById('user-dropdown');
+        if(!btn||!menu) return;
+        btn.addEventListener('click', function(e){
+          e.stopPropagation();
+          var isVisible = menu.classList.contains('visible');
+          if(isVisible){ menu.classList.remove('visible'); } else {
+            var rect = btn.getBoundingClientRect();
+            menu.style.right = (window.innerWidth - rect.right) + 'px';
+            menu.style.top = rect.bottom + 'px';
+            menu.style.left = 'auto';
+            menu.classList.add('visible');
+          }
+        });
+        document.addEventListener('click', function(){ menu.classList.remove('visible'); });
+        document.addEventListener('keydown', function(e){ if(e.key==='Escape') menu.classList.remove('visible'); });
+      })();
     </script>
 
     <!-- Segment dropdown -->
