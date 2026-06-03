@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InfoPrice — Criar conta grátis</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Raleway:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+    }
+
+    /* ════ WRAPPER ════ */
+    .login-wrapper {
+      display: flex;
+      gap: 64px;
+      align-items: stretch;
+      width: 100%;
+      height: 100%;
+      max-width: 1312px;
+    }
+
+    /* ════ LEFT — SLIDES PANEL ════ */
+    .login-slides {
+      width: 640px;
+      flex-shrink: 0;
+      height: 100%;
+      border-radius: 6px;
+      padding: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(to bottom, #002946 0%, #378ef0 100%);
+    }
+
+    .slide-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      max-width: 428px;
+      flex-shrink: 0;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .slide-title {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      line-height: 28px;
+      color: #fff;
+    }
+
+    .tw-word { color: #F29423; }
+
+    .tw-cursor {
+      display: inline-block;
+      color: rgba(255, 255, 255, 0.75);
+      font-weight: 300;
+      margin-left: 1px;
+      animation: tw-blink 0.7s step-end infinite;
+    }
+
+    @keyframes tw-blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    .slide-subtitle {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 21px;
+      color: rgba(255, 255, 255, 0.82);
+      transition: opacity 0.3s ease;
+    }
+
+    /* ── Image placeholder area ── */
+    .slide-image-area {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .slide-img-slot {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      height: 320px;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .slide-img-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 6px;
+      display: block;
+      position: relative;
+      z-index: 2;
+    }
+
+    .slide-img-slot img[src=""],
+    .slide-img-slot img:not([src]) {
+      display: none;
+    }
+
+    .slide-img-slot img[src=""] ~ .slide-placeholder-hint,
+    .slide-img-slot img:not([src]) ~ .slide-placeholder-hint {
+      display: flex;
+    }
+
+    .slide-placeholder-hint {
+      display: none;
+      position: absolute;
+      inset: 0;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 2px dashed rgba(255, 255, 255, 0.3);
+      border-radius: 6px;
+      z-index: 1;
+    }
+
+    .slide-placeholder-hint .ph-icon {
+      font-size: 40px;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    .slide-placeholder-hint .ph-label {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.45);
+      font-family: 'Open Sans', sans-serif;
+      text-align: center;
+      line-height: 18px;
+    }
+
+    .slide-placeholder-hint .ph-sublabel {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.28);
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    /* ── Navigation dots ── */
+    .slide-nav {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .slide-dot {
+      height: 8px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      background: rgba(255, 255, 255, 0.35);
+      width: 8px;
+      transition: width 0.25s ease, background 0.25s ease;
+    }
+
+    .slide-dot.active {
+      background: #F29423;
+      width: 24px;
+    }
+
+    /* ════ RIGHT — FORM PANEL ════ */
+    .login-form-panel {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .login-form-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 48px;
+      width: 100%;
+    }
+
+    /* Link para login — no fluxo normal do formulário */
+    .link-login {
+      /* flow inline — sem posicionamento absoluto */
+    }
+
+    /* Logo */
+    .login-logo {
+      height: 20px;
+      width: 129px;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    /* Form top section */
+    .form-top {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+    }
+
+    /* Heading */
+    .form-heading {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 22px;
+      color: #505050;
+      text-align: center;
+      max-width: 320px;
+    }
+
+    .form-fields-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Individual field */
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      width: 320px;
+    }
+
+    .form-label {
+      font-size: 14px;
+      line-height: 20px;
+      color: #323232;
+      padding-bottom: 8px;
+    }
+
+    .form-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: stretch;
+    }
+
+    .form-input {
+      width: 100%;
+      height: 36px;
+      background: #fff;
+      border: 1px solid #bcbcbc;
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      line-height: 20px;
+      color: #323232;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .form-input::placeholder { color: #bcbcbc; }
+    .form-input:focus { border-color: #378ef0; }
+
+    /* Primary button */
+    .btn-primary {
+      width: 320px;
+      background: #378ef0;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 18px;
+      color: #fff;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s;
+    }
+
+    .btn-primary:hover { background: #2478d8; }
+
+    /* Link buttons */
+    .btn-link {
+      background: none;
+      border: none;
+      color: #378ef0;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 12px;
+      line-height: 18px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-link:hover { text-decoration: underline; }
+
+    /* Info message box — ancorado na base do painel, alinhado com o fim da área azul */
+    .info-box {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #f5f9fe;
+      border: 1px solid #a5ccf8;
+      border-radius: 6px;
+      padding: 12px 16px;
+    }
+
+    .info-box p {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 12px;
+      line-height: 18px;
+      color: #505050;
+      text-align: center;
+    }
+
+    .info-box strong {
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-wrapper">
+
+    <!-- ══════════════════════════════════════
+         LEFT — PAINEL DE SLIDES (área azul)
+    ══════════════════════════════════════ -->
+    <div class="login-slides">
+
+      <div class="slide-text">
+        <p class="slide-title">
+          Inteligência de preços para <span id="tw-word" class="tw-word"></span><span class="tw-cursor">|</span>
+        </p>
+        <p class="slide-subtitle" id="slide-subtitle">Monitore preços de 280 mil lojas e identifique oportunidades de margem em cada ponto de venda.</p>
+      </div>
+
+      <div class="slide-image-area">
+        <div class="slide-img-slot">
+          <img id="slide-img" src="" alt="Imagem do slide">
+          <div class="slide-placeholder-hint">
+            <span class="material-icons-outlined ph-icon">image</span>
+            <span class="ph-label">Insira a imagem do slide aqui</span>
+            <span class="ph-sublabel">Recomendado: 480 × 320 px</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation dots -->
+      <div class="slide-nav">
+        <button class="slide-dot active" data-slide="0"></button>
+        <button class="slide-dot"        data-slide="1"></button>
+        <button class="slide-dot"        data-slide="2"></button>
+      </div>
+
+    </div>
+    <!-- /login-slides -->
+
+
+    <!-- ══════════════════════════════════════
+         RIGHT — FORMULÁRIO DE CADASTRO (FREE)
+    ══════════════════════════════════════ -->
+    <div class="login-form-panel">
+      <div class="login-form-inner">
+
+        <!-- Logo InfoPrice -->
+        <img
+          class="login-logo"
+          src="https://marcoskip.github.io/infoprice-prototipos/assets/logo-principal.svg"
+          alt="InfoPrice"
+        >
+
+        <div class="form-top">
+
+          <p class="form-heading">Crie sua conta grátis no ISA - Infopanel</p>
+
+          <div class="form-fields-group">
+
+            <!-- E-mail -->
+            <div class="form-field">
+              <label class="form-label" for="register-email">E-mail</label>
+              <div class="form-input-wrap">
+                <input
+                  class="form-input"
+                  type="email"
+                  id="register-email"
+                  placeholder=""
+                  autocomplete="email"
+                >
+              </div>
+            </div>
+
+          </div><!-- /form-fields-group -->
+
+          <button class="btn-primary" type="button">CADASTRAR</button>
+
+          <a class="btn-link link-login" href="login.html">Já tenho uma conta — Entrar</a>
+
+        </div><!-- /form-top -->
+
+      </div><!-- /login-form-inner -->
+
+      <!-- Info box — ancorado na base, alinhado com o fim da área azul -->
+      <div class="info-box">
+        <p>Este é um cadastro para <strong>não assinantes do InfoPanel</strong>. Caso você seja de uma empresa contratante, contate-a ou fale com o nosso time de atendimento através do e-mail <a href="mailto:atendimento@infoprice.co" style="color:#378ef0;font-weight:700;text-decoration:none;">atendimento@infoprice.co</a></p>
+      </div>
+
+    </div>
+    <!-- /login-form-panel -->
+
+  </div><!-- /login-wrapper -->
+
+  <script>
+    /* ══════════════════════════════════════
+       TYPEWRITER CAROUSEL
+    ══════════════════════════════════════ */
+    const SLIDES = [
+      {
+        word:     'varejo',
+        subtitle: 'Monitore preços de 280 mil lojas e identifique oportunidades de margem em cada ponto de venda.',
+        image:    ''
+      },
+      {
+        word:     'indústria',
+        subtitle: 'Tenha visão completa dos preços praticados no varejo e atacado de todo o Brasil, sem depender dos varejistas.',
+        image:    ''
+      },
+      {
+        word:     'farma',
+        subtitle: 'Compare preços dentro e fora do balcão e precifique seus medicamentos com mais precisão e rentabilidade.',
+        image:    ''
+      }
+    ];
+
+    const twWordEl   = document.getElementById('tw-word');
+    const subtitleEl = document.getElementById('slide-subtitle');
+    const slideImgEl = document.getElementById('slide-img');
+    const dots       = document.querySelectorAll('.slide-dot');
+
+    const SPEED_TYPE   = 80;
+    const SPEED_DELETE = 45;
+    const PAUSE_TYPED  = 5000;
+    const PAUSE_NEXT   = 180;
+
+    const delay = ms => new Promise(r => setTimeout(r, ms));
+
+    let current = 0;
+
+    function updateMeta(index) {
+      dots.forEach((d, i) => d.classList.toggle('active', i === index));
+      slideImgEl.src = SLIDES[index].image || '';
+    }
+
+    async function runTypewriter() {
+      updateMeta(current);
+
+      while (true) {
+        const word = SLIDES[current].word;
+
+        for (let i = 0; i <= word.length; i++) {
+          twWordEl.textContent = word.slice(0, i);
+          await delay(SPEED_TYPE);
+        }
+
+        await delay(PAUSE_TYPED);
+
+        subtitleEl.style.opacity = '0';
+        await delay(300);
+
+        for (let i = word.length; i >= 0; i--) {
+          twWordEl.textContent = word.slice(0, i);
+          await delay(SPEED_DELETE);
+        }
+
+        current = (current + 1) % SLIDES.length;
+        updateMeta(current);
+
+        subtitleEl.textContent = SLIDES[current].subtitle;
+        subtitleEl.style.opacity = '1';
+
+        await delay(PAUSE_NEXT);
+      }
+    }
+
+    runTypewriter();
+  </script>
+
+</body>
+</html>

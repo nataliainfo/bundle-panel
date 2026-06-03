@@ -1,0 +1,2631 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InfoPrice — Gerenciar Pessoas</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Raleway:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: #f4f4f4;
+      min-height: 100vh;
+    }
+
+    /* ════════════════════════════════════
+       MENU BAR
+    ════════════════════════════════════ */
+    .menu-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      height: 52px;
+      width: 100%;
+    }
+
+    .menu-apps-btn {
+      width: 48px;
+      height: 52px;
+      flex-shrink: 0;
+      background: #378ef0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .menu-apps-btn .material-icons-outlined {
+      color: #fff;
+      font-size: 24px;
+    }
+
+    .menu-right {
+      flex: 1;
+      height: 52px;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+    }
+
+    .menu-logo-area {
+      padding: 8px 12px 8px 8px;
+      display: flex;
+      align-items: center;
+    }
+
+    .menu-logo {
+      height: 15px;
+      width: 99px;
+      object-fit: contain;
+      object-position: left center;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    .menu-divider {
+      width: 1px;
+      height: 24px;
+      background: #d3d3d3;
+      flex-shrink: 0;
+    }
+
+    .menu-product {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 16px 12px;
+    }
+
+    .menu-product-name {
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 20px;
+      color: #505050;
+    }
+
+    .menu-actions {
+      display: flex;
+      align-items: center;
+    }
+
+    .menu-icon-btn {
+      width: 44px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .menu-icon-btn .material-icons-outlined {
+      font-size: 20px;
+      color: #505050;
+    }
+
+    .menu-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 8px;
+      cursor: pointer;
+    }
+
+    .menu-user-name {
+      font-weight: 600;
+      font-size: 14px;
+      color: #505050;
+      white-space: nowrap;
+    }
+
+    .menu-user .material-icons-outlined {
+      font-size: 16px;
+      color: #505050;
+    }
+
+    /* ════════════════════════════════════
+       LAYOUT
+    ════════════════════════════════════ */
+    .below-menu {
+      display: flex;
+      align-items: flex-start;
+    }
+
+    /* ════════════════════════════════════
+       SIDEBAR (admin — 3 itens, interativa)
+    ════════════════════════════════════ */
+    .sidebar {
+      width: 48px;
+      flex-shrink: 0;
+      background: #fff;
+      position: sticky;
+      top: 52px;
+      height: calc(100vh - 52px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 10;
+    }
+
+    .sidebar.open { width: 224px; }
+
+    .sidebar-top,
+    .sidebar-bottom {
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+      color: #747474;
+      transition: background 0.15s, color 0.15s;
+      text-decoration: none;
+    }
+
+    .sidebar-item:hover { background: #f5f9fe; color: #378ef0; }
+    .sidebar-item:hover .sidebar-icon,
+    .sidebar-item:hover .sidebar-label { color: #378ef0; }
+    .sidebar-item.active .sidebar-icon,
+    .sidebar-item.active .sidebar-label { color: #378ef0; }
+
+    .sidebar-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      color: #747474;
+      transition: color 0.15s;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sidebar-item.active .sidebar-icon { color: #378ef0; }
+
+    .sidebar-label {
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 18px;
+      color: #505050;
+      flex: 1;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      opacity: 0;
+      transition: color 0.15s, opacity 0.12s ease;
+    }
+
+    .sidebar.open .sidebar-label {
+      opacity: 1;
+      transition: color 0.15s, opacity 0.18s ease 0.14s;
+    }
+
+    .sidebar-item:hover .sidebar-label,
+    .sidebar-item.active .sidebar-label { color: #378ef0; }
+
+    /* Toggle button */
+    .sidebar-toggle-btn {
+      display: flex;
+      align-items: center;
+      padding: 14px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      width: 100%;
+      transition: background 0.15s;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .sidebar-toggle-btn:hover { background: #f5f9fe; }
+    .sidebar-toggle-btn:hover .sidebar-toggle-icon { color: #378ef0; }
+
+    .sidebar-toggle-icon {
+      font-size: 20px;
+      color: #747474;
+      transition: color 0.15s;
+      flex-shrink: 0;
+    }
+
+    /* Tooltip */
+    #sidebar-tooltip {
+      position: fixed;
+      background: #323232;
+      color: #fff;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 18px;
+      padding: 5px 10px;
+      border-radius: 4px;
+      pointer-events: none;
+      z-index: 9999;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    }
+
+    #sidebar-tooltip.visible { opacity: 1; }
+
+    #sidebar-tooltip::before {
+      content: '';
+      position: absolute;
+      right: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 5px solid transparent;
+      border-right-color: #323232;
+    }
+
+    /* ════════════════════════════════════
+       MAIN CONTENT
+    ════════════════════════════════════ */
+    .main-content {
+      flex: 1;
+      min-width: 0;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* ── Back button ── */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: #505050;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      line-height: 20px;
+      transition: background 0.15s;
+      text-decoration: none;
+    }
+
+    .back-btn:hover { background: #f0f0f0; }
+
+    .back-btn .material-icons-outlined {
+      font-size: 24px;
+      color: #505050;
+    }
+
+    /* ── Header cards row ── */
+    .header-row {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    .header-title-card {
+      flex: 1;
+      min-width: 0;
+      background: #fff;
+      border-radius: 6px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .header-title {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 20px;
+      color: #323232;
+    }
+
+    .header-subtitle {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 18px;
+      color: #959595;
+      margin-top: 2px;
+    }
+
+    .header-usage-card {
+      width: 188px;
+      flex-shrink: 0;
+      background: #fff;
+      border-radius: 6px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      position: relative;
+    }
+
+    .usage-bar-bg {
+      height: 8px;
+      background: #eaeaea;
+      border-radius: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .usage-bar-fill {
+      position: absolute;
+      inset: 0;
+      border-radius: 10px;
+      background: linear-gradient(to right, #33ab84, #90eecf);
+      width: 100%;
+    }
+
+    .usage-text {
+      font-size: 12px;
+      line-height: 18px;
+      color: #323232;
+    }
+
+    .usage-text strong {
+      color: #33ab84;
+      font-weight: 700;
+    }
+
+    .usage-upgrade {
+      font-size: 12px;
+      line-height: 18px;
+      color: #378ef0;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .usage-upgrade:hover { text-decoration: underline; }
+
+    /* ════════════════════════════════════
+       GRID / TABELA
+    ════════════════════════════════════ */
+    .grid-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-end;
+    }
+
+    /* ── Toolbar ── */
+    .toolbar {
+      background: #fff;
+      border-radius: 6px;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .search-bar {
+      width: 524px;
+      height: 40px;
+      background: #fff;
+      border: 1px solid #d3d3d3;
+      border-radius: 6px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: border-color 0.15s;
+    }
+
+    .search-bar:focus-within { border-color: #378ef0; }
+
+    .search-bar .material-icons-outlined {
+      font-size: 18px;
+      color: #747474;
+      flex-shrink: 0;
+    }
+
+    .search-bar input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      line-height: 20px;
+      color: #323232;
+      background: transparent;
+    }
+
+    .search-bar input::placeholder { color: #747474; }
+
+    .search-clear {
+      font-size: 16px;
+      color: #bcbcbc;
+      cursor: pointer;
+      flex-shrink: 0;
+      display: none;
+      background: none;
+      border: none;
+      padding: 0;
+      line-height: 1;
+      transition: color 0.15s;
+    }
+
+    .search-clear:hover { color: #505050; }
+    .search-clear.visible { display: flex; align-items: center; }
+
+    /* ── Filtro de status ── */
+    .filter-wrapper {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .status-filter {
+      width: 192px;
+      height: 40px;
+      background: #fff;
+      border: 1px solid #d3d3d3;
+      border-radius: 4px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+      user-select: none;
+    }
+
+    .status-filter:hover { border-color: #bcbcbc; }
+    .status-filter.active-filter { border-color: #378ef0; }
+
+    .filter-text {
+      flex: 1;
+      font-size: 14px;
+      line-height: 20px;
+      color: #959595;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .filter-text.selected { color: #323232; }
+
+    .filter-clear {
+      font-size: 16px;
+      color: #bcbcbc;
+      cursor: pointer;
+      flex-shrink: 0;
+      display: none;
+      transition: color 0.15s;
+      line-height: 1;
+    }
+
+    .filter-clear:hover { color: #505050; }
+    .filter-clear.visible { display: flex; align-items: center; }
+
+    .filter-chevron {
+      font-size: 20px;
+      color: #747474;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+
+    .status-filter.open .filter-chevron { transform: rotate(180deg); }
+
+    .filter-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      width: 192px;
+      background: #fff;
+      border: 1px solid #d3d3d3;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 200;
+      display: none;
+      overflow: hidden;
+    }
+
+    .filter-dropdown.open { display: block; }
+
+    .filter-option {
+      padding: 8px 12px;
+      font-size: 14px;
+      line-height: 20px;
+      color: #323232;
+      cursor: pointer;
+      transition: background 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .filter-option:hover { background: #f5f9fe; color: #378ef0; }
+
+    .filter-option.selected {
+      color: #378ef0;
+      font-weight: 600;
+    }
+
+    .filter-option.selected::after {
+      content: 'check';
+      font-family: 'Material Icons';
+      font-size: 16px;
+      color: #378ef0;
+    }
+
+    .btn-add-user {
+      background: #378ef0;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+
+    .btn-add-user:hover { background: #2478d8; }
+
+    .btn-add-user .material-icons-outlined {
+      font-size: 18px;
+    }
+
+    /* ── Tabela de usuários ── */
+    .users-table {
+      width: 100%;
+      border: 1px solid #eaeaea;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .table-header-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 34px;
+      padding: 0 8px 0 16px;
+      border-bottom: 1px solid #eaeaea;
+      background: #fff;
+    }
+
+    .table-header-label {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      font-size: 12px;
+      line-height: 14px;
+      color: #747474;
+    }
+
+    .table-header-label .material-icons-outlined {
+      font-size: 12px;
+      color: #747474;
+    }
+
+    /* Toggle switch placeholder */
+    .toggle-space {
+      width: 28px;
+      flex-shrink: 0;
+    }
+
+    .table-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 54px;
+      padding: 0 8px 0 16px;
+      border-bottom: 1px solid #eaeaea;
+      background: #fff;
+      transition: background 0.15s;
+    }
+
+    .table-row:last-child { border-bottom: none; }
+    .table-row:hover { background: #fafafa; }
+
+    /* ── Toggle switch ── */
+    .toggle {
+      width: 28px;
+      height: 16px;
+      border-radius: 18px;
+      cursor: pointer;
+      flex-shrink: 0;
+      position: relative;
+      transition: background 0.2s;
+      border: none;
+      padding: 0;
+    }
+
+    .toggle.on  { background: #378ef0; }
+    .toggle.off { background: #bcbcbc; }
+    .toggle.blocked { cursor: not-allowed; }
+
+    .toggle::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #fff;
+      top: 3px;
+      transition: left 0.2s;
+    }
+
+    .toggle.on::after  { left: 15px; }
+    .toggle.off::after { left: 3px; }
+
+    /* ── User info ── */
+    .user-info {
+      flex: 1;
+      min-width: 0;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .user-name-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .user-name {
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 20px;
+      color: #323232;
+      white-space: nowrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 12px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .badge-admin {
+      background: #378ef0;
+      color: #fff;
+    }
+
+    .badge-pending {
+      background: #fff;
+      border: 1px solid #378ef0;
+      color: #378ef0;
+    }
+
+    .user-email-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .user-email {
+      font-size: 12px;
+      line-height: 18px;
+      color: #959595;
+      white-space: nowrap;
+    }
+
+    .link-blue {
+      font-size: 12px;
+      line-height: 18px;
+      color: #378ef0;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: 'Open Sans', sans-serif;
+      padding: 0;
+      text-decoration: none;
+    }
+
+    .link-blue:hover { text-decoration: underline; }
+
+    /* ── Acessos column ── */
+    .user-acessos {
+      width: 220px;
+      flex-shrink: 0;
+      padding: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .access-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: #f0f0f0;
+      font-size: 11px;
+      font-weight: 600;
+      color: #505050;
+      white-space: nowrap;
+    }
+
+    /* ── Último acesso column ── */
+    .user-last-access {
+      width: 160px;
+      flex-shrink: 0;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .last-access-date {
+      font-size: 13px;
+      line-height: 18px;
+      color: #505050;
+      white-space: nowrap;
+    }
+
+    .last-access-empty {
+      font-size: 13px;
+      color: #bcbcbc;
+    }
+
+    /* Cabeçalho das colunas */
+    .col-header {
+      font-size: 12px;
+      line-height: 14px;
+      color: #747474;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding: 8px;
+      white-space: nowrap;
+    }
+
+    .col-header .material-icons-outlined { font-size: 12px; }
+
+    /* ── Actions column ── */
+    .user-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      width: 50px;
+      flex-shrink: 0;
+    }
+
+    .user-actions.disabled .link-blue {
+      opacity: 0.4;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    /* ════════════════════════════════════
+       PAGINATION
+    ════════════════════════════════════ */
+    .pagination-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 8px;
+      width: 100%;
+    }
+
+    .pagination-total {
+      font-size: 12px;
+      line-height: 18px;
+      color: #747474;
+    }
+
+    .pagination-controls {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .pag-nav-btn {
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #959595;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+
+    .pag-nav-btn .material-icons-outlined {
+      font-size: 16px;
+    }
+
+    .pag-nav-btn:hover { color: #378ef0; }
+
+    .pag-pages {
+      display: flex;
+      align-items: center;
+    }
+
+    .pag-page {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      line-height: 18px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .pag-page.active {
+      border: 1px solid #378ef0;
+      color: #378ef0;
+    }
+
+    .pag-page:not(.active) {
+      color: #959595;
+    }
+
+    .pag-page:not(.active):hover { color: #378ef0; }
+
+    /* ════════════════════════════════════
+       MODAL — Adicionar usuário
+    ════════════════════════════════════ */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-backdrop.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal {
+      background: #fff;
+      border-radius: 6px;
+      width: 480px;
+      box-shadow:
+        0px 9px 28px 8px rgba(0,0,0,0.05),
+        0px 6px 16px rgba(0,0,0,0.08),
+        0px 3px 6px -4px rgba(0,0,0,0.12);
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      margin-top: 16px;
+      transition: opacity 0.2s ease, margin-top 0.2s ease;
+    }
+
+    .modal-backdrop.visible .modal {
+      opacity: 1;
+      margin-top: 0;
+    }
+
+    /* Cabeçalho */
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid #eaeaea;
+    }
+
+    .modal-title {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 22px;
+      color: #323232;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #747474;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      border-radius: 4px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .modal-close:hover { background: #f5f5f5; color: #323232; }
+    .modal-close .material-icons-outlined { font-size: 20px; }
+
+    /* Corpo */
+    .modal-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 20px;
+      color: #323232;
+    }
+
+    .form-label span {
+      color: #d93025;
+      margin-left: 2px;
+    }
+
+    .form-input,
+    .form-select {
+      height: 40px;
+      border: 1px solid #d3d3d3;
+      border-radius: 4px;
+      padding: 0 12px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      color: #323232;
+      background: #fff;
+      outline: none;
+      transition: border-color 0.15s;
+      width: 100%;
+    }
+
+    .form-input::placeholder { color: #bcbcbc; }
+
+    /* ── Switch "Admin" na modal ── */
+    .form-switch-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 0;
+    }
+
+    .form-switch-label {
+      font-size: 14px;
+      line-height: 20px;
+      color: #323232;
+      cursor: pointer;
+      user-select: none;
+    }
+    .form-input:focus,
+    .form-select:focus { border-color: #378ef0; }
+
+    .form-input.error,
+    .form-select.error { border-color: #d93025; }
+
+    .form-error-msg {
+      font-size: 12px;
+      line-height: 16px;
+      color: #d93025;
+      display: none;
+    }
+
+    .form-error-msg.visible { display: block; }
+
+    /* ── Multi-select customizado ── */
+    .multiselect-wrapper {
+      position: relative;
+    }
+
+    .multiselect-trigger {
+      min-height: 40px;
+      border: 1px solid #d3d3d3;
+      border-radius: 4px;
+      padding: 6px 36px 6px 10px;
+      background: #fff;
+      cursor: pointer;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px;
+      transition: border-color 0.15s;
+      position: relative;
+      user-select: none;
+    }
+
+    .multiselect-trigger:focus-within,
+    .multiselect-trigger.open { border-color: #378ef0; }
+    .multiselect-trigger.error { border-color: #d93025; }
+
+    .multiselect-placeholder {
+      font-size: 14px;
+      color: #bcbcbc;
+      line-height: 20px;
+    }
+
+    .multiselect-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #f0f7ff;
+      border: 1px solid #a5ccf8;
+      border-radius: 10px;
+      padding: 1px 6px 1px 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #378ef0;
+      line-height: 18px;
+    }
+
+    .multiselect-chip-remove {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      cursor: pointer;
+      color: #378ef0;
+      line-height: 1;
+      transition: color 0.12s;
+    }
+
+    .multiselect-chip-remove:hover { color: #1473e6; }
+
+    .multiselect-chevron {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 20px;
+      color: #747474;
+      pointer-events: none;
+      transition: transform 0.2s;
+    }
+
+    .multiselect-trigger.open .multiselect-chevron {
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    .multiselect-dropdown {
+      position: fixed;
+      background: #fff;
+      border: 1px solid #d3d3d3;
+      border-radius: 4px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+      z-index: 9000;
+      display: none;
+      overflow-y: auto;
+      max-height: 240px;
+    }
+
+    .multiselect-dropdown.open { display: block; }
+
+    .multiselect-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+
+    .multiselect-option:hover { background: #f5f9fe; }
+
+    .multiselect-checkbox {
+      width: 16px;
+      height: 16px;
+      border: 2px solid #d3d3d3;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.12s, border-color 0.12s;
+      background: #fff;
+    }
+
+    .multiselect-option.selected .multiselect-checkbox {
+      background: #378ef0;
+      border-color: #378ef0;
+    }
+
+    .multiselect-checkbox-tick {
+      display: none;
+      font-size: 12px;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .multiselect-option.selected .multiselect-checkbox-tick { display: block; }
+
+    .multiselect-option-label {
+      font-size: 14px;
+      line-height: 20px;
+      color: #323232;
+    }
+
+    .multiselect-option.selected .multiselect-option-label {
+      color: #378ef0;
+      font-weight: 600;
+    }
+
+    /* Rodapé */
+    .modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 16px 20px;
+      border-top: 1px solid #eaeaea;
+    }
+
+    .btn-modal-cancel {
+      background: #fff;
+      border: 1px solid #d3d3d3;
+      border-radius: 4px;
+      padding: 6px 16px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: #505050;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .btn-modal-cancel:hover { border-color: #bcbcbc; background: #f5f5f5; }
+
+    .btn-modal-confirm {
+      background: #378ef0;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 16px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-modal-confirm:hover { background: #2478d8; }
+
+    /* ════════════════════════════════════
+       CONTEXT MENU (select picker)
+    ════════════════════════════════════ */
+    .context-menu {
+      position: fixed;
+      background: #fff;
+      border-radius: 6px;
+      padding: 6px 0;
+      box-shadow:
+        0px 3px 3px rgba(0,0,0,0.12),
+        0px 6px 8px rgba(0,0,0,0.08),
+        0px 9px 14px rgba(0,0,0,0.05);
+      z-index: 1000;
+      min-width: 180px;
+      display: none;
+    }
+
+    .context-menu.visible { display: block; }
+
+    .context-menu-item {
+      padding: 8px 12px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+      color: #323232;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.12s, color 0.12s;
+    }
+
+    .context-menu-item:hover {
+      background: #f5f9fe;
+      color: #378ef0;
+    }
+
+    .context-menu-item.danger:hover {
+      background: #fff5f5;
+      color: #d93025;
+    }
+
+    .context-menu-divider {
+      height: 1px;
+      background: #eaeaea;
+      margin: 2px 0;
+    }
+
+    /* ════════════════════════════════════
+       USER DROPDOWN MENU
+    ════════════════════════════════════ */
+    #user-dropdown {
+      position: fixed;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow:
+        0px 9px 28px 8px rgba(0,0,0,0.05),
+        0px 6px 16px rgba(0,0,0,0.08),
+        0px 3px 6px -4px rgba(0,0,0,0.12);
+      min-width: 240px;
+      z-index: 9999;
+      display: none;
+      overflow: hidden;
+    }
+
+    #user-dropdown.visible { display: block; }
+
+    .udrop-profile {
+      padding: 14px 16px 12px;
+    }
+
+    .udrop-name {
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 20px;
+      color: #323232;
+    }
+
+    .udrop-email {
+      font-size: 12px;
+      line-height: 18px;
+      color: #747474;
+      margin-top: 2px;
+    }
+
+    .udrop-divider {
+      height: 1px;
+      background: #eaeaea;
+      margin: 2px 0;
+    }
+
+    .udrop-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      font-size: 14px;
+      line-height: 20px;
+      color: #323232;
+      cursor: pointer;
+      text-decoration: none;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 400;
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .udrop-item:hover { background: #f5f9fe; color: #378ef0; }
+    .udrop-item:hover .material-icons-outlined { color: #378ef0; }
+
+    .udrop-item .material-icons-outlined {
+      font-size: 20px;
+      color: #505050;
+      flex-shrink: 0;
+      transition: color 0.15s;
+    }
+
+    .udrop-badge {
+      margin-left: auto;
+      background: #33ab84;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      font-family: 'Open Sans', sans-serif;
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .udrop-sair {
+      padding: 10px 16px 12px;
+      font-size: 14px;
+      color: #505050;
+      cursor: pointer;
+      display: block;
+      text-decoration: none;
+      font-family: 'Open Sans', sans-serif;
+      transition: color 0.15s;
+    }
+
+    .udrop-sair:hover { color: #d93025; }
+
+    /* ════════════════════════════════════
+       APPS MENU (menu de produtos)
+    ════════════════════════════════════ */
+    #apps-menu {
+      position: fixed;
+      top: 52px;
+      left: 0;
+      width: 240px;
+      background: #fff;
+      box-shadow: 4px 0 16px rgba(0,0,0,0.12);
+      z-index: 9998;
+      display: none;
+      flex-direction: column;
+      padding: 16px 0 8px;
+    }
+
+    #apps-menu.open { display: flex; }
+
+    .apps-menu-title {
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 20px;
+      color: #323232;
+      padding: 0 16px 8px;
+    }
+
+    .apps-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      font-size: 14px;
+      line-height: 20px;
+      color: #323232;
+      text-decoration: none;
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+
+    .apps-menu-item:hover { background: #f5f9fe; color: #378ef0; }
+
+    .apps-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 16px;
+      flex-shrink: 0;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .apps-badge--isa {
+      background: #e0f0ff;
+      color: #0e9ce3;
+    }
+
+    .apps-badge--ipa {
+      background: #ede8f8;
+      color: #7b4ea6;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════
+       MENU BAR
+  ══════════════════════════════════════ -->
+  <div class="menu-bar">
+    <div class="menu-apps-btn" id="apps-btn">
+      <span class="material-icons-outlined">apps</span>
+    </div>
+    <div class="menu-right">
+      <div class="menu-logo-area">
+        <img
+          class="menu-logo"
+          src="https://marcoskip.github.io/infoprice-prototipos/assets/logo-principal.svg"
+          alt="InfoPrice"
+        >
+      </div>
+      <div class="menu-divider"></div>
+      <div class="menu-product">
+        <span class="menu-product-name">Administrador</span>
+      </div>
+      <div class="menu-actions">
+        <div class="menu-icon-btn"><span class="material-icons-outlined">person_add</span></div>
+        <div class="menu-icon-btn"><span class="material-icons-outlined">help_outline</span></div>
+        <div class="menu-user" id="user-menu-btn">
+          <span class="menu-user-name">Olá, Marcus</span>
+          <span class="material-icons-outlined">keyboard_arrow_down</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SIDEBAR + CONTEÚDO
+  ══════════════════════════════════════ -->
+  <div class="below-menu">
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+
+        <div class="sidebar-item" data-page="Configuração de produtos" data-href="#">
+          <span class="sidebar-icon material-icons">settings</span>
+          <span class="sidebar-label">Configuração de produtos</span>
+        </div>
+
+        <div class="sidebar-item active" data-page="Gerenciar pessoas" data-href="gerenciar-usuarios.html">
+          <span class="sidebar-icon material-icons">person_add</span>
+          <span class="sidebar-label">Gerenciar pessoas</span>
+        </div>
+
+        <div class="sidebar-item" data-page="Planos" data-href="bundle-varejo.html">
+          <span class="sidebar-icon material-icons">work</span>
+          <span class="sidebar-label">Planos</span>
+        </div>
+
+      </div>
+      <div class="sidebar-bottom">
+        <button class="sidebar-toggle-btn" id="sidebar-toggle">
+          <span class="sidebar-toggle-icon material-icons-outlined" id="toggle-icon">keyboard_arrow_right</span>
+          <span class="sidebar-label" style="color:#747474; font-weight:400;">Recolher menu</span>
+        </button>
+      </div>
+    </nav>
+
+    <div id="sidebar-tooltip" role="tooltip" aria-hidden="true"></div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="main-content">
+
+      <!-- Back button -->
+      <a class="back-btn" href="#">
+        <span class="material-icons-outlined">arrow_back</span>
+        Voltar para Gerenciador de preços
+      </a>
+
+      <!-- Header cards -->
+      <div class="header-row">
+
+        <!-- Título -->
+        <div class="header-title-card">
+          <p class="header-title">Gerenciar pessoas</p>
+          <p class="header-subtitle">Gerencie a sua equipe, adicione ou desative usuários.</p>
+        </div>
+
+      </div>
+      <!-- /header-row -->
+
+      <!-- Grid de usuários -->
+      <div class="grid-section">
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+          <div class="toolbar-left">
+
+            <div class="search-bar">
+              <span class="material-icons-outlined">search</span>
+              <input
+                type="text"
+                id="search-input"
+                placeholder="Buscar por nome ou email"
+                autocomplete="off"
+              >
+              <button class="search-clear material-icons-outlined" id="search-clear">close</button>
+            </div>
+
+            <div class="filter-wrapper" id="filter-wrapper">
+              <div class="status-filter" id="filter-trigger">
+                <span class="filter-text" id="filter-text">Filtre por um status</span>
+                <span class="filter-clear material-icons-outlined" id="filter-clear">close</span>
+                <span class="filter-chevron material-icons-outlined">keyboard_arrow_down</span>
+              </div>
+              <div class="filter-dropdown" id="filter-dropdown">
+                <div class="filter-option" data-value="admin">Admin</div>
+                <div class="filter-option" data-value="ativo">Ativo</div>
+                <div class="filter-option" data-value="inativo">Inativo</div>
+                <div class="filter-option" data-value="pendente">Pendente</div>
+              </div>
+            </div>
+
+          </div>
+
+          <button class="btn-add-user">
+            <span class="material-icons-outlined">add</span>
+            ADICIONAR USUÁRIO
+          </button>
+        </div>
+
+        <!-- Tabela -->
+        <div style="width:100%; display:flex; flex-direction:column; gap:8px;">
+
+          <div class="users-table">
+
+            <!-- Cabeçalho -->
+            <div class="table-header-row">
+              <div class="toggle-space"></div>
+              <div class="col-header" style="flex:1;">
+                Usuário <span class="material-icons-outlined">unfold_more</span>
+              </div>
+              <div class="col-header" style="width:220px; flex-shrink:0;">
+                Acessos
+              </div>
+              <div class="col-header" style="width:160px; flex-shrink:0;">
+                Último acesso <span class="material-icons-outlined">unfold_more</span>
+              </div>
+              <div style="width:50px; flex-shrink:0;"></div>
+            </div>
+
+            <!-- Linha 1: Admin ativo -->
+            <div class="table-row" data-status="admin,ativo"
+              data-name="Tiago Rodrigues Machado"
+              data-email="tiago.rodrigues@email.com"
+              data-acessos="infopanel,ipa,mpdv">
+              <button class="toggle on"></button>
+              <div class="user-info">
+                <div class="user-name-row">
+                  <span class="user-name">Tiago Rodrigues Machado</span>
+                  <span class="badge badge-admin">Admin</span>
+                </div>
+                <div class="user-email-row">
+                  <span class="user-email">tiago.rodrigues@email.com</span>
+                </div>
+              </div>
+              <div class="user-acessos">
+                <span class="access-tag">Infopanel</span>
+                <span class="access-tag">IPA</span>
+                <span class="access-tag">MPDV</span>
+              </div>
+              <div class="user-last-access">
+                <span class="last-access-date">21 mai 2025, 09:14</span>
+              </div>
+              <div class="user-actions">
+                <button class="link-blue btn-editar">Editar</button>
+                <button class="link-blue btn-mais">Mais</button>
+              </div>
+            </div>
+
+            <!-- Linha 2: Pendente (inativo) -->
+            <div class="table-row" data-status="pendente,inativo"
+              data-name="Juliana Moraes"
+              data-email="juliana.moraes@email.com"
+              data-acessos="mpdv">
+              <button class="toggle off blocked" title="Usuário pendente não pode ser ativado"></button>
+              <div class="user-info">
+                <div class="user-name-row">
+                  <span class="user-name">Juliana Moraes</span>
+                  <span class="badge badge-pending user-status-badge">Pendente</span>
+                </div>
+                <div class="user-email-row">
+                  <span class="user-email">juliana.moraes@email.com</span>
+                  <a class="link-blue reenviar-convite" href="#">Reenviar convite</a>
+                </div>
+              </div>
+              <div class="user-acessos">
+                <span class="access-tag">MPDV</span>
+              </div>
+              <div class="user-last-access">
+                <span class="last-access-empty">—</span>
+              </div>
+              <div class="user-actions disabled">
+                <button class="link-blue btn-editar">Editar</button>
+                <button class="link-blue btn-mais">Mais</button>
+              </div>
+            </div>
+
+            <!-- Linha 3: Inativo sem badge -->
+            <div class="table-row" data-status="inativo"
+              data-name="Maria Garcia da Silva"
+              data-email="maria.garcia@email.com"
+              data-acessos="ipa-software,ipa-simulador">
+              <button class="toggle off"></button>
+              <div class="user-info">
+                <div class="user-name-row">
+                  <span class="user-name">Maria Garcia da Silva</span>
+                </div>
+                <div class="user-email-row">
+                  <span class="user-email">maria.garcia@email.com</span>
+                </div>
+              </div>
+              <div class="user-acessos">
+                <span class="access-tag">IPA Software de Precificação</span>
+                <span class="access-tag">IPA Simulador de demanda</span>
+              </div>
+              <div class="user-last-access">
+                <span class="last-access-date">03 jan 2025, 17:45</span>
+              </div>
+              <div class="user-actions disabled">
+                <button class="link-blue btn-editar">Editar</button>
+                <button class="link-blue btn-mais">Mais</button>
+              </div>
+            </div>
+
+          </div>
+          <!-- /users-table -->
+
+          <!-- Paginação -->
+          <div class="pagination-row">
+
+            <span class="pagination-total">total: 1</span>
+
+            <div class="pagination-controls">
+              <button class="pag-nav-btn"><span class="material-icons-outlined">first_page</span></button>
+              <button class="pag-nav-btn"><span class="material-icons-outlined">chevron_left</span></button>
+
+              <div class="pag-pages">
+                <button class="pag-page active">1</button>
+                <button class="pag-page">2</button>
+                <button class="pag-page">3</button>
+                <button class="pag-page">...</button>
+                <button class="pag-page">9999</button>
+              </div>
+
+              <button class="pag-nav-btn"><span class="material-icons-outlined">chevron_right</span></button>
+              <button class="pag-nav-btn"><span class="material-icons-outlined">last_page</span></button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+      <!-- /grid-section -->
+
+    </div>
+    <!-- /main-content -->
+
+  </div>
+  <!-- /below-menu -->
+
+  <!-- Modal — Adicionar usuário -->
+  <div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal" id="modal-add-user">
+
+      <div class="modal-header">
+        <p class="modal-title" id="modal-title">Adicionar usuário</p>
+        <button class="modal-close" id="modal-close-btn" aria-label="Fechar">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="form-field">
+          <label class="form-label" for="field-nome">Nome<span>*</span></label>
+          <input
+            class="form-input"
+            id="field-nome"
+            type="text"
+            placeholder="Digite o nome completo"
+            autocomplete="off"
+          >
+          <span class="form-error-msg" id="error-nome">O nome é obrigatório.</span>
+        </div>
+
+        <div class="form-switch-row">
+          <button class="toggle off" id="modal-admin-toggle"></button>
+          <span class="form-switch-label" id="modal-admin-label">Esse usuário é um Admin</span>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="field-email">E-mail<span>*</span></label>
+          <input
+            class="form-input"
+            id="field-email"
+            type="email"
+            placeholder="exemplo@empresa.com"
+            autocomplete="off"
+          >
+          <span class="form-error-msg" id="error-email">Insira um e-mail válido.</span>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Acessos<span>*</span></label>
+          <div class="multiselect-wrapper" id="multiselect-wrapper">
+            <div class="multiselect-trigger" id="multiselect-trigger">
+              <span class="multiselect-placeholder" id="multiselect-placeholder">Selecione os produtos</span>
+              <span class="multiselect-chevron material-icons-outlined">keyboard_arrow_down</span>
+            </div>
+            <div class="multiselect-dropdown" id="multiselect-dropdown">
+              <div class="multiselect-option" data-value="infopanel">
+                <div class="multiselect-checkbox"><span class="multiselect-checkbox-tick material-icons">check</span></div>
+                <span class="multiselect-option-label">Infopanel</span>
+              </div>
+              <div class="multiselect-option" data-value="ipa">
+                <div class="multiselect-checkbox"><span class="multiselect-checkbox-tick material-icons">check</span></div>
+                <span class="multiselect-option-label">IPA</span>
+              </div>
+              <div class="multiselect-option" data-value="mpdv">
+                <div class="multiselect-checkbox"><span class="multiselect-checkbox-tick material-icons">check</span></div>
+                <span class="multiselect-option-label">MPDV</span>
+              </div>
+              <div class="multiselect-option" data-value="ipa-software">
+                <div class="multiselect-checkbox"><span class="multiselect-checkbox-tick material-icons">check</span></div>
+                <span class="multiselect-option-label">IPA Software de Precificação</span>
+              </div>
+              <div class="multiselect-option" data-value="ipa-simulador">
+                <div class="multiselect-checkbox"><span class="multiselect-checkbox-tick material-icons">check</span></div>
+                <span class="multiselect-option-label">IPA Simulador de demanda</span>
+              </div>
+            </div>
+          </div>
+          <span class="form-error-msg" id="error-acessos">Selecione ao menos um acesso.</span>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-modal-cancel" id="modal-cancel-btn">CANCELAR</button>
+        <button class="btn-modal-confirm" id="modal-confirm-btn">ADICIONAR</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal — Editar usuário -->
+  <div class="modal-backdrop" id="modal-edit-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-edit-title">
+    <div class="modal" id="modal-edit">
+
+      <div class="modal-header">
+        <p class="modal-title" id="modal-edit-title">Editar usuário</p>
+        <button class="modal-close" id="modal-edit-close-btn" aria-label="Fechar">
+          <span class="material-icons-outlined">close</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="form-field">
+          <label class="form-label" for="edit-field-nome">Nome<span>*</span></label>
+          <input class="form-input" id="edit-field-nome" type="text" placeholder="Digite o nome completo" autocomplete="off">
+          <span class="form-error-msg" id="edit-error-nome">O nome é obrigatório.</span>
+        </div>
+
+        <div class="form-switch-row">
+          <button class="toggle off" id="edit-admin-toggle"></button>
+          <span class="form-switch-label" id="edit-admin-label">Esse usuário é um Admin</span>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="edit-field-email">E-mail<span>*</span></label>
+          <input class="form-input" id="edit-field-email" type="email" placeholder="exemplo@empresa.com" autocomplete="off">
+          <span class="form-error-msg" id="edit-error-email">Insira um e-mail válido.</span>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label">Acessos<span>*</span></label>
+          <div class="multiselect-wrapper" id="edit-ms-wrapper">
+            <div class="multiselect-trigger" id="edit-ms-trigger">
+              <span class="multiselect-placeholder" id="edit-ms-placeholder">Selecione os produtos</span>
+              <span class="multiselect-chevron material-icons-outlined">keyboard_arrow_down</span>
+            </div>
+            <div class="multiselect-dropdown" id="edit-ms-dropdown">
+              <div class="multiselect-option" data-value="infopanel">
+                <div class="multiselect-checkbox"><span class="multiselect-checkbox-tick material-icons">check</span></div>
+                <span class="multiselect-option-label">Infopanel</span>
+              </div>
+              <div class="multiselect-option" data-value="ipa">
+                <div class="multiselect-checkbox"><span class="multiselect-checkbox-tick material-icons">check</span></div>
+                <span class="multiselect-option-label">IPA</span>
+              </div>
+              <div class="multiselect-option" data-value="mpdv">
+                <div class="multiselect-checkbox"><span class="multiselect-checkbox-tick material-icons">check</span></div>
+                <span class="multiselect-option-label">MPDV</span>
+              </div>
+              <div class="multiselect-option" data-value="ipa-software">
+                <div class="multiselect-checkbox"><span class="multiselect-checkbox-tick material-icons">check</span></div>
+                <span class="multiselect-option-label">IPA Software de Precificação</span>
+              </div>
+              <div class="multiselect-option" data-value="ipa-simulador">
+                <div class="multiselect-checkbox"><span class="multiselect-checkbox-tick material-icons">check</span></div>
+                <span class="multiselect-option-label">IPA Simulador de demanda</span>
+              </div>
+            </div>
+          </div>
+          <span class="form-error-msg" id="edit-error-acessos">Selecione ao menos um acesso.</span>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-modal-cancel" id="modal-edit-cancel-btn">CANCELAR</button>
+        <button class="btn-modal-confirm" id="modal-edit-confirm-btn">SALVAR</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Context menu do Tiago -->
+  <div class="context-menu" id="tiago-context-menu" role="menu">
+    <div class="context-menu-item" onclick="closeContextMenu()">Editar</div>
+    <div class="context-menu-item" onclick="closeContextMenu()">Tornar administrador</div>
+    <div class="context-menu-divider"></div>
+    <div class="context-menu-item" onclick="closeContextMenu()">Suspender acesso</div>
+    <div class="context-menu-item danger" onclick="closeContextMenu()">Excluir</div>
+  </div>
+
+  <!-- Apps menu -->
+  <div id="apps-menu">
+    <p class="apps-menu-title">Produtos</p>
+    <a class="apps-menu-item" href="relatorios-essential.html">
+      <span class="apps-badge apps-badge--isa">ISA</span>
+      InfoPanel
+    </a>
+    <a class="apps-menu-item" href="#">
+      <span class="apps-badge apps-badge--isa">ISA</span>
+      Monitoramento PDV
+    </a>
+    <a class="apps-menu-item" href="#">
+      <span class="apps-badge apps-badge--ipa">IPA</span>
+      Software de precificação
+    </a>
+    <a class="apps-menu-item" href="#">
+      <span class="apps-badge apps-badge--ipa">IPA</span>
+      Simulador de demanda
+    </a>
+  </div>
+
+  <!-- User dropdown menu -->
+  <div id="user-dropdown">
+    <div class="udrop-profile">
+      <p class="udrop-name">Marcus Roggero</p>
+      <p class="udrop-email">marcus@infoprice.co</p>
+    </div>
+    <div class="udrop-divider"></div>
+    <a class="udrop-item" href="#">
+      <span class="material-icons-outlined">settings</span>
+      Configurações
+    </a>
+    <a class="udrop-item" href="gerenciar-usuarios.html">
+      <span class="material-icons-outlined">people</span>
+      Pessoas
+      <span class="udrop-badge">CONVIDAR</span>
+    </a>
+    <div class="udrop-divider"></div>
+    <a class="udrop-sair" href="#">Sair</a>
+  </div>
+
+  <script>
+    /* ── User dropdown menu ── */
+    (function() {
+      const userBtn  = document.getElementById('user-menu-btn');
+      const dropdown = document.getElementById('user-dropdown');
+      if (!userBtn || !dropdown) return;
+
+      userBtn.style.cursor = 'pointer';
+
+      userBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const isVisible = dropdown.classList.contains('visible');
+        if (isVisible) {
+          dropdown.classList.remove('visible');
+        } else {
+          const rect = userBtn.getBoundingClientRect();
+          dropdown.style.right = (window.innerWidth - rect.right) + 'px';
+          dropdown.style.top   = rect.bottom + 'px';
+          dropdown.style.left  = 'auto';
+          dropdown.classList.add('visible');
+        }
+      });
+
+      document.addEventListener('click', function() {
+        dropdown.classList.remove('visible');
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') dropdown.classList.remove('visible');
+      });
+    })();
+
+    const sidebar   = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('sidebar-toggle');
+    const toggleIcon = document.getElementById('toggle-icon');
+    const tooltip   = document.getElementById('sidebar-tooltip');
+
+    let isOpen = false;
+
+    /* ── Toggle abrir / fechar ── */
+    toggleBtn.addEventListener('click', () => {
+      isOpen = !isOpen;
+      sidebar.classList.toggle('open', isOpen);
+      toggleIcon.textContent = isOpen ? 'keyboard_arrow_left' : 'keyboard_arrow_right';
+    });
+
+    /* ── Navegação ao clicar nos itens ── */
+    document.querySelectorAll('.sidebar-item[data-href]').forEach(item => {
+      item.addEventListener('click', () => {
+        const href = item.dataset.href;
+        if (href && href !== '#') window.location.href = href;
+      });
+    });
+
+    /* ══ FILTRO DE STATUS ══ */
+    const filterTrigger  = document.getElementById('filter-trigger');
+    const filterDropdown = document.getElementById('filter-dropdown');
+    const filterTextEl   = document.getElementById('filter-text');
+    const filterClearBtn = document.getElementById('filter-clear');
+    const tableRows      = document.querySelectorAll('.table-row[data-status]');
+    const totalEl        = document.querySelector('.pagination-total');
+    const searchInput    = document.getElementById('search-input');
+    const searchClearBtn = document.getElementById('search-clear');
+
+    let activeFilter = null;
+    let searchQuery  = '';
+
+    /* ══ MODAL — Adicionar usuário ══ */
+    const modalBackdrop  = document.getElementById('modal-backdrop');
+    const modalCloseBtnX = document.getElementById('modal-close-btn');
+    const modalCancelBtn = document.getElementById('modal-cancel-btn');
+    const modalConfirmBtn = document.getElementById('modal-confirm-btn');
+    const btnAddUser     = document.querySelector('.btn-add-user');
+
+    const fieldNome       = document.getElementById('field-nome');
+    const fieldEmail      = document.getElementById('field-email');
+    const errorNome       = document.getElementById('error-nome');
+    const errorEmail      = document.getElementById('error-email');
+    const errorAcessos    = document.getElementById('error-acessos');
+    const modalAdminToggle = document.getElementById('modal-admin-toggle');
+    const modalAdminLabel  = document.getElementById('modal-admin-label');
+
+    // Toggle Admin — modal Adicionar
+    function setToggleState(btn, on) {
+      btn.classList.toggle('on',  on);
+      btn.classList.toggle('off', !on);
+    }
+
+    modalAdminToggle.addEventListener('click', () => {
+      setToggleState(modalAdminToggle, modalAdminToggle.classList.contains('off'));
+    });
+    modalAdminLabel.addEventListener('click', () => {
+      setToggleState(modalAdminToggle, modalAdminToggle.classList.contains('off'));
+    });
+
+    /* ── Multi-select ── */
+    const msWrapper     = document.getElementById('multiselect-wrapper');
+    const msTrigger     = document.getElementById('multiselect-trigger');
+    const msDropdown    = document.getElementById('multiselect-dropdown');
+    const msPlaceholder = document.getElementById('multiselect-placeholder');
+    const msOptions     = msDropdown.querySelectorAll('.multiselect-option');
+    let selectedAcessos = new Set();
+
+    function msRender() {
+      // Remove chips antigos
+      msTrigger.querySelectorAll('.multiselect-chip').forEach(c => c.remove());
+
+      if (selectedAcessos.size === 0) {
+        msPlaceholder.style.display = '';
+      } else {
+        msPlaceholder.style.display = 'none';
+        selectedAcessos.forEach(val => {
+          const opt = msDropdown.querySelector(`[data-value="${val}"]`);
+          const label = opt ? opt.querySelector('.multiselect-option-label').textContent : val;
+          const chip = document.createElement('span');
+          chip.className = 'multiselect-chip';
+          chip.innerHTML = `${label}<span class="multiselect-chip-remove material-icons-outlined" data-val="${val}">close</span>`;
+          msTrigger.insertBefore(chip, msTrigger.querySelector('.multiselect-chevron'));
+        });
+      }
+
+      // Limpa erro se tiver seleção
+      if (selectedAcessos.size > 0) {
+        msTrigger.classList.remove('error');
+        errorAcessos.classList.remove('visible');
+      }
+    }
+
+    function positionDropdown(trigger, dropdown) {
+      const rect = trigger.getBoundingClientRect();
+      dropdown.style.left  = rect.left + 'px';
+      dropdown.style.width = rect.width + 'px';
+      // Abre abaixo; se não couber, abre acima
+      const spaceBelow = window.innerHeight - rect.bottom - 8;
+      const dropH = Math.min(240, dropdown.scrollHeight || 240);
+      if (spaceBelow >= dropH) {
+        dropdown.style.top    = (rect.bottom + 4) + 'px';
+        dropdown.style.bottom = '';
+      } else {
+        dropdown.style.top    = '';
+        dropdown.style.bottom = (window.innerHeight - rect.top + 4) + 'px';
+      }
+    }
+
+    msTrigger.addEventListener('click', e => {
+      // Clique no X do chip remove o item
+      const removeBtn = e.target.closest('.multiselect-chip-remove');
+      if (removeBtn) {
+        e.stopPropagation();
+        const val = removeBtn.dataset.val;
+        selectedAcessos.delete(val);
+        msDropdown.querySelector(`[data-value="${val}"]`)?.classList.remove('selected');
+        msRender();
+        return;
+      }
+
+      const willOpen = !msDropdown.classList.contains('open');
+      msDropdown.classList.toggle('open', willOpen);
+      msTrigger.classList.toggle('open', willOpen);
+      if (willOpen) positionDropdown(msTrigger, msDropdown);
+    });
+
+    msOptions.forEach(option => {
+      option.addEventListener('click', e => {
+        e.stopPropagation();
+        const val = option.dataset.value;
+        if (selectedAcessos.has(val)) {
+          selectedAcessos.delete(val);
+          option.classList.remove('selected');
+        } else {
+          selectedAcessos.add(val);
+          option.classList.add('selected');
+        }
+        msRender();
+      });
+    });
+
+    // Fecha ao clicar fora
+    document.addEventListener('click', e => {
+      if (!msWrapper.contains(e.target)) {
+        msDropdown.classList.remove('open');
+        msTrigger.classList.remove('open');
+      }
+    });
+
+    function openModal() {
+      // Reset campos e erros
+      fieldNome.value  = '';
+      fieldEmail.value = '';
+      [fieldNome, fieldEmail].forEach(f => f.classList.remove('error'));
+      [errorNome, errorEmail, errorAcessos].forEach(e => e.classList.remove('visible'));
+      setToggleState(modalAdminToggle, false);
+
+      // Reset multi-select
+      selectedAcessos.clear();
+      msOptions.forEach(o => o.classList.remove('selected'));
+      msTrigger.classList.remove('error', 'open');
+      msDropdown.classList.remove('open');
+      msRender();
+
+      modalBackdrop.classList.add('visible');
+      requestAnimationFrame(() => fieldNome.focus());
+    }
+
+    function closeModal() {
+      modalBackdrop.classList.remove('visible');
+    }
+
+    function validateModal() {
+      let valid = true;
+
+      // Nome
+      if (!fieldNome.value.trim()) {
+        fieldNome.classList.add('error');
+        errorNome.classList.add('visible');
+        valid = false;
+      } else {
+        fieldNome.classList.remove('error');
+        errorNome.classList.remove('visible');
+      }
+
+      // E-mail
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRe.test(fieldEmail.value.trim())) {
+        fieldEmail.classList.add('error');
+        errorEmail.classList.add('visible');
+        valid = false;
+      } else {
+        fieldEmail.classList.remove('error');
+        errorEmail.classList.remove('visible');
+      }
+
+      // Acessos
+      if (selectedAcessos.size === 0) {
+        msTrigger.classList.add('error');
+        errorAcessos.classList.add('visible');
+        valid = false;
+      } else {
+        msTrigger.classList.remove('error');
+        errorAcessos.classList.remove('visible');
+      }
+
+      return valid;
+    }
+
+    btnAddUser.addEventListener('click', openModal);
+    modalCloseBtnX.addEventListener('click', closeModal);
+    modalCancelBtn.addEventListener('click', closeModal);
+
+    // Fecha ao clicar no backdrop fora do modal
+    modalBackdrop.addEventListener('click', e => {
+      if (e.target === modalBackdrop) closeModal();
+    });
+
+    // Fecha com Escape
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && modalBackdrop.classList.contains('visible')) closeModal();
+    });
+
+    // Valida em tempo real após erro já exibido
+    fieldNome.addEventListener('input', () => {
+      if (fieldNome.classList.contains('error') && fieldNome.value.trim()) {
+        fieldNome.classList.remove('error');
+        errorNome.classList.remove('visible');
+      }
+    });
+
+    fieldEmail.addEventListener('input', () => {
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (fieldEmail.classList.contains('error') && emailRe.test(fieldEmail.value.trim())) {
+        fieldEmail.classList.remove('error');
+        errorEmail.classList.remove('visible');
+      }
+    });
+
+    modalConfirmBtn.addEventListener('click', () => {
+      if (!validateModal()) return;
+      const acessos = [...selectedAcessos].join(', ');
+      alert(`Usuário "${fieldNome.value.trim()}" adicionado com acesso(s): ${acessos}`);
+      closeModal();
+    });
+
+    /* ══ MODAL EDITAR ══ */
+    const editBackdrop    = document.getElementById('modal-edit-backdrop');
+    const editCloseBtn    = document.getElementById('modal-edit-close-btn');
+    const editCancelBtn   = document.getElementById('modal-edit-cancel-btn');
+    const editConfirmBtn  = document.getElementById('modal-edit-confirm-btn');
+    const editFieldNome    = document.getElementById('edit-field-nome');
+    const editFieldEmail   = document.getElementById('edit-field-email');
+    const editErrorNome    = document.getElementById('edit-error-nome');
+    const editErrorEmail   = document.getElementById('edit-error-email');
+    const editErrorAcess   = document.getElementById('edit-error-acessos');
+    const editAdminToggle  = document.getElementById('edit-admin-toggle');
+    const editAdminLabel   = document.getElementById('edit-admin-label');
+
+    // Toggle Admin — modal Editar
+    editAdminToggle.addEventListener('click', () => {
+      setToggleState(editAdminToggle, editAdminToggle.classList.contains('off'));
+    });
+    editAdminLabel.addEventListener('click', () => {
+      setToggleState(editAdminToggle, editAdminToggle.classList.contains('off'));
+    });
+
+    // Multi-select do modal de edição
+    const editMsWrapper     = document.getElementById('edit-ms-wrapper');
+    const editMsTrigger     = document.getElementById('edit-ms-trigger');
+    const editMsDropdown    = document.getElementById('edit-ms-dropdown');
+    const editMsPlaceholder = document.getElementById('edit-ms-placeholder');
+    const editMsOptions     = editMsDropdown.querySelectorAll('.multiselect-option');
+    let editSelectedAcessos = new Set();
+
+    const accessLabels = {
+      'infopanel':    'Infopanel',
+      'ipa':          'IPA',
+      'mpdv':         'MPDV',
+      'ipa-software': 'IPA Software de Precificação',
+      'ipa-simulador':'IPA Simulador de demanda'
+    };
+
+    function editMsRender() {
+      editMsTrigger.querySelectorAll('.multiselect-chip').forEach(c => c.remove());
+      if (editSelectedAcessos.size === 0) {
+        editMsPlaceholder.style.display = '';
+      } else {
+        editMsPlaceholder.style.display = 'none';
+        editSelectedAcessos.forEach(val => {
+          const label = accessLabels[val] || val;
+          const chip = document.createElement('span');
+          chip.className = 'multiselect-chip';
+          chip.innerHTML = `${label}<span class="multiselect-chip-remove material-icons-outlined" data-val="${val}">close</span>`;
+          editMsTrigger.insertBefore(chip, editMsTrigger.querySelector('.multiselect-chevron'));
+        });
+      }
+      if (editSelectedAcessos.size > 0) {
+        editMsTrigger.classList.remove('error');
+        editErrorAcess.classList.remove('visible');
+      }
+    }
+
+    editMsTrigger.addEventListener('click', e => {
+      const removeBtn = e.target.closest('.multiselect-chip-remove');
+      if (removeBtn) {
+        e.stopPropagation();
+        const val = removeBtn.dataset.val;
+        editSelectedAcessos.delete(val);
+        editMsDropdown.querySelector(`[data-value="${val}"]`)?.classList.remove('selected');
+        editMsRender();
+        return;
+      }
+      const willOpen = !editMsDropdown.classList.contains('open');
+      editMsDropdown.classList.toggle('open', willOpen);
+      editMsTrigger.classList.toggle('open', willOpen);
+      if (willOpen) positionDropdown(editMsTrigger, editMsDropdown);
+    });
+
+    editMsOptions.forEach(option => {
+      option.addEventListener('click', e => {
+        e.stopPropagation();
+        const val = option.dataset.value;
+        if (editSelectedAcessos.has(val)) {
+          editSelectedAcessos.delete(val);
+          option.classList.remove('selected');
+        } else {
+          editSelectedAcessos.add(val);
+          option.classList.add('selected');
+        }
+        editMsRender();
+      });
+    });
+
+    document.addEventListener('click', e => {
+      if (!editMsWrapper.contains(e.target)) {
+        editMsDropdown.classList.remove('open');
+        editMsTrigger.classList.remove('open');
+      }
+    });
+
+    function openEditModal(name, email, acessos, isAdmin) {
+      // Preenche campos
+      editFieldNome.value  = name;
+      editFieldEmail.value = email;
+      [editFieldNome, editFieldEmail].forEach(f => f.classList.remove('error'));
+      [editErrorNome, editErrorEmail, editErrorAcess].forEach(e => e.classList.remove('visible'));
+
+      // Pré-preenche toggle Admin
+      setToggleState(editAdminToggle, !!isAdmin);
+
+      // Pre-seleciona acessos
+      editSelectedAcessos.clear();
+      editMsOptions.forEach(o => o.classList.remove('selected'));
+      editMsTrigger.classList.remove('error', 'open');
+      editMsDropdown.classList.remove('open');
+
+      acessos.forEach(val => {
+        editSelectedAcessos.add(val);
+        editMsDropdown.querySelector(`[data-value="${val}"]`)?.classList.add('selected');
+      });
+      editMsRender();
+
+      editBackdrop.classList.add('visible');
+      requestAnimationFrame(() => editFieldNome.focus());
+    }
+
+    function closeEditModal() {
+      editBackdrop.classList.remove('visible');
+    }
+
+    function validateEditModal() {
+      let valid = true;
+      if (!editFieldNome.value.trim()) {
+        editFieldNome.classList.add('error'); editErrorNome.classList.add('visible'); valid = false;
+      } else {
+        editFieldNome.classList.remove('error'); editErrorNome.classList.remove('visible');
+      }
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRe.test(editFieldEmail.value.trim())) {
+        editFieldEmail.classList.add('error'); editErrorEmail.classList.add('visible'); valid = false;
+      } else {
+        editFieldEmail.classList.remove('error'); editErrorEmail.classList.remove('visible');
+      }
+      if (editSelectedAcessos.size === 0) {
+        editMsTrigger.classList.add('error'); editErrorAcess.classList.add('visible'); valid = false;
+      } else {
+        editMsTrigger.classList.remove('error'); editErrorAcess.classList.remove('visible');
+      }
+      return valid;
+    }
+
+    editCloseBtn.addEventListener('click', closeEditModal);
+    editCancelBtn.addEventListener('click', closeEditModal);
+    editBackdrop.addEventListener('click', e => { if (e.target === editBackdrop) closeEditModal(); });
+
+    editConfirmBtn.addEventListener('click', () => {
+      if (!validateEditModal()) return;
+      alert(`Alterações salvas para "${editFieldNome.value.trim()}".`);
+      closeEditModal();
+    });
+
+    // Validação em tempo real
+    editFieldNome.addEventListener('input', () => {
+      if (editFieldNome.classList.contains('error') && editFieldNome.value.trim()) {
+        editFieldNome.classList.remove('error'); editErrorNome.classList.remove('visible');
+      }
+    });
+    editFieldEmail.addEventListener('input', () => {
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (editFieldEmail.classList.contains('error') && emailRe.test(editFieldEmail.value.trim())) {
+        editFieldEmail.classList.remove('error'); editErrorEmail.classList.remove('visible');
+      }
+    });
+
+    // Abre modal de edição ao clicar em "Editar" (apenas se não desabilitado)
+    document.querySelectorAll('.btn-editar').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const actions = btn.closest('.user-actions');
+        if (actions && actions.classList.contains('disabled')) return;
+        const row = btn.closest('.table-row');
+        const name    = row.dataset.name   || '';
+        const email   = row.dataset.email  || '';
+        const acessos = (row.dataset.acessos || '').split(',').map(s => s.trim()).filter(Boolean);
+        const isAdmin = (row.dataset.status || '').split(',').map(s => s.trim()).includes('admin');
+        openEditModal(name, email, acessos, isAdmin);
+      });
+    });
+
+    /* ══ CONTEXT MENU (botão "Mais") ══ */
+    const contextMenu = document.getElementById('tiago-context-menu');
+
+    function openContextMenu(btn) {
+      const menuW = 192;
+      const rect  = btn.getBoundingClientRect();
+      let left = rect.right - menuW;
+      let top  = rect.bottom + 4;
+      if (left < 8) left = 8;
+      if (top + 160 > window.innerHeight) top = rect.top - 160;
+      contextMenu.style.left     = left + 'px';
+      contextMenu.style.top      = top  + 'px';
+      contextMenu.style.minWidth = menuW + 'px';
+      contextMenu.classList.add('visible');
+    }
+
+    function closeContextMenu() {
+      contextMenu.classList.remove('visible');
+    }
+
+    // Abre context menu para qualquer btn-mais ativo
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('.btn-mais');
+      if (btn) {
+        e.stopPropagation();
+        // Só abre se a ação NÃO estiver desabilitada
+        const actions = btn.closest('.user-actions');
+        if (actions && actions.classList.contains('disabled')) return;
+
+        if (contextMenu.classList.contains('visible')) {
+          closeContextMenu();
+        } else {
+          openContextMenu(btn);
+        }
+        return;
+      }
+      closeContextMenu();
+    });
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeContextMenu(); });
+
+    /* ══ TOGGLE — ativa/desativa usuário ══ */
+    document.querySelectorAll('.toggle').forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        const isOn = toggle.classList.contains('on');
+        const row  = toggle.closest('.table-row');
+        const actions = row.querySelector('.user-actions');
+
+        const statuses = row.dataset.status.split(',').map(s => s.trim());
+        const isPendente = statuses.includes('pendente');
+
+        if (isOn) {
+          /* Desativar — bloqueado se for o único admin ativo */
+          if (statuses.includes('admin')) {
+            const outrosAdminsAtivos = [...document.querySelectorAll('.table-row')].filter(r => {
+              if (r === row) return false;
+              const s = (r.dataset.status || '').split(',').map(x => x.trim());
+              const t = r.querySelector('.toggle');
+              return s.includes('admin') && t && t.classList.contains('on');
+            });
+
+            if (outrosAdminsAtivos.length === 0) {
+              // Bloqueia: é o único admin ativo
+              toggle.style.cursor = 'not-allowed';
+              toggle.style.opacity = '0.5';
+              setTimeout(() => {
+                toggle.style.cursor = '';
+                toggle.style.opacity = '';
+              }, 600);
+
+              // Exibe tooltip temporário
+              const tip = document.createElement('div');
+              tip.textContent = 'É necessário ao menos um administrador ativo.';
+              tip.style.cssText = [
+                'position:fixed','background:#323232','color:#fff',
+                'font-size:12px','font-family:Open Sans,sans-serif',
+                'padding:6px 12px','border-radius:4px','z-index:9999',
+                'white-space:nowrap','pointer-events:none',
+                'box-shadow:0 2px 8px rgba(0,0,0,.2)',
+                'opacity:0','transition:opacity .15s'
+              ].join(';');
+              document.body.appendChild(tip);
+              const r2 = toggle.getBoundingClientRect();
+              tip.style.left = (r2.left + r2.width / 2 - tip.offsetWidth / 2) + 'px';
+              tip.style.top  = (r2.top - tip.offsetHeight - 8) + 'px';
+              requestAnimationFrame(() => { tip.style.opacity = '1'; });
+              setTimeout(() => {
+                tip.style.opacity = '0';
+                setTimeout(() => tip.remove(), 200);
+              }, 2500);
+
+              return; // bloqueia a desativação
+            }
+          }
+
+          toggle.classList.replace('on', 'off');
+          actions.classList.add('disabled');
+
+          const idx = statuses.indexOf('ativo');
+          if (idx !== -1) statuses[idx] = 'inativo';
+          else if (!statuses.includes('inativo')) statuses.push('inativo');
+          row.dataset.status = statuses.join(',');
+
+        } else {
+          /* Ativar — bloqueado se pendente */
+          if (isPendente) {
+            toggle.style.cursor = 'not-allowed';
+            toggle.style.opacity = '0.5';
+            setTimeout(() => {
+              toggle.style.cursor = '';
+              toggle.style.opacity = '';
+            }, 600);
+            return; // bloqueia a ativação
+          }
+
+          toggle.classList.replace('off', 'on');
+          actions.classList.remove('disabled');
+
+          const idx = statuses.indexOf('inativo');
+          if (idx !== -1) statuses[idx] = 'ativo';
+          else if (!statuses.includes('ativo')) statuses.push('ativo');
+          row.dataset.status = statuses.join(',');
+        }
+
+        // Re-aplica filtro ativo para manter consistência
+        applyFilter();
+      });
+    });
+
+    /* ── Busca por nome / e-mail ── */
+    searchInput.addEventListener('input', () => {
+      searchQuery = searchInput.value;
+      searchClearBtn.classList.toggle('visible', searchQuery.length > 0);
+      applyFilter();
+    });
+
+    searchClearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      searchQuery = '';
+      searchClearBtn.classList.remove('visible');
+      searchInput.focus();
+      applyFilter();
+    });
+
+    filterTrigger.addEventListener('click', e => {
+      e.stopPropagation();
+      filterDropdown.classList.toggle('open');
+      filterTrigger.classList.toggle('open');
+    });
+
+    document.addEventListener('click', () => {
+      filterDropdown.classList.remove('open');
+      filterTrigger.classList.remove('open');
+    });
+
+    filterClearBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      clearFilter();
+    });
+
+    document.querySelectorAll('.filter-option').forEach(option => {
+      option.addEventListener('click', e => {
+        e.stopPropagation();
+        const value = option.dataset.value;
+
+        if (activeFilter === value) {
+          clearFilter();
+        } else {
+          activeFilter = value;
+          const labels = { admin: 'Admin', ativo: 'Ativo', inativo: 'Inativo', pendente: 'Pendente' };
+          filterTextEl.textContent = labels[value];
+          filterTextEl.classList.add('selected');
+          filterTrigger.classList.add('active-filter');
+          filterClearBtn.classList.add('visible');
+          document.querySelectorAll('.filter-option').forEach(o => o.classList.remove('selected'));
+          option.classList.add('selected');
+        }
+
+        filterDropdown.classList.remove('open');
+        filterTrigger.classList.remove('open');
+        applyFilter();
+      });
+    });
+
+    function clearFilter() {
+      activeFilter = null;
+      filterTextEl.textContent = 'Filtre por um status';
+      filterTextEl.classList.remove('selected');
+      filterTrigger.classList.remove('active-filter');
+      filterClearBtn.classList.remove('visible');
+      document.querySelectorAll('.filter-option').forEach(o => o.classList.remove('selected'));
+      applyFilter();
+    }
+
+    function applyFilter() {
+      const query = searchQuery.trim().toLowerCase();
+      let visible = 0;
+
+      tableRows.forEach(row => {
+        const name  = (row.querySelector('.user-name')?.textContent  || '').toLowerCase();
+        const email = (row.querySelector('.user-email')?.textContent || '').toLowerCase();
+        const statuses = row.dataset.status ? row.dataset.status.split(',') : [];
+
+        const matchSearch = !query || name.includes(query) || email.includes(query);
+        const matchFilter = !activeFilter || statuses.includes(activeFilter);
+
+        const show = matchSearch && matchFilter;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+
+      if (totalEl) totalEl.textContent = `total: ${visible}`;
+    }
+
+    /* ── Tooltips (sidebar fechada) ── */
+    function showTooltip(item) {
+      const label = item.dataset.page;
+      if (!label) return;
+      const rect = item.getBoundingClientRect();
+      tooltip.textContent = label;
+      tooltip.style.left = (rect.right + 12) + 'px';
+      tooltip.style.top  = (rect.top + (rect.height - 28) / 2) + 'px';
+      tooltip.classList.add('visible');
+    }
+
+    function hideTooltip() { tooltip.classList.remove('visible'); }
+
+    document.querySelectorAll('.sidebar-item[data-page]').forEach(item => {
+      item.addEventListener('mouseenter', () => { if (!isOpen) showTooltip(item); });
+      item.addEventListener('mouseleave', hideTooltip);
+    });
+
+    /* ── Apps menu ── */
+    (function() {
+      const appsBtn  = document.getElementById('apps-btn');
+      const appsMenu = document.getElementById('apps-menu');
+      if (!appsBtn || !appsMenu) return;
+
+      appsBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        appsMenu.classList.toggle('open');
+      });
+
+      document.addEventListener('click', function() {
+        appsMenu.classList.remove('open');
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') appsMenu.classList.remove('open');
+      });
+    })();
+  </script>
+</body>
+</html>

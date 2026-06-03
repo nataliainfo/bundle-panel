@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Planos</title>
+    <link rel="icon" type="image/x-icon" href="https://marcoskip.github.io/infoprice-prototipos/assets/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Raleway:wght@700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="stylesheet" href="https://marcoskip.github.io/infoprice-prototipos/tokens.css" />
+    <link rel="stylesheet" href="https://marcoskip.github.io/infoprice-prototipos/styles.css" />
+
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: 'Open Sans', sans-serif;
+        background: #f5f5f5;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      /* ─── MENUBAR (Figma-accurate) ─── */
+      .plano-menubar {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        height: 52px;
+        display: flex;
+        align-items: stretch;
+        z-index: 100;
+      }
+      .plano-menubar__apps-btn {
+        width: 48px;
+        flex-shrink: 0;
+        background: #378ef0;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .plano-menubar__apps-btn .material-icons-outlined {
+        font-size: 24px;
+        color: #fff;
+      }
+      .plano-menubar__main {
+        flex: 1;
+        background: #f0f0f0;
+        display: flex;
+        align-items: center;
+        padding: 0 8px;
+        min-width: 0;
+      }
+      .plano-menubar__logo-wrap {
+        padding: 8px 12px 8px 8px;
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+      }
+      .plano-menubar__logo {
+        height: 15px;
+        width: auto;
+      }
+      .plano-menubar__divider {
+        width: 1px;
+        height: 24px;
+        background: #d3d3d3;
+        flex-shrink: 0;
+      }
+      .plano-menubar__status {
+        padding: 16px 12px;
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+      }
+      .plano-menubar__status-text {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: #505050;
+        line-height: 20px;
+        white-space: nowrap;
+      }
+      .plano-menubar__actions {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        flex-shrink: 0;
+      }
+      .plano-menubar__action-btn {
+        width: 44px;
+        height: 52px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px 12px;
+      }
+      .plano-menubar__action-btn .material-icons-outlined {
+        font-size: 20px;
+        color: #505050;
+      }
+      .plano-menubar__user-btn {
+        height: 52px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 8px;
+      }
+      .plano-menubar__user-name {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: #505050;
+        white-space: nowrap;
+      }
+      .plano-menubar__arrow {
+        font-size: 16px;
+        color: #505050;
+      }
+
+      /* ─── SIDEBAR (Figma-accurate) ─── */
+      .plano-sidebar {
+        position: fixed;
+        top: 52px;
+        left: 0;
+        width: 48px;
+        height: calc(100vh - 52px);
+        background: #fff;
+        z-index: 90;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: stretch;
+      }
+      .plano-sidebar__top,
+      .plano-sidebar__bottom {
+        display: flex;
+        flex-direction: column;
+      }
+      .plano-sidebar__item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        text-decoration: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 14px;
+      }
+      .plano-sidebar__item .material-icons-outlined,
+      .plano-sidebar__item .material-icons {
+        font-size: 20px;
+        color: #747474;
+      }
+      .plano-sidebar__item--active .material-icons-outlined,
+      .plano-sidebar__item--active .material-icons {
+        color: #378ef0;
+      }
+
+      /* ─── MAIN SCROLL AREA ─── */
+      .plano-page {
+        position: fixed;
+        top: 52px;
+        left: 48px;
+        right: 0;
+        bottom: 0;
+        overflow: auto;
+        padding: 8px 8px 40px;
+      }
+
+      /* ─── NAV LINK BUTTON (breadcrumb) ─── */
+      .plano-nav-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        color: #505050;
+        padding: 6px 8px;
+        height: 36px;
+        margin-bottom: 8px;
+        border-radius: 6px;
+      }
+      .plano-nav-link .material-icons-outlined {
+        font-size: 24px;
+        color: #505050;
+      }
+
+      /* ─── PAGE HEADER ─── */
+      .plano-header {
+        display: flex;
+        align-items: stretch;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      .plano-header__title-block {
+        flex: 1;
+        background: #fff;
+        border-radius: 6px;
+        padding: 8px;
+        display: flex;
+        align-items: center;
+      }
+      .plano-header__title-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        flex: 1;
+      }
+      .plano-header__title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #323232;
+        line-height: 20px;
+      }
+      .plano-header__subtitle {
+        font-size: 12px;
+        font-weight: 400;
+        color: #959595;
+        line-height: 18px;
+        white-space: nowrap;
+      }
+      .plano-header__info-card {
+        background: #fff;
+        border-radius: 6px;
+        padding: 8px 16px 8px 8px;
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+      }
+      .plano-header__info-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .plano-header__info-label {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .plano-header__info-label img {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+      }
+      .plano-header__info-label-text {
+        font-size: 14px;
+        font-weight: 600;
+        color: #323232;
+        line-height: 20px;
+        white-space: nowrap;
+      }
+      .plano-header__info-value {
+        font-size: 12px;
+        font-weight: 400;
+        color: #959595;
+        line-height: 18px;
+        white-space: nowrap;
+      }
+
+      /* ─── SEGMENT SELECTOR ─── */
+      .segment-card {
+        cursor: pointer;
+        user-select: none;
+        transition: background 0.15s;
+      }
+      .segment-card:hover { background: #f5f9fe; }
+
+      .segment-card-inner {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .segment-chevron {
+        font-size: 16px;
+        color: #959595;
+        transition: transform 0.2s;
+        margin-left: 2px;
+      }
+
+      .segment-card.open .segment-chevron { transform: rotate(180deg); }
+
+      #segment-dropdown {
+        position: fixed;
+        background: #fff;
+        border-radius: 6px;
+        box-shadow:
+          0px 9px 28px 8px rgba(0,0,0,0.05),
+          0px 6px 16px rgba(0,0,0,0.08),
+          0px 3px 6px -4px rgba(0,0,0,0.12);
+        min-width: 180px;
+        z-index: 9999;
+        display: none;
+        overflow: hidden;
+      }
+
+      #segment-dropdown.open { display: block; }
+
+      .segment-option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 16px;
+        font-size: 14px;
+        line-height: 20px;
+        color: #323232;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.15s, color 0.15s;
+      }
+
+      .segment-option:hover { background: #f5f9fe; color: #378ef0; }
+      .segment-option:hover .material-icons-outlined { color: #378ef0; }
+
+      .segment-option .material-icons-outlined {
+        font-size: 16px;
+        color: #505050;
+        flex-shrink: 0;
+        transition: color 0.15s;
+      }
+
+      .segment-option.active {
+        color: #378ef0;
+        font-weight: 600;
+      }
+
+      .segment-option.active .material-icons-outlined { color: #378ef0; }
+
+      /* ─── TABLE WRAPPER ─── */
+      .plan-wrap {
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+      }
+
+      /* ─── LEFT LABEL COLUMN ─── */
+      .plan-labels {
+        flex-shrink: 0;
+        width: 340px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      /* placeholder for header row height */
+      .plan-labels__header {
+        height: 80px;
+        flex-shrink: 0;
+      }
+
+      .plan-section-labels {
+        background: #fff;
+        border-radius: 6px;
+        overflow: hidden;
+      }
+
+      .plan-row-label {
+        display: flex;
+        align-items: center;
+        height: 46px;
+        overflow: hidden;
+      }
+      .plan-row-label--category {
+        padding: 8px 8px;
+      }
+      .plan-row-label--feature {
+        padding: 8px 8px 8px 8px;
+        padding-right: 16px;
+      }
+      .plan-row-label--sub {
+        padding: 8px 8px 8px 32px;
+        padding-right: 8px;
+      }
+      .plan-row-label__text {
+        font-size: 14px;
+        line-height: 20px;
+        white-space: nowrap;
+      }
+      .plan-row-label__text--category {
+        font-weight: 600;
+        color: #378ef0;
+      }
+      .plan-row-label__text--feature {
+        font-weight: 400;
+        color: #505050;
+      }
+
+      /* IA badge */
+      .plan-ia-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: #fde3f7;
+        color: #e663c9;
+        border-radius: 100px;
+        padding: 3px 8px 3px 3px;
+        font-size: 12px;
+        font-weight: 700;
+        flex-shrink: 0;
+        margin-left: 6px;
+        line-height: 1;
+      }
+      .plan-ia-badge::before {
+        content: '';
+        display: block;
+        width: 16px;
+        height: 16px;
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzU0Nl8yMzEzKSI+CjxjaXJjbGUgY3g9IjYiIGN5PSI2IiByPSI1LjUiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcl81NDZfMjMxMykiLz4KPGNpcmNsZSBjeD0iNiIgY3k9IjYiIHI9IjUuNSIgZmlsbD0idXJsKCNwYWludDFfbGluZWFyXzU0Nl8yMzEzKSIgZmlsbC1vcGFjaXR5PSIwLjUiLz4KPGcgZmlsdGVyPSJ1cmwoI2ZpbHRlcjBfZF81NDZfMjMxMykiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTcuNzk5NiA0LjU3ODAxQzcuNjM2MjEgNC40OTYzMiA3LjUwMzcyIDQuMzYzODMgNy40MjIwMiA0LjIwMDQzTDYuNjIxNDcgMi44NjY3NEM2LjMxMDMzIDIuMjQ0NDUgNS42NjYxOCAyLjI0NDQ1IDUuMzU1MDQgMi44NjY3NEw0LjU3ODAxIDQuMjAwNDNDNC40OTYzMiA0LjM2MzgzIDQuMzYzODMgNC40OTYzMiA0LjIwMDQ0IDQuNTc4MDFMMi44NjY3NCA1LjM1NTA0QzIuMjQ0NDUgNS42NjYxOCAyLjI0NDQ1IDYuMzEwMzMgMi44NjY3NCA2LjYyMTQ3TDQuMjAwNDQgNy40MjIwMkM0LjM2MzgzIDcuNTAzNzIgNC40OTYzMiA3LjYzNjIxIDQuNTc4MDEgNy43OTk2TDUuMzU1MDQgOS4xMzMzQzUuNjY2MTggOS43NTU1OCA2LjMxMDMzIDkuNzU1NTggNi42MjE0NyA5LjEzMzNMNy40MjIwMiA3Ljc5OTZDNy41MDM3MiA3LjYzNjIxIDcuNjM2MjEgNy41MDM3MiA3Ljc5OTYgNy40MjIwMkw5LjEzMzMgNi42MjE0N0M5Ljc1NTU4IDYuMzEwMzMgOS43NTU1OCA1LjY2NjE4IDkuMTMzMyA1LjM1NTA0TDcuNzk5NiA0LjU3ODAxWiIgZmlsbD0idXJsKCNwYWludDJfbGluZWFyXzU0Nl8yMzEzKSIvPgo8L2c+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNOC4wMTM1IDYuMjM1OTlDNy45NjI0NCA2LjA4MjggNy45NjI0NCA1LjkxNzE5IDguMDEzNSA1Ljc2NDAxTDguMzQ2NzEgNC40MzAxMUM4LjU0MTE4IDMuODQ2NzEgOC4xMzg1OCAzLjQ0NDEyIDcuNTU1MTkgMy42Mzg1OEw2LjIzNTk5IDMuOTg2NUM2LjA4MjgxIDQuMDM3NTYgNS45MTcxOSA0LjAzNzU2IDUuNzY0MDEgMy45ODY1TDQuNDQ0ODEgMy42Mzg1OEMzLjg2MTQyIDMuNDQ0MTIgMy40NTg4MiAzLjg0NjcxIDMuNjUzMjkgNC40MzAxMUwzLjk4NjUgNS43NjQwMUM0LjAzNzU2IDUuOTE3MiA0LjAzNzU2IDYuMDgyODEgMy45ODY1IDYuMjM1OTlMMy42Mzg1OCA3LjU1NTE5QzMuNDQ0MTIgOC4xMzg1OCAzLjg0NjcxIDguNTQxMTggNC40MzAxMSA4LjM0NjcxTDUuNzY0MDEgOC4wMTM1QzUuOTE3MiA3Ljk2MjQ0IDYuMDgyODEgNy45NjI0NCA2LjIzNTk5IDguMDEzNUw3LjU2OTg5IDguMzQ2NzJDOC4xNTMyOSA4LjU0MTE4IDguNTU1ODggOC4xMzg1OCA4LjM2MTQyIDcuNTU1MTlMOC4wMTM1IDYuMjM1OTlaIiBmaWxsPSJ1cmwoI3BhaW50M19saW5lYXJfNTQ2XzIzMTMpIi8+CjwvZz4KPGRlZnM+CjxmaWx0ZXIgaWQ9ImZpbHRlcjBfZF81NDZfMjMxMyIgeD0iMC40MDAwMjQiIHk9IjEuNDAwMDIiIHdpZHRoPSIxMS4yIiBoZWlnaHQ9IjExLjIiIGZpbHRlclVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY29sb3ItaW50ZXJwb2xhdGlvbi1maWx0ZXJzPSJzUkdCIj4KPGZlRmxvb2QgZmxvb2Qtb3BhY2l0eT0iMCIgcmVzdWx0PSJCYWNrZ3JvdW5kSW1hZ2VGaXgiLz4KPGZlQ29sb3JNYXRyaXggaW49IlNvdXJjZUFscGhhIiB0eXBlPSJtYXRyaXgiIHZhbHVlcz0iMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMTI3IDAiIHJlc3VsdD0iaGFyZEFscGhhIi8+CjxmZU9mZnNldCBkeT0iMSIvPgo8ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSIxIi8+CjxmZUNvbXBvc2l0ZSBpbjI9ImhhcmRBbHBoYSIgb3BlcmF0b3I9Im91dCIvPgo8ZmVDb2xvck1hdHJpeCB0eXBlPSJtYXRyaXgiIHZhbHVlcz0iMCAwIDAgMCAwLjUwOTgwNCAwIDAgMCAwIDAuMzY0NzA2IDAgMCAwIDAgMC43OTYwNzggMCAwIDAgMC40IDAiLz4KPGZlQmxlbmQgbW9kZT0ibm9ybWFsIiBpbjI9IkJhY2tncm91bmRJbWFnZUZpeCIgcmVzdWx0PSJlZmZlY3QxX2Ryb3BTaGFkb3dfNTQ2XzIzMTMiLz4KPGZlQmxlbmQgbW9kZT0ibm9ybWFsIiBpbj0iU291cmNlR3JhcGhpYyIgaW4yPSJlZmZlY3QxX2Ryb3BTaGFkb3dfNTQ2XzIzMTMiIHJlc3VsdD0ic2hhcGUiLz4KPC9maWx0ZXI+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhcl81NDZfMjMxMyIgeDE9Ii0yLjI1IiB5MT0iLTEuMjUiIHgyPSIxMC41IiB5Mj0iMTQuNSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjODI1RENCIi8+CjxzdG9wIG9mZnNldD0iMC41NDYzODkiIHN0b3AtY29sb3I9IiNFNjYzQzkiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkY3NTZCIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQxX2xpbmVhcl81NDZfMjMxMyIgeDE9IjEwLjUiIHkxPSItNi41MDIzMmUtMDgiIHgyPSI0IiB5Mj0iOCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMEQ2NkQwIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0U2NjNDOSIgc3RvcC1vcGFjaXR5PSIwIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQyX2xpbmVhcl81NDZfMjMxMyIgeDE9IjYuMDAwMDIiIHkxPSIyLjQwMDAyIiB4Mj0iNi4wMDAwMiIgeTI9IjkuNjAwMDEiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0id2hpdGUiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkVDNUZGIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQzX2xpbmVhcl81NDZfMjMxMyIgeDE9IjguNDU0NTQiIHkxPSI4LjI0OTk5IiB4Mj0iMy41NDU0NiIgeTI9IjMuNTQ1NDUiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0id2hpdGUiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkVDNUZGIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxjbGlwUGF0aCBpZD0iY2xpcDBfNTQ2XzIzMTMiPgo8cmVjdCB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIGZpbGw9IndoaXRlIi8+CjwvY2xpcFBhdGg+CjwvZGVmcz4KPC9zdmc+Cg==");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        flex-shrink: 0;
+      }
+
+      /* ─── PLAN COLUMNS AREA ─── */
+      .plan-cols {
+        flex: 1;
+        display: flex;
+        gap: 8px;
+        min-width: 0;
+      }
+
+      /* ─── SINGLE PLAN COLUMN ─── */
+      .plan-col {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      /* column header */
+      .plan-col__header {
+        height: 80px;
+        background: #fff;
+        border-radius: 6px;
+        padding: 16px 8px 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        flex-shrink: 0;
+      }
+
+      /* ─── STICKY PLAN HEADER BAR ─── */
+      .plan-header-bar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        display: flex;
+        gap: 8px;
+        background: #f5f5f5;
+        padding-bottom: 8px;
+      }
+      .plan-header-bar__spacer {
+        width: 340px;
+        flex-shrink: 0;
+      }
+      .plan-header-bar__cols {
+        flex: 1;
+        display: flex;
+        gap: 8px;
+        min-width: 0;
+      }
+      .plan-col--free .plan-col__header,
+      .plan-col__header--free {
+        background: #f5f9fe;
+        border: 1px solid #7db6f5;
+      }
+      .plan-col--free .plan-section {
+        background: #f5f9fe;
+        border: 1px solid #7db6f5;
+      }
+      .plan-col__name {
+        font-size: 20px;
+        font-weight: 600;
+        color: #505050;
+        line-height: 14px;
+        white-space: nowrap;
+      }
+      .plan-col__btn {
+        width: 100%;
+        padding: 6px 6px;
+        background: #f29423;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        color: #fff;
+        text-transform: uppercase;
+        text-align: center;
+        line-height: 18px;
+        white-space: nowrap;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        transition: opacity 140ms;
+      }
+      .plan-col__btn:hover { opacity: 0.88; }
+      .plan-col__btn--current {
+        opacity: 0.4;
+        cursor: default;
+      }
+      .plan-col__btn--current:hover { opacity: 0.4; }
+      .plan-col__btn .material-icons-outlined {
+        font-size: 18px;
+        flex-shrink: 0;
+      }
+
+      /* ─── PLAN SECTION BLOCK ─── */
+      .plan-section {
+        background: #fff;
+        border-radius: 6px;
+        overflow: hidden;
+      }
+
+      /* ─── PLAN ROW (cell) ─── */
+      .plan-row-cell {
+        height: 46px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px 8px;
+      }
+
+      /* status icons */
+      .plan-icon-check {
+        color: #33ab84;
+        font-size: 16px;
+        line-height: 1;
+      }
+      .plan-icon-x {
+        color: #ec5b62;
+        font-size: 16px;
+        line-height: 1;
+      }
+      /* text value cells */
+      .plan-cell-val {
+        font-size: 14px;
+        font-weight: 400;
+        color: #323232;
+        line-height: 20px;
+        white-space: nowrap;
+        text-align: center;
+      }
+
+      /* empty category header row */
+      .plan-row-cell--empty {
+        /* just takes up space for the category row */
+        background: transparent;
+      }
+
+      /* ─── CTA BANNER ─── */
+      .plano-cta {
+        position: relative;
+        background: #093659;
+        border-radius: 6px;
+        border-bottom: 4px solid #f29423;
+        overflow: hidden;
+        height: 202px;
+        margin-top: 8px;
+      }
+      /* decorative ellipse */
+      .plano-cta__ellipse {
+        position: absolute;
+        width: 904px;
+        height: 904px;
+        left: 307px;
+        top: -183px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(55, 142, 240, 0.12) 0%, transparent 70%);
+        pointer-events: none;
+      }
+      .plano-cta__inner {
+        position: absolute;
+        top: 48px;
+        left: 48px;
+        right: 48px;
+        height: 106px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .plano-cta__text {
+        flex-shrink: 0;
+        width: 380px;
+      }
+      .plano-cta__heading {
+        font-family: 'Raleway', sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        color: #fff;
+        line-height: 30px;
+      }
+      .plano-cta__heading--gradient {
+        background: linear-gradient(68.95deg, #f29423 11.238%, #f9cf9c 126.22%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .plano-cta__illustration {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        height: 100%;
+      }
+      /* tilted cards decoration */
+      .plano-cta__card {
+        position: absolute;
+        background: rgba(61, 203, 253, 0.2);
+        border: 1px solid rgba(215, 232, 252, 0.4);
+        border-radius: 6px;
+        transform: rotate(-14deg);
+        display: flex;
+        align-items: flex-start;
+        padding: 8px;
+      }
+      .plano-cta__card img {
+        width: 48px;
+        height: 48px;
+        object-fit: contain;
+      }
+      .plano-cta__action {
+        flex-shrink: 0;
+        width: 290px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .plano-cta__desc {
+        font-size: 14px;
+        font-weight: 400;
+        color: #fff;
+        line-height: 20px;
+      }
+      .plano-cta__btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        align-self: flex-start;
+        gap: 8px;
+        width: auto;
+        background: #f29423;
+        border: none;
+        border-radius: 4px;
+        padding: 6px 10px;
+        cursor: pointer;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        color: #fff;
+        text-transform: uppercase;
+        line-height: 18px;
+        transition: opacity 140ms;
+      }
+      .plano-cta__btn:hover { opacity: 0.88; }
+      .plano-cta__btn .material-icons-outlined {
+        font-size: 18px;
+      }
+
+    /* ════════════════════════════════════
+       APPS MENU (menu de produtos)
+    ════════════════════════════════════ */
+    #apps-menu {
+      position: fixed;
+      top: 52px;
+      left: 0;
+      width: 240px;
+      background: #fff;
+      box-shadow: 4px 0 16px rgba(0,0,0,0.12);
+      z-index: 9998;
+      display: none;
+      flex-direction: column;
+      padding: 16px 0 8px;
+    }
+
+    #apps-menu.open { display: flex; }
+
+    .apps-menu-title {
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 20px;
+      color: #323232;
+      padding: 0 16px 8px;
+    }
+
+    .apps-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      font-size: 14px;
+      line-height: 20px;
+      color: #323232;
+      text-decoration: none;
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+
+    .apps-menu-item:hover { background: #f5f9fe; color: #378ef0; }
+
+    .apps-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 16px;
+      flex-shrink: 0;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .apps-badge--isa {
+      background: #e0f0ff;
+      color: #0e9ce3;
+    }
+
+    .apps-badge--ipa {
+      background: #ede8f8;
+      color: #7b4ea6;
+    }
+
+    </style>
+  </head>
+
+  <body>
+    <!-- ═══ HEADER (Figma-accurate) ═══ -->
+    <header class="plano-menubar">
+      <!-- Blue apps button -->
+      <button class="plano-menubar__apps-btn" id="apps-btn" aria-label="Menu">
+        <span class="material-icons-outlined">apps</span>
+      </button>
+      <!-- Main bar -->
+      <div class="plano-menubar__main">
+        <!-- Logo -->
+        <div class="plano-menubar__logo-wrap">
+          <img src="https://marcoskip.github.io/infoprice-prototipos/assets/logo-principal.svg"
+               alt="InfoPrice" class="plano-menubar__logo" />
+        </div>
+        <!-- Vertical divider -->
+        <div class="plano-menubar__divider"></div>
+        <!-- Product status -->
+        <div class="plano-menubar__status">
+          <span class="plano-menubar__status-text">Administrador</span>
+        </div>
+        <!-- Right actions -->
+        <div class="plano-menubar__actions">
+          <button class="plano-menubar__action-btn" aria-label="Convidar usuário">
+            <span class="material-icons-outlined">person_add</span>
+          </button>
+          <button class="plano-menubar__action-btn" aria-label="Ajuda">
+            <span class="material-icons-outlined">help_outline</span>
+          </button>
+          <button class="plano-menubar__user-btn" id="userBtn">
+            <span class="plano-menubar__user-name">Olá, Marcus</span>
+            <span class="material-icons-outlined plano-menubar__arrow">keyboard_arrow_down</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ═══ SIDEBAR (Figma-accurate) ═══ -->
+    <nav class="plano-sidebar" id="sidebar" aria-label="Menu principal">
+      <div class="plano-sidebar__top">
+        <a href="#" class="plano-sidebar__item" aria-label="Configurações">
+          <span class="material-icons">settings</span>
+        </a>
+        <a href="gerenciar-usuarios.html" class="plano-sidebar__item" aria-label="Convidar usuário">
+          <span class="material-icons">person_add</span>
+        </a>
+        <a href="#" class="plano-sidebar__item plano-sidebar__item--active" aria-label="Planos">
+          <span class="material-icons">work</span>
+        </a>
+      </div>
+      <div class="plano-sidebar__bottom">
+        <button class="plano-sidebar__item" id="sidebarSeta" aria-label="Expandir menu">
+          <span class="material-icons-outlined">chevron_right</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- ═══ MAIN CONTENT ═══ -->
+    <main class="plano-page" id="planoPage">
+
+      <!-- Page header -->
+      <div class="plano-header">
+        <div class="plano-header__title-block">
+          <div class="plano-header__title-inner">
+            <span class="plano-header__title">Planos</span>
+            <span class="plano-header__subtitle">Compare planos, faça um upgrade ou conheça os benefícios do seu plano atual</span>
+          </div>
+        </div>
+        <div class="plano-header__info-card segment-card" id="segment-card">
+          <div class="segment-card-inner">
+            <div class="plano-header__info-inner">
+              <div class="plano-header__info-label">
+                <span class="material-icons-outlined" style="font-size:16px;color:#378ef0;">store</span>
+                <span class="plano-header__info-label-text">Segmento</span>
+              </div>
+              <span class="plano-header__info-value">Varejo</span>
+            </div>
+            <span class="material-icons-outlined segment-chevron">keyboard_arrow_down</span>
+          </div>
+        </div>
+        <div class="plano-header__info-card">
+          <div class="plano-header__info-inner">
+            <div class="plano-header__info-label">
+              <span class="material-icons-outlined" style="font-size:16px;color:#378ef0;">workspace_premium</span>
+              <span class="plano-header__info-label-text">Seu plano atual</span>
+            </div>
+            <span class="plano-header__info-value">Free</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ PLAN COMPARISON TABLE ═══ -->
+
+      <!-- Layout: left labels column + 4 plan columns side by side -->
+      <div style="display:flex; gap:8px; align-items:flex-start;">
+
+        <!-- ── LEFT LABELS COLUMN ── -->
+        <div class="plan-labels">
+
+          <!-- Header placeholder (same height as plan col header) -->
+          <div class="plan-labels__header"></div>
+
+          <!-- Section 1: Preço e concorrência (header + 8 features = 9 rows) -->
+          <div class="plan-section-labels">
+            <div class="plan-row-label plan-row-label--category">
+              <span class="plan-row-label__text plan-row-label__text--category">Preço e concorrência</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Painel geral</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Módulo de competitividade</span>
+            </div>
+            <div class="plan-row-label plan-row-label--sub">
+              <span class="plan-row-label__text plan-row-label__text--feature">Competitividade de Redes</span>
+            </div>
+            <div class="plan-row-label plan-row-label--sub">
+              <span class="plan-row-label__text plan-row-label__text--feature">Competitividade de Produtos</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Módulo Omnichannel</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Análise de cobertura</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Solicitação sob demanda (semanais)</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Pesquisa PDV</span>
+            </div>
+          </div>
+
+          <!-- Section 2: Inteligência (header + 3 features = 4 rows) -->
+          <div class="plan-section-labels">
+            <div class="plan-row-label plan-row-label--category">
+              <span class="plan-row-label__text plan-row-label__text--category">Inteligência</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Módulo de Lojas Concorrentes</span>
+              <span class="plan-ia-badge">IA</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Previsão de demanda</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Sensibilidade Infoprice</span>
+            </div>
+          </div>
+
+          <!-- Section 3: Precificação estratégica (header + 8 features = 9 rows) -->
+          <div class="plan-section-labels">
+            <div class="plan-row-label plan-row-label--category">
+              <span class="plan-row-label__text plan-row-label__text--category">Precificação estratégica</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Gerenciador de preços</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Regras e limites</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Preço psicológico</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Tabela de preço</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Preço regular</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Preço atacado</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Preço oferta (farma)</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Preço oferta (varejo)</span>
+            </div>
+          </div>
+
+          <!-- Section 4: Negociação (header + 1 feature = 2 rows) -->
+          <div class="plan-section-labels">
+            <div class="plan-row-label plan-row-label--category">
+              <span class="plan-row-label__text plan-row-label__text--category">Negociação</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Módulo de negociação</span>
+            </div>
+          </div>
+
+          <!-- Section 5: Análises e relatórios (header + 2 features = 3 rows) -->
+          <div class="plan-section-labels">
+            <div class="plan-row-label plan-row-label--category">
+              <span class="plan-row-label__text plan-row-label__text--category">Análises e relatórios</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Módulo de relatórios</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">IPA Analytics</span>
+            </div>
+          </div>
+
+          <!-- Section 6: Integração e utilização (header + 2 features = 3 rows) -->
+          <div class="plan-section-labels">
+            <div class="plan-row-label plan-row-label--category">
+              <span class="plan-row-label__text plan-row-label__text--category">Integração e utilização</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Integração FTP (Infopanel)</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Quantidade de usuários</span>
+            </div>
+          </div>
+
+          <!-- Section 7: Adicionais (header + 5 features = 6 rows) -->
+          <div class="plan-section-labels">
+            <div class="plan-row-label plan-row-label--category">
+              <span class="plan-row-label__text plan-row-label__text--category">Adicionais</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Otimização</span>
+              <span class="plan-ia-badge">IA</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Campanhas promocionais</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Simulação de estratégia</span>
+              <span class="plan-ia-badge">IA</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Fontes (digitais e SeFaz)</span>
+            </div>
+            <div class="plan-row-label plan-row-label--feature">
+              <span class="plan-row-label__text plan-row-label__text--feature">Integração de saída ERP (IPA)</span>
+            </div>
+          </div>
+
+        </div><!-- /plan-labels -->
+
+        <!-- ── PLAN COLUMNS ── -->
+        <div class="plan-cols">
+
+          <!-- ─── FREE ─── -->
+          <div class="plan-col plan-col--free">
+            <div class="plan-col__header plan-col__header--free">
+              <span class="plan-col__name">Free</span>
+              <button class="plan-col__btn plan-col__btn--current" disabled>
+                SEU PLANO ATUAL
+              </button>
+            </div>
+            <!-- S1: Preço e concorrência [-, ✓, ✗, ✗, ✗, ✗, ✗, ✗, ✗] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+            </div>
+            <!-- S2: Inteligência [-, ✗, ✗, ✗] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+            </div>
+            <!-- S3: Precificação estratégica [-, ✗×8] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+            </div>
+            <!-- S4: Negociação [-, ✗] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+            </div>
+            <!-- S5: Análises e relatórios [-, ✗, ✗] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+            </div>
+            <!-- S6: Integração e utilização [-, ✗, "1"] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">1</span></div>
+            </div>
+            <!-- S7: Adicionais [-, ✗×5] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+            </div>
+          </div>
+
+          <!-- ─── ESSENTIAL ─── -->
+          <div class="plan-col">
+            <div class="plan-col__header">
+              <span class="plan-col__name">Essential</span>
+              <button class="plan-col__btn">
+                <span class="material-icons-outlined">arrow_upward</span>
+                FAZER UM UPGRADE DE PLANO
+              </button>
+            </div>
+            <!-- S1: [-, ✓, ✗, ✗, ✗, ✗, ✓, ✗, "Sob contratação"] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Sob contratação</span></div>
+            </div>
+            <!-- S2: [-, ✗, ✗, ✗] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+            </div>
+            <!-- S3: [-, ✗×8] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+            </div>
+            <!-- S4: [-, ✓] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+            </div>
+            <!-- S5: [-, ✗, ✗] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+            </div>
+            <!-- S6: [-, ✗, "Ilimitado"] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Ilimitado</span></div>
+            </div>
+            <!-- S7: [-, "Sob contratação"×5] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Sob contratação</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Sob contratação</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Sob contratação</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Sob contratação</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Sob contratação</span></div>
+            </div>
+          </div>
+
+          <!-- ─── PRO ─── -->
+          <div class="plan-col">
+            <div class="plan-col__header">
+              <span class="plan-col__name">Pro</span>
+              <button class="plan-col__btn">
+                <span class="material-icons-outlined">arrow_upward</span>
+                FAZER UM UPGRADE DE PLANO
+              </button>
+            </div>
+            <!-- S1: [-, ✓, ✓, ✓, ✓, ✓, ✓, "500", "Sob contratação"] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">500</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Sob contratação</span></div>
+            </div>
+            <!-- S2: [-, ✓, ✗, ✗] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+            </div>
+            <!-- S3: [-, "Ilimitadas", ✓, "Ilimitadas", ✓, ✓, ✓, "Visualização", ✓] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Ilimitadas</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Ilimitadas</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Visualização</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+            </div>
+            <!-- S4: [-, ✓] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+            </div>
+            <!-- S5: [-, ✓, ✗] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+            </div>
+            <!-- S6: [-, ✗, "Ilimitado"] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-x">highlight_off</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Ilimitado</span></div>
+            </div>
+            <!-- S7: [-, "Sob contratação"×5] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Sob contratação</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Sob contratação</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Sob contratação</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Sob contratação</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Sob contratação</span></div>
+            </div>
+          </div>
+
+          <!-- ─── ENTERPRISE ─── -->
+          <div class="plan-col">
+            <div class="plan-col__header">
+              <span class="plan-col__name">Enterprise</span>
+              <button class="plan-col__btn">
+                <span class="material-icons-outlined">arrow_upward</span>
+                FAZER UM UPGRADE DE PLANO
+              </button>
+            </div>
+            <!-- S1: [-, ✓, ✓, ✓, ✓, ✓, ✓, "1.000", "Sob contratação"] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">1.000</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Sob contratação</span></div>
+            </div>
+            <!-- S2: [-, ✓, ✓, ✓] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+            </div>
+            <!-- S3: [-, "Ilimitadas", ✓, "Ilimitadas", ✓, ✓, ✓, "Visualização", ✓] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Ilimitadas</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Ilimitadas</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Visualização</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+            </div>
+            <!-- S4: [-, ✓] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+            </div>
+            <!-- S5: [-, ✓, ✓] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+            </div>
+            <!-- S6: [-, ✓, "Ilimitado"] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="material-icons-outlined plan-icon-check">check_circle_outline</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Ilimitado</span></div>
+            </div>
+            <!-- S7: [-, "Sob contratação"×5] -->
+            <div class="plan-section">
+              <div class="plan-row-cell plan-row-cell--empty"></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Sob contratação</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Sob contratação</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Sob contratação</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Sob contratação</span></div>
+              <div class="plan-row-cell"><span class="plan-cell-val">Sob contratação</span></div>
+            </div>
+          </div>
+
+        </div><!-- /plan-cols -->
+
+      </div><!-- /flex wrapper -->
+
+      <!-- ═══ CTA BANNER ═══ -->
+      <div class="plano-cta">
+        <div class="plano-cta__ellipse"></div>
+        <div class="plano-cta__inner">
+          <!-- Left: heading -->
+          <div class="plano-cta__text">
+            <p class="plano-cta__heading">
+              Precisa de ajuda para escolher<br>
+              o <span class="plano-cta__heading--gradient">melhor plano</span> para você?
+            </p>
+          </div>
+
+          <!-- Center: decorative illustration -->
+          <div class="plano-cta__illustration" aria-hidden="true">
+            <div class="plano-cta__card" style="width:187px;height:222px;left:calc(50% - 211px);top:-10px;">
+              <span class="material-icons-outlined" style="font-size:48px;color:rgba(215,232,252,0.6);">business</span>
+            </div>
+            <div class="plano-cta__card" style="width:207px;height:245px;left:calc(50% - 96px);top:10px;">
+              <span class="material-icons-outlined" style="font-size:48px;color:rgba(215,232,252,0.6);">group</span>
+            </div>
+            <div class="plano-cta__card" style="width:187px;height:222px;left:calc(50% + 24px);top:30px;">
+              <span class="material-icons-outlined" style="font-size:48px;color:rgba(215,232,252,0.6);">category</span>
+            </div>
+          </div>
+
+          <!-- Right: action -->
+          <div class="plano-cta__action">
+            <p class="plano-cta__desc">
+              Converse com um dos nossos consultores comerciais esclareça todas as suas dúvidas.
+            </p>
+            <button class="plano-cta__btn">
+              <span class="material-icons">mode_comment</span>
+              FALE COM UM ESPECIALISTA
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </main><!-- /plano-page -->
+
+    <!-- Apps menu -->
+    <div id="apps-menu">
+      <p class="apps-menu-title">Produtos</p>
+      <a class="apps-menu-item" href="relatorios-essential.html">
+        <span class="apps-badge apps-badge--isa">ISA</span>
+        InfoPanel
+      </a>
+      <a class="apps-menu-item" href="#">
+        <span class="apps-badge apps-badge--isa">ISA</span>
+        Monitoramento PDV
+      </a>
+      <a class="apps-menu-item" href="#">
+        <span class="apps-badge apps-badge--ipa">IPA</span>
+        Software de precificação
+      </a>
+      <a class="apps-menu-item" href="#">
+        <span class="apps-badge apps-badge--ipa">IPA</span>
+        Simulador de demanda
+      </a>
+    </div>
+
+    <script>
+      // ─── Upgrade button toast ───
+      document.querySelectorAll(".plan-col__btn:not(.plan-col__btn--current)").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const existing = document.querySelector(".plano-toast");
+          if (existing) existing.remove();
+          const t = document.createElement("div");
+          t.className = "plano-toast";
+          t.style.cssText = [
+            "position:fixed","bottom:24px","right:24px","z-index:9999",
+            "background:#fff","border-radius:6px","box-shadow:0 4px 12px rgba(0,0,0,.15)",
+            "padding:12px 16px","display:flex","align-items:center","gap:10px",
+            "font-family:'Open Sans',sans-serif","font-size:13px","color:#323232"
+          ].join(";");
+          t.innerHTML = `
+            <span class="material-icons-outlined" style="color:#378ef0;font-size:20px;">info</span>
+            <div>
+              <div style="font-weight:600;">Em breve</div>
+              <div style="color:#959595;">Funcionalidade disponível em breve.</div>
+            </div>
+            <button onclick="this.closest('.plano-toast').remove()"
+              style="background:none;border:none;cursor:pointer;margin-left:8px;">
+              <span class="material-icons-outlined" style="font-size:18px;color:#959595;">close</span>
+            </button>`;
+          document.body.appendChild(t);
+          setTimeout(() => t.remove(), 3000);
+        });
+      });
+    </script>
+
+    <!-- Segment dropdown -->
+    <div id="segment-dropdown">
+      <a class="segment-option active" href="bundle-varejo.html">
+        <span class="material-icons-outlined">store</span>
+        Varejo
+      </a>
+      <a class="segment-option" href="bundle-industria.html">
+        <span class="material-icons-outlined">factory</span>
+        Indústria
+      </a>
+    </div>
+
+    <script>
+      (function() {
+        const card     = document.getElementById('segment-card');
+        const dropdown = document.getElementById('segment-dropdown');
+        if (!card || !dropdown) return;
+
+        card.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const isOpen = dropdown.classList.contains('open');
+          if (isOpen) {
+            dropdown.classList.remove('open');
+            card.classList.remove('open');
+          } else {
+            const rect = card.getBoundingClientRect();
+            dropdown.style.left = rect.left + 'px';
+            dropdown.style.top  = (rect.bottom + 4) + 'px';
+            dropdown.classList.add('open');
+            card.classList.add('open');
+          }
+        });
+
+        document.addEventListener('click', function() {
+          dropdown.classList.remove('open');
+          card.classList.remove('open');
+        });
+
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') {
+            dropdown.classList.remove('open');
+            card.classList.remove('open');
+          }
+        });
+      })();
+    </script>
+
+    <script>
+      /* ── Apps menu ── */
+      (function() {
+        const appsBtn  = document.getElementById('apps-btn');
+        const appsMenu = document.getElementById('apps-menu');
+        if (!appsBtn || !appsMenu) return;
+
+        appsBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          appsMenu.classList.toggle('open');
+        });
+
+        document.addEventListener('click', function() {
+          appsMenu.classList.remove('open');
+        });
+
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') appsMenu.classList.remove('open');
+        });
+      })();
+    </script>
+  </body>
+</html>
