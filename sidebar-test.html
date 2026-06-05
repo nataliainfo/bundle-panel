@@ -744,7 +744,7 @@
           <div class="sidebar-subitems-inner">
             <div class="sidebar-subitem" data-page="Visão geral de Elasticidade">Visão geral de Elasticidade</div>
             <div class="sidebar-subitem" data-page="Análise de Elasticidade">Análise de Elasticidade</div>
-            <div class="sidebar-subitem" data-page="Aderência de Preços">Aderência de Preços</div>
+            <div class="sidebar-subitem" data-page="Aderência de Preços" data-href="aderencia-de-precos-industria-essential.html">Aderência de Preços</div>
           </div>
         </div>
 
@@ -934,9 +934,11 @@
     });
   });
 
-  /* ── Clique em sub-item → ativa sub-item + pai ── */
+  /* ── Clique em sub-item → ativa sub-item + pai (e navega se tiver href) ── */
   allSubs.forEach(sub => {
     sub.addEventListener('click', () => {
+      const href = sub.dataset.href;
+      if (href && href !== '#') { window.location.href = href; return; }
       clearActive();
       sub.classList.add('active');
       industriaTrigger.classList.add('active');

@@ -1115,7 +1115,7 @@
           <span class="sidebar-label">Análise de competitividade</span>
         </div>
 
-        <div class="sidebar-item" data-page="Lojas concorrentes" data-href="#">
+        <div class="sidebar-item" data-page="Lojas concorrentes" data-href="lojas-concorrentes-essential.html">
           <span class="sidebar-icon material-icons">store</span>
           <span class="sidebar-label">Lojas concorrentes</span>
         </div>
@@ -1163,7 +1163,7 @@
           <div class="sidebar-subitems-inner">
             <div class="sidebar-subitem" data-href="#">Visão geral de Elasticidade</div>
             <div class="sidebar-subitem" data-href="#">Análise de Elasticidade</div>
-            <div class="sidebar-subitem" data-href="#">Aderência de Preços</div>
+            <div class="sidebar-subitem" data-href="aderencia-de-precos-industria-essential.html">Aderência de Preços</div>
           </div>
         </div>
 
@@ -1493,6 +1493,13 @@
       if (item.id === 'industria-trigger') return;
       item.addEventListener('click', () => {
         const href = item.dataset.href;
+        if (href && href !== '#') window.location.href = href;
+      });
+    });
+
+    document.querySelectorAll('.sidebar-subitem[data-href]').forEach(sub => {
+      sub.addEventListener('click', () => {
+        const href = sub.dataset.href;
         if (href && href !== '#') window.location.href = href;
       });
     });

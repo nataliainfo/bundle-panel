@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InfoPrice — Módulo de Lojas Concorrentes</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Raleway:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body { font-family: 'Open Sans', sans-serif; background: #f5f5f5; min-height: 100vh; }
+
+    /* ════ MENU BAR ════ */
+    .menu-bar { position: sticky; top: 0; z-index: 100; display: flex; height: 52px; width: 100%; }
+    .menu-apps-btn { width: 48px; height: 52px; flex-shrink: 0; background: #378ef0; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .menu-apps-btn .material-icons-outlined { color: #fff; font-size: 24px; }
+    .menu-right { flex: 1; height: 52px; background: #f0f0f0; display: flex; align-items: center; padding: 0 8px; }
+    .menu-logo-area { padding: 8px 12px 8px 8px; display: flex; align-items: center; }
+    .menu-logo { height: 15px; width: 99px; object-fit: contain; object-position: left center; display: block; flex-shrink: 0; }
+    .menu-divider { width: 1px; height: 24px; background: #d3d3d3; flex-shrink: 0; }
+    .menu-product { flex: 1; display: flex; align-items: center; gap: 8px; padding: 16px 12px; }
+    .menu-product-name { font-weight: 600; font-size: 14px; line-height: 20px; color: #505050; white-space: nowrap; }
+    .menu-badge { display: flex; align-items: center; padding: 1px 6px; border: 1px solid #959595; border-radius: 10px; }
+    .menu-badge span { font-weight: 700; font-size: 10px; color: #959595; text-transform: uppercase; }
+    .menu-actions { display: flex; align-items: center; }
+    .menu-icon-btn { width: 44px; height: 52px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .menu-icon-btn .material-icons-outlined { font-size: 20px; color: #505050; }
+    .menu-user { display: flex; align-items: center; gap: 10px; padding: 16px 8px; cursor: pointer; }
+    .menu-user-name { font-weight: 600; font-size: 14px; color: #505050; white-space: nowrap; }
+    .menu-user .material-icons-outlined { font-size: 16px; color: #505050; }
+
+    /* ════ LAYOUT ════ */
+    .below-menu { display: flex; align-items: flex-start; }
+
+    /* ════ SIDEBAR ════ */
+    .sidebar { width: 48px; flex-shrink: 0; background: #fff; position: sticky; top: 52px; height: calc(100vh - 52px); display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; transition: width 0.25s cubic-bezier(0.4,0,0.2,1); z-index: 10; }
+    .sidebar.open { width: 224px; }
+    .sidebar-top { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; }
+    .sidebar-top::-webkit-scrollbar { width: 0; }
+    .sidebar-top { scrollbar-width: none; }
+    .sidebar-bottom { flex-shrink: 0; display: flex; flex-direction: column; }
+
+    .sidebar-item { display: flex; align-items: center; gap: 6px; padding: 14px; cursor: pointer; white-space: nowrap; position: relative; user-select: none; transition: background 0.15s ease; list-style: none; text-decoration: none; }
+    .sidebar-item:hover { background: #f5f9fe; }
+    .sidebar-item:hover .sidebar-icon, .sidebar-item:hover .sidebar-label, .sidebar-item:hover .sidebar-chevron { color: #378ef0; }
+    .sidebar-item.active .sidebar-icon, .sidebar-item.active .sidebar-label { color: #378ef0; }
+
+    .sidebar-icon { font-size: 20px; flex-shrink: 0; width: 20px; height: 20px; color: #747474; transition: color 0.15s ease; line-height: 1; display: flex; align-items: center; justify-content: center; }
+    .sidebar-icon svg { display: block; width: 20px; height: 20px; flex-shrink: 0; color: inherit; }
+    .sidebar-item.active .sidebar-icon { color: #378ef0; }
+
+    .sidebar-inner-group { flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px; overflow: hidden; }
+    .sidebar-label { font-weight: 600; font-size: 12px; line-height: 18px; color: #505050; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.15s ease, opacity 0.12s ease; opacity: 0; }
+    .sidebar.open .sidebar-label { opacity: 1; transition: color 0.15s ease, opacity 0.18s ease 0.14s; }
+    .sidebar-item:hover .sidebar-label, .sidebar-item.active .sidebar-label { color: #378ef0; }
+    .sidebar-item:hover .sidebar-inner-group .sidebar-label, .sidebar-item.active .sidebar-inner-group .sidebar-label { color: #378ef0; }
+
+    .sidebar-chevron { font-size: 16px; flex-shrink: 0; color: #747474; transition: color 0.15s ease, transform 0.2s ease, opacity 0.12s ease; opacity: 0; }
+    .sidebar.open .sidebar-chevron { opacity: 1; transition: color 0.15s ease, transform 0.2s ease, opacity 0.18s ease 0.14s; }
+    .sidebar-item:hover .sidebar-inner-group .sidebar-chevron { color: #378ef0; }
+    .sidebar-item.expanded > .sidebar-inner-group > .sidebar-chevron { transform: rotate(180deg); }
+
+    .sidebar-subitems { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.25s cubic-bezier(0.4,0,0.2,1); }
+    .sidebar-subitems.expanded { grid-template-rows: 1fr; }
+    .sidebar-subitems-inner { overflow: hidden; }
+
+    .sidebar-subitem { display: flex; align-items: center; padding: 10px 14px 10px 36px; cursor: pointer; font-weight: 400; font-size: 12px; line-height: 16px; color: #505050; white-space: nowrap; list-style: none; text-decoration: none; opacity: 0; transition: background 0.15s ease, color 0.15s ease, opacity 0.12s ease; }
+    .sidebar.open .sidebar-subitem { opacity: 1; transition: background 0.15s ease, color 0.15s ease, opacity 0.18s ease 0.14s; }
+    .sidebar-subitem:hover { background: #f5f9fe; color: #378ef0; }
+    .sidebar-subitem.active { color: #378ef0; font-weight: 600; }
+
+    .sidebar-toggle-btn { display: flex; align-items: center; justify-content: flex-start; padding: 14px; cursor: pointer; background: none; border: none; width: 100%; transition: background 0.15s ease; gap: 6px; white-space: nowrap; }
+    .sidebar-toggle-btn:hover { background: #f5f9fe; }
+    .sidebar-toggle-btn:hover .sidebar-toggle-icon { color: #378ef0; }
+    .sidebar-toggle-icon { font-size: 20px; color: #747474; transition: color 0.15s; flex-shrink: 0; }
+
+    /* ════ TOOLTIP ════ */
+    #sidebar-tooltip { position: fixed; background: #323232; color: #fff; font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 600; line-height: 18px; padding: 5px 10px; border-radius: 4px; pointer-events: none; z-index: 9999; white-space: nowrap; opacity: 0; transition: opacity 0.15s ease; box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+    #sidebar-tooltip.visible { opacity: 1; }
+    #sidebar-tooltip::before { content: ''; position: absolute; right: 100%; top: 50%; transform: translateY(-50%); border: 5px solid transparent; border-right-color: #323232; }
+
+    /* ════ MAIN CONTENT ════ */
+    .main-content { flex: 1; min-width: 0; padding: 8px; display: flex; flex-direction: column; gap: 8px; }
+
+    /* ════ PAGE HEADER ════ */
+    .page-header { background: #fff; border-radius: 6px; padding: 12px 18px; display: flex; align-items: center; gap: 8px; }
+    .page-header-icon { background: #f5f9fe; border-radius: 22px; padding: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .page-header-icon .material-icons { font-size: 20px; color: #378ef0; }
+    .page-header-text { flex: 1; min-width: 0; }
+    .page-header-title { font-weight: 600; font-size: 18px; line-height: 26px; color: #323232; }
+    .page-header-desc { font-weight: 400; font-size: 14px; line-height: 20px; color: #747474; }
+    .page-header-action { background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 0; flex-shrink: 0; font-family: 'Open Sans', sans-serif; font-size: 14px; color: #378ef0; text-decoration: none; }
+    .page-header-action:hover { text-decoration: underline; }
+
+    /* ════ MAIN CARD ════ */
+    .main-card { background: #fff; border-radius: 6px; padding: 64px; display: flex; flex-direction: column; gap: 96px; align-items: center; }
+
+    /* ── HERO ── */
+    .hero { display: flex; align-items: center; gap: 48px; width: 100%; }
+    .hero-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 32px; }
+    .hero-heading { display: flex; flex-direction: column; gap: 8px; }
+    .hero-title { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: 28px; line-height: 32px; color: #378ef0; }
+    .hero-subtitle { font-weight: 400; font-size: 12px; line-height: 18px; color: #747474; }
+    .hero-buttons { display: flex; gap: 8px; align-items: center; }
+    .btn-orange { background: #f29423; border: none; border-radius: 4px; padding: 6px 10px; font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 700; color: #fff; text-transform: uppercase; cursor: pointer; }
+    .btn-orange:hover { background: #d97e1a; }
+    .btn-outline-blue { background: transparent; border: 1px solid #378ef0; border-radius: 4px; padding: 6px 10px; font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 700; color: #378ef0; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+    .btn-outline-blue .material-icons-outlined { font-size: 18px; }
+    .btn-outline-blue:hover { background: #f0f7ff; }
+
+    .hero-image { width: 600px; height: 291px; flex-shrink: 0; border-radius: 6px; overflow: hidden; position: relative; background: linear-gradient(to top, #002946, #378ef0); box-shadow: 0px 9px 28px 8px rgba(0,0,0,.05),0px 6px 16px rgba(0,0,0,.08),0px 3px 6px -4px rgba(0,0,0,.12); }
+    .hero-image-frame { position: absolute; border: 1.263px solid #559ff2; border-radius: 7.6px; mix-blend-mode: lighten; }
+    .hero-image-frame-1 { inset: 18px 13px -185px; }
+    .hero-image-frame-2 { inset: 43px 34px -160px; }
+    .hero-image-frame-3 { inset: 71px 55px -130px; }
+    .video-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,41,70,.55), rgba(55,142,240,.45)); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; cursor: pointer; z-index: 3; }
+    .play-btn { position: relative; width: 88px; height: 88px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .play-ring { position: absolute; border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+    .play-ring-1 { width: 88px; height: 88px; border: 2px solid rgba(255,255,255,.5); background: rgba(255,255,255,.08); }
+    .play-ring-2 { width: 70px; height: 70px; background: rgba(255,255,255,.18); }
+    .play-ring-3 { width: 52px; height: 52px; background: rgba(255,255,255,.38); }
+    .play-icon { position: relative; z-index: 1; width: 0; height: 0; border-top: 9px solid transparent; border-bottom: 9px solid transparent; border-left: 16px solid #fff; margin-left: 4px; }
+    .video-label { font-family: 'Open Sans', sans-serif; font-weight: 600; font-size: 14px; color: #fff; }
+
+    /* ── FEATURES ── */
+    .features { display: flex; gap: 48px; align-items: flex-start; width: 100%; }
+    .features-heading-col { width: 315px; flex-shrink: 0; }
+    .features-heading { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: 28px; line-height: 36px; color: #378ef0; }
+    .features-cols { flex: 1; min-width: 0; display: flex; gap: 48px; }
+    .feature-card { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+    .feature-card-top { display: flex; flex-direction: column; gap: 8px; margin-bottom: 4px; }
+    .feature-icon-box { background: #eaeaea; border-radius: 4px; width: 27px; height: 27px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .feature-icon-box .material-icons-outlined { font-size: 16px; color: #378ef0; }
+    .feature-title { font-weight: 600; font-size: 16px; line-height: 20px; color: #505050; }
+    .feature-desc { font-weight: 400; font-size: 12px; line-height: 18px; color: #747474; }
+
+    /* ── UPGRADE BANNER ── */
+    .upgrade-banner { background: linear-gradient(to bottom, #002946, #378ef0); border-radius: 6px; border-bottom: 4px solid #f29423; padding: 32px; display: flex; align-items: center; gap: 24px; }
+    .upgrade-left { display: flex; gap: 24px; align-items: center; }
+    .upgrade-headline { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+    .upgrade-title-wrap { display: flex; flex-direction: column; }
+    .upgrade-title { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: 22px; line-height: 28px; color: #fff; }
+    .upgrade-title-highlight { background: linear-gradient(85.56deg, #f29423 11.24%, #f9cf9c 126.22%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .upgrade-sub { font-weight: 400; font-size: 14px; line-height: 20px; color: #fff; }
+    .upgrade-features { display: flex; gap: 24px; }
+    .upgrade-features-col { display: flex; flex-direction: column; gap: 8px; }
+    .upgrade-feature-item { display: flex; align-items: flex-start; gap: 4px; }
+    .upgrade-feature-item .material-icons-outlined { font-size: 16px; color: #f29423; flex-shrink: 0; margin-top: 2px; }
+    .upgrade-feature-text { font-weight: 400; font-size: 14px; line-height: 20px; color: #fff; }
+    .upgrade-actions { display: flex; flex-direction: column; align-items: center; gap: 8px; flex-shrink: 0; }
+    .btn-orange-specialist { background: #f29423; border: none; border-radius: 4px; padding: 6px 10px; font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 700; color: #fff; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .btn-orange-specialist .material-icons-outlined { font-size: 18px; }
+    .btn-orange-specialist:hover { background: #d97e1a; }
+    .btn-link-white { background: none; border: none; color: #fff; font-family: 'Open Sans', sans-serif; font-size: 12px; cursor: pointer; text-decoration: none; }
+    .btn-link-white:hover { text-decoration: underline; }
+
+    /* ════ USER DROPDOWN ════ */
+    #user-dropdown { position: fixed; background: #fff; border-radius: 6px; box-shadow: 0px 9px 28px 8px rgba(0,0,0,.05),0px 6px 16px rgba(0,0,0,.08),0px 3px 6px -4px rgba(0,0,0,.12); min-width: 240px; z-index: 9999; display: none; overflow: hidden; }
+    #user-dropdown.visible { display: block; }
+    .udrop-profile { padding: 14px 16px 12px; }
+    .udrop-name { font-weight: 600; font-size: 14px; color: #323232; }
+    .udrop-email { font-size: 12px; color: #747474; margin-top: 2px; }
+    .udrop-divider { height: 1px; background: #eaeaea; margin: 2px 0; }
+    .udrop-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px; font-size: 14px; color: #323232; cursor: pointer; text-decoration: none; font-family: 'Open Sans', sans-serif; background: none; border: none; width: 100%; text-align: left; transition: background .15s, color .15s; }
+    .udrop-item:hover { background: #f5f9fe; color: #378ef0; }
+    .udrop-item .material-icons-outlined { font-size: 20px; color: #505050; flex-shrink: 0; transition: color .15s; }
+    .udrop-item:hover .material-icons-outlined { color: #378ef0; }
+    .udrop-badge { margin-left: auto; background: #33ab84; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; flex-shrink: 0; }
+    .udrop-sair { padding: 10px 16px 12px; font-size: 14px; color: #505050; cursor: pointer; display: block; text-decoration: none; font-family: 'Open Sans', sans-serif; transition: color .15s; }
+    .udrop-sair:hover { color: #d93025; }
+
+    /* ════ APPS MENU ════ */
+    #apps-menu { position: fixed; top: 52px; left: 0; background: #fff; border-right: 1px solid #eaeaea; border-bottom: 1px solid #eaeaea; border-radius: 0 0 6px 0; min-width: 240px; z-index: 9998; display: none; padding: 12px 0 8px; box-shadow: 4px 4px 12px rgba(0,0,0,.08); }
+    #apps-menu.open { display: block; }
+    .apps-menu-title { font-weight: 700; font-size: 13px; color: #323232; padding: 0 16px 8px; }
+    .apps-menu-item { display: flex; align-items: center; gap: 10px; padding: 8px 16px; font-size: 14px; color: #323232; text-decoration: none; transition: background .15s; }
+    .apps-menu-item:hover { background: #f5f9fe; }
+    .apps-badge { font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 4px; flex-shrink: 0; }
+    .apps-badge--isa { background: #e0f0fd; color: #0e9ce3; }
+    .apps-badge--ipa { background: #ede8f7; color: #7b4ea6; }
+  </style>
+</head>
+<body>
+
+  <!-- MENU BAR -->
+  <div class="menu-bar">
+    <div class="menu-apps-btn">
+      <span class="material-icons-outlined">apps</span>
+    </div>
+    <div class="menu-right">
+      <div class="menu-logo-area">
+        <img class="menu-logo" src="https://marcoskip.github.io/infoprice-prototipos/assets/logo-principal.svg" alt="InfoPrice">
+      </div>
+      <div class="menu-divider"></div>
+      <div class="menu-product">
+        <span class="menu-product-name">ISA | InfoPanel</span>
+        <div class="menu-badge"><span>essential</span></div>
+      </div>
+      <div class="menu-actions">
+        <div class="menu-icon-btn"><span class="material-icons-outlined">person_add</span></div>
+        <div class="menu-icon-btn"><span class="material-icons-outlined">help_outline</span></div>
+        <div class="menu-user" id="user-menu-btn">
+          <span class="menu-user-name">Olá, Marcus</span>
+          <span class="material-icons-outlined">keyboard_arrow_down</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="below-menu">
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+
+        <div class="sidebar-item" data-page="Panel" data-href="#">
+          <span class="sidebar-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9.58331 14.7346H3.74998L3.74998 3.33594L12.0833 3.29507V8.62803C12.5 8.22093 13.3333 7.81384 13.75 7.81384V3.29507C13.75 2.39946 13 1.66669 12.0833 1.66669L3.74998 1.70756C2.83331 1.70756 2.08331 2.44033 2.08331 3.33594L2.08331 14.7346C2.08331 15.6302 2.83331 16.363 3.74998 16.363H7.91665L9.58331 14.7346ZM13.0083 15.7931C13.5916 16.1513 14.2666 16.363 15 16.363C17.075 16.363 18.75 14.7265 18.75 12.6991C18.75 10.6718 17.075 9.03528 15 9.03528C12.925 9.03528 11.25 10.6718 11.25 12.691C11.25 13.4075 11.4666 14.0751 11.8333 14.6369L9.23331 17.1772L10.4166 18.3334L13.0083 15.7931ZM12.9166 12.6991C12.9166 11.5756 13.85 10.6637 15 10.6637C16.15 10.6637 17.0833 11.5756 17.0833 12.6991C17.0833 13.8227 16.15 14.7346 15 14.7346C13.85 14.7346 12.9166 13.8227 12.9166 12.6991Z" fill="currentColor"/>
+              <path d="M10.4166 11.7493V9.03528C10.4166 8.66211 10.0952 8.35679 9.70236 8.35679H6.84522V6.9998H10.4166V5.64282H8.63093V4.96432H7.20236V5.64282H6.13093C5.73808 5.64282 5.41665 5.94814 5.41665 6.32131V9.03528C5.41665 9.40845 5.73808 9.71378 6.13093 9.71378H8.98808V11.0708H5.41665V12.4277H7.20236V13.1062H8.63093V12.4277H9.70236C10.0952 12.4277 10.4166 12.1224 10.4166 11.7493Z" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="sidebar-label">Panel</span>
+        </div>
+
+        <div class="sidebar-item" data-page="Módulo de relatórios" data-href="relatorios-essential.html">
+          <span class="sidebar-icon material-icons">assignment</span>
+          <span class="sidebar-label">Módulo de relatórios</span>
+        </div>
+
+        <div class="sidebar-item" data-page="Análise de competitividade" data-href="competitividade-free.html">
+          <span class="sidebar-icon material-icons">emoji_events</span>
+          <span class="sidebar-label">Análise de competitividade</span>
+        </div>
+
+        <div class="sidebar-item active" data-page="Lojas concorrentes" data-href="lojas-concorrentes-essential.html">
+          <span class="sidebar-icon material-icons">store</span>
+          <span class="sidebar-label">Lojas concorrentes</span>
+        </div>
+
+        <div class="sidebar-item" data-page="Módulo omnichannel" data-href="omnichannel-essential.html">
+          <span class="sidebar-icon material-icons">hub</span>
+          <span class="sidebar-label">Módulo omnichannel</span>
+        </div>
+
+        <div class="sidebar-item" data-page="On demand" data-href="ondemand-essential.html">
+          <span class="sidebar-icon material-icons">ads_click</span>
+          <span class="sidebar-label">On demand</span>
+        </div>
+
+        <div class="sidebar-item" data-page="Análise de cobertura" data-href="#">
+          <span class="sidebar-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13.8217 18C13.8217 19.4197 12.6698 20.5717 11.25 20.5717C9.83025 20.5717 8.67825 19.4197 8.67825 18C8.67825 16.9282 9.348 15.951 10.3927 15.576V6.85723H12.1072V15.576C13.152 15.951 13.8217 16.929 13.8217 18ZM15.5355 18C15.5355 16.5937 14.8658 15.3615 13.821 14.5717V4.28623C13.821 2.86648 12.669 1.71448 11.2492 1.71448C9.8295 1.71448 8.6775 2.86648 8.6775 4.28623V14.5717C7.63275 15.3622 6.963 16.5937 6.963 18C6.963 20.3707 8.8785 22.2855 11.2485 22.2855C13.6185 22.2855 15.534 20.37 15.534 18H15.5355ZM17.25 18C17.25 21.3082 14.5582 24 11.25 24C7.94175 24 5.25 21.3082 5.25 18C5.25 16.3657 5.90625 14.8927 6.9645 13.8082V4.28623C6.9645 1.91548 8.88 0.000732422 11.25 0.000732422C13.62 0.000732422 15.5355 1.91623 15.5355 4.28623V13.8082C16.5938 14.8927 17.25 16.3665 17.25 18ZM18.9645 10.2855V12H16.3927V10.2855H18.9645ZM18.9645 6.85723V8.57173H16.3927V6.85723H18.9645ZM18.9645 3.42823V5.14273H16.3927V3.42823H18.9645Z" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="sidebar-label">Análise de cobertura</span>
+        </div>
+
+        <div class="sidebar-item" id="industria-trigger" data-page="Inteligência para a Indústria" data-href="#">
+          <span class="sidebar-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g clip-path="url(#clip-factory)">
+                <path d="M11.6667 8.33324V7.06657C11.6667 6.4749 11.075 6.0749 10.525 6.29157L7.49999 7.4999V7.0999C7.49999 6.4999 6.89166 6.09157 6.34166 6.33324L2.67499 7.8999C2.06666 8.16657 1.66666 8.76657 1.66666 9.43324V16.6666C1.66666 17.5832 2.41666 18.3332 3.33332 18.3332H16.6667C17.5833 18.3332 18.3333 17.5832 18.3333 16.6666V8.33324H11.6667ZM7.49999 14.1666C7.49999 14.6249 7.12499 14.9999 6.66666 14.9999C6.20832 14.9999 5.83332 14.6249 5.83332 14.1666V12.4999C5.83332 12.0416 6.20832 11.6666 6.66666 11.6666C7.12499 11.6666 7.49999 12.0416 7.49999 12.4999V14.1666ZM10.8333 14.1666C10.8333 14.6249 10.4583 14.9999 9.99999 14.9999C9.54166 14.9999 9.16666 14.6249 9.16666 14.1666V12.4999C9.16666 12.0416 9.54166 11.6666 9.99999 11.6666C10.4583 11.6666 10.8333 12.0416 10.8333 12.4999V14.1666ZM14.1667 14.1666C14.1667 14.6249 13.7917 14.9999 13.3333 14.9999C12.875 14.9999 12.5 14.6249 12.5 14.1666V12.4999C12.5 12.0416 12.875 11.6666 13.3333 11.6666C13.7917 11.6666 14.1667 12.0416 14.1667 12.4999V14.1666Z" fill="currentColor"/>
+                <path d="M16.7666 1.66663H15.7416C15.3166 1.66663 14.9666 1.98329 14.9166 2.39996L14.3333 7.08329H18.1666L17.5916 2.39996C17.5416 1.98329 17.1833 1.66663 16.7666 1.66663Z" fill="currentColor"/>
+              </g>
+              <defs><clipPath id="clip-factory"><rect width="20" height="20" fill="white"/></clipPath></defs>
+            </svg>
+          </span>
+          <span class="sidebar-inner-group">
+            <span class="sidebar-label">Inteligência para a Indústria</span>
+            <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
+          </span>
+        </div>
+
+        <div class="sidebar-subitems" id="industria-subitems">
+          <div class="sidebar-subitems-inner">
+            <div class="sidebar-subitem" data-href="#">Visão geral de Elasticidade</div>
+            <div class="sidebar-subitem" data-href="#">Análise de Elasticidade</div>
+            <div class="sidebar-subitem" data-href="aderencia-de-precos-industria-essential.html">Aderência de Preços</div>
+          </div>
+        </div>
+
+        <div class="sidebar-item" data-page="Central de Monitoramentos" data-href="#">
+          <span class="sidebar-icon material-icons">notifications</span>
+          <span class="sidebar-label">Central de Monitoramentos</span>
+        </div>
+
+      </div>
+
+      <div class="sidebar-bottom">
+        <button class="sidebar-toggle-btn" id="sidebar-toggle">
+          <span class="sidebar-toggle-icon material-icons-outlined" id="toggle-icon">keyboard_arrow_right</span>
+          <span class="sidebar-label" style="color:#747474; font-weight:400; margin-left:2px;">Recolher menu</span>
+        </button>
+      </div>
+    </nav>
+
+    <div id="sidebar-tooltip" role="tooltip" aria-hidden="true"></div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="main-content">
+
+      <!-- CABEÇALHO DA PÁGINA -->
+      <div class="page-header">
+        <div class="page-header-icon">
+          <span class="material-icons">store</span>
+        </div>
+        <div class="page-header-text">
+          <p class="page-header-title">Módulo de lojas concorrentes</p>
+          <p class="page-header-desc">Identifique os seus principais concorrentes por loja através do nosso score inteligente</p>
+        </div>
+        <a class="page-header-action" href="#">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="30" height="30" rx="4" fill="#F5F9FE"/>
+            <path d="M21.75 8.25H8.25C7.4175 8.25 6.75 8.9175 6.75 9.75V18.75C6.75 19.575 7.4175 20.25 8.25 20.25H12V21.75H18V20.25H21.75C22.575 20.25 23.2425 19.575 23.2425 18.75L23.25 9.75C23.25 8.9175 22.575 8.25 21.75 8.25ZM21.75 18.75H8.25V9.75H21.75V18.75ZM18 14.25L12.75 17.25V11.25L18 14.25Z" fill="#378EF0"/>
+          </svg>
+          Veja como usar
+        </a>
+      </div>
+
+      <!-- CARD PRINCIPAL -->
+      <div class="main-card">
+
+        <!-- HERO -->
+        <div class="hero">
+          <div class="hero-text">
+            <div class="hero-heading">
+              <p class="hero-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam.</p>
+              <p class="hero-subtitle">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure.</p>
+            </div>
+            <div class="hero-buttons">
+              <button class="btn-orange">EXPERIMENTE</button>
+              <button class="btn-outline-blue">
+                <span class="material-icons-outlined">visibility</span>
+                VEJA NA PRÁTICA
+              </button>
+            </div>
+          </div>
+
+          <div class="hero-image">
+            <div class="hero-image-frame hero-image-frame-1"></div>
+            <div class="hero-image-frame hero-image-frame-2"></div>
+            <div class="hero-image-frame hero-image-frame-3"></div>
+            <div class="video-overlay">
+              <div class="play-btn">
+                <div class="play-ring play-ring-1"></div>
+                <div class="play-ring play-ring-2"></div>
+                <div class="play-ring play-ring-3"></div>
+                <div class="play-icon"></div>
+              </div>
+              <p class="video-label">Assista ao vídeo</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- FEATURES -->
+        <div class="features">
+          <div class="features-heading-col">
+            <p class="features-heading">Lorem ipsum dolor sit amet</p>
+          </div>
+          <div class="features-cols">
+            <div class="feature-card">
+              <div class="feature-card-top">
+                <div class="feature-icon-box"><span class="material-icons-outlined">store</span></div>
+                <p class="feature-title">Lorem ipsum dolor sit amet consectetur adipiscing</p>
+              </div>
+              <p class="feature-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-card-top">
+                <div class="feature-icon-box"><span class="material-icons-outlined">insights</span></div>
+                <p class="feature-title">Duis aute irure dolor reprehenderit in voluptate</p>
+              </div>
+              <p class="feature-desc">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- BANNER DE UPGRADE — Pro Varejo -->
+        <div class="upgrade-banner">
+          <div class="upgrade-left">
+            <div class="upgrade-headline">
+              <div class="upgrade-title-wrap">
+                <span class="upgrade-title">Evolua seu plano,</span>
+                <span class="upgrade-title">desbloqueie o <span class="upgrade-title-highlight">Pro</span></span>
+              </div>
+              <p class="upgrade-sub">Com o upgrade, você também garante:</p>
+            </div>
+            <div class="upgrade-features">
+              <div class="upgrade-features-col">
+                <div class="upgrade-feature-item">
+                  <span class="material-icons-outlined">emoji_events</span>
+                  <span class="upgrade-feature-text">Competitividade de Redes e Produtos</span>
+                </div>
+                <div class="upgrade-feature-item">
+                  <span class="material-icons-outlined">hub</span>
+                  <span class="upgrade-feature-text">Módulo Omnichannel</span>
+                </div>
+                <div class="upgrade-feature-item">
+                  <span class="material-icons-outlined">assignment</span>
+                  <span class="upgrade-feature-text">Módulo de relatórios</span>
+                </div>
+                <div class="upgrade-feature-item">
+                  <span class="material-icons-outlined">ads_click</span>
+                  <span class="upgrade-feature-text">500 solicitações sob demanda/semana</span>
+                </div>
+              </div>
+              <div class="upgrade-features-col">
+                <div class="upgrade-feature-item">
+                  <span class="material-icons-outlined">edit</span>
+                  <span class="upgrade-feature-text">Regras e limites ilimitados</span>
+                </div>
+                <div class="upgrade-feature-item">
+                  <span class="material-icons-outlined">attach_money</span>
+                  <span class="upgrade-feature-text">Preço regular, psicológico e atacado</span>
+                </div>
+                <div class="upgrade-feature-item">
+                  <span class="material-icons-outlined">tune</span>
+                  <span class="upgrade-feature-text">Gerenciador de preços ilimitado</span>
+                </div>
+                <div class="upgrade-feature-item">
+                  <span class="material-icons-outlined">handshake</span>
+                  <span class="upgrade-feature-text">Módulo de negociação</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="upgrade-actions">
+            <button class="btn-orange-specialist">
+              <span class="material-icons-outlined">mode_comment</span>
+              FALAR COM UM ESPECIALISTA
+            </button>
+            <a class="btn-link-white" href="bundle-varejo.html">Ver todos os benefícios</a>
+          </div>
+        </div>
+
+      </div><!-- /main-card -->
+    </div><!-- /main-content -->
+  </div><!-- /below-menu -->
+
+  <!-- User dropdown -->
+  <div id="user-dropdown">
+    <div class="udrop-profile">
+      <p class="udrop-name">Marcus Roggero</p>
+      <p class="udrop-email">marcus@infoprice.co</p>
+    </div>
+    <div class="udrop-divider"></div>
+    <a class="udrop-item" href="#"><span class="material-icons-outlined">settings</span>Configurações</a>
+    <a class="udrop-item" href="gerenciar-usuarios.html"><span class="material-icons-outlined">people</span>Pessoas<span class="udrop-badge">CONVIDAR</span></a>
+    <div class="udrop-divider"></div>
+    <a class="udrop-sair" href="#">Sair</a>
+  </div>
+
+  <!-- Apps menu -->
+  <div id="apps-menu">
+    <p class="apps-menu-title">Produtos</p>
+    <a class="apps-menu-item" href="relatorios-essential.html"><span class="apps-badge apps-badge--isa">ISA</span> InfoPanel</a>
+    <a class="apps-menu-item" href="#"><span class="apps-badge apps-badge--isa">ISA</span> Monitoramento PDV</a>
+    <a class="apps-menu-item" href="#"><span class="apps-badge apps-badge--ipa">IPA</span> Software de precificação</a>
+    <a class="apps-menu-item" href="#"><span class="apps-badge apps-badge--ipa">IPA</span> Simulador de demanda</a>
+  </div>
+
+  <script>
+    /* ── Apps menu ── */
+    (function(){
+      var b = document.querySelector('.menu-apps-btn');
+      var m = document.getElementById('apps-menu');
+      if(!b||!m) return;
+      b.addEventListener('click', function(e){ e.stopPropagation(); m.classList.toggle('open'); });
+      document.addEventListener('click', function(){ m.classList.remove('open'); });
+      document.addEventListener('keydown', function(e){ if(e.key==='Escape') m.classList.remove('open'); });
+    })();
+
+    /* ── User dropdown ── */
+    (function(){
+      var btn  = document.getElementById('user-menu-btn');
+      var menu = document.getElementById('user-dropdown');
+      if(!btn||!menu) return;
+      btn.style.cursor = 'pointer';
+      btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        var v = menu.classList.contains('visible');
+        if(v){ menu.classList.remove('visible'); } else {
+          var rect = btn.getBoundingClientRect();
+          menu.style.right = (window.innerWidth - rect.right) + 'px';
+          menu.style.top   = rect.bottom + 'px';
+          menu.style.left  = 'auto';
+          menu.classList.add('visible');
+        }
+      });
+      document.addEventListener('click', function(){ menu.classList.remove('visible'); });
+      document.addEventListener('keydown', function(e){ if(e.key==='Escape') menu.classList.remove('visible'); });
+    })();
+
+    /* ── Sidebar ── */
+    const sidebar          = document.getElementById('sidebar');
+    const toggleBtn        = document.getElementById('sidebar-toggle');
+    const toggleIcon       = document.getElementById('toggle-icon');
+    const industriaTrigger = document.getElementById('industria-trigger');
+    const industriaSubs    = document.getElementById('industria-subitems');
+    const tooltip          = document.getElementById('sidebar-tooltip');
+
+    let isOpen = false, isExpanded = false;
+
+    toggleBtn.addEventListener('click', () => {
+      isOpen = !isOpen;
+      sidebar.classList.toggle('open', isOpen);
+      toggleIcon.textContent = isOpen ? 'keyboard_arrow_left' : 'keyboard_arrow_right';
+      if (!isOpen && isExpanded) { isExpanded = false; industriaTrigger.classList.remove('expanded'); industriaSubs.classList.remove('expanded'); }
+    });
+
+    industriaTrigger.addEventListener('click', () => {
+      if (!isOpen) { isOpen = true; sidebar.classList.add('open'); toggleIcon.textContent = 'keyboard_arrow_left'; }
+      isExpanded = !isExpanded;
+      industriaTrigger.classList.toggle('expanded', isExpanded);
+      industriaSubs.classList.toggle('expanded', isExpanded);
+    });
+
+    document.querySelectorAll('.sidebar-item[data-href]').forEach(item => {
+      if (item.id === 'industria-trigger') return;
+      item.addEventListener('click', () => { const h = item.dataset.href; if(h && h !== '#') window.location.href = h; });
+    });
+
+    document.querySelectorAll('.sidebar-subitem[data-href]').forEach(sub => {
+      sub.addEventListener('click', () => { const h = sub.dataset.href; if(h && h !== '#') window.location.href = h; });
+    });
+
+    function showTooltip(item) {
+      const label = item.dataset.page; if (!label) return;
+      const rect = item.getBoundingClientRect();
+      tooltip.textContent = label;
+      tooltip.style.left = (rect.right + 12) + 'px';
+      tooltip.style.top  = (rect.top + (rect.height - 28) / 2) + 'px';
+      tooltip.classList.add('visible');
+    }
+    function hideTooltip() { tooltip.classList.remove('visible'); }
+
+    document.querySelectorAll('.sidebar-item[data-page]').forEach(item => {
+      const isIndustria = item.id === 'industria-trigger';
+      item.addEventListener('mouseenter', () => { if (!isOpen || isIndustria) showTooltip(item); });
+      item.addEventListener('mouseleave', hideTooltip);
+    });
+  </script>
+
+</body>
+</html>
