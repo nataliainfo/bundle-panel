@@ -37,7 +37,11 @@
       align-items: center;
       flex-shrink: 0;
       border-bottom: 1px solid #e0e0e0;
+      padding-left: 48px;
+      transition: padding-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
+    body.sidebar-open .mock-menubar { padding-left: 224px; }
 
     .mock-menubar-apps {
       width: 48px;
@@ -139,7 +143,11 @@
       display: flex;
       flex: 1;
       overflow: hidden;
+      margin-left: 48px;
+      transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
+    body.sidebar-open .below-menu { margin-left: 224px; }
 
     /* ════════════════════════════════════════════════
        SIDEBAR
@@ -151,11 +159,13 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      flex-shrink: 0;
       overflow: hidden;
       transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      z-index: 10;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      z-index: 200;
     }
 
     .sidebar.open {
@@ -292,8 +302,7 @@
 
     /* ── Sub-item ── */
     .sidebar-subitem {
-      display: flex;
-      align-items: center;
+      display: block;
       padding: 10px 14px 10px 36px;
       cursor: pointer;
       font-weight: 400;
@@ -301,7 +310,8 @@
       line-height: 16px;
       color: #505050;
       white-space: nowrap;
-      transition: background 0.15s ease, color 0.15s ease;
+      overflow: hidden;
+      text-overflow: ellipsis;
       list-style: none;
       opacity: 0;
       transition: background 0.15s ease, color 0.15s ease, opacity 0.12s ease;
@@ -645,9 +655,6 @@
 
   <!-- ══════════════ MOCK MENUBAR ══════════════ -->
   <div class="mock-menubar">
-    <div class="mock-menubar-apps" id="apps-btn">
-      <span class="material-icons-outlined">apps</span>
-    </div>
     <div class="mock-menubar-logo">
       <img
         src="https://marcoskip.github.io/infoprice-prototipos/assets/logo-principal.svg"
@@ -656,8 +663,7 @@
     </div>
     <div class="mock-menubar-divider"></div>
     <div class="mock-menubar-product">
-      <span class="mock-menubar-name">ISA | InfoPanel</span>
-      <div class="mock-badge"><span>essential</span></div>
+      <span class="mock-menubar-name">Essential</span>
     </div>
     <div class="mock-menu-icon"><span class="material-icons-outlined">person_add</span></div>
     <div class="mock-menu-icon"><span class="material-icons-outlined">help_outline</span></div>
@@ -824,7 +830,11 @@
       <p class="udrop-email">marcus@infoprice.co</p>
     </div>
     <div class="udrop-divider"></div>
-    <a class="udrop-item" href="#">
+    <a class="udrop-item" href="competitividade-free.html">
+      <span class="material-icons-outlined">grid_view</span>
+      Acessar produtos
+    </a>
+    <a class="udrop-item" href="configuracoes.html">
       <span class="material-icons-outlined">settings</span>
       Configurações
     </a>
@@ -894,6 +904,7 @@
   toggleBtn.addEventListener('click', () => {
     isOpen = !isOpen;
     sidebar.classList.toggle('open', isOpen);
+    document.body.classList.toggle('sidebar-open', isOpen);
     toggleIcon.textContent = isOpen ? 'keyboard_arrow_left' : 'keyboard_arrow_right';
 
     // Recolher sub-itens ao fechar a sidebar
@@ -912,6 +923,7 @@
     if (!isOpen) {
       isOpen = true;
       sidebar.classList.add('open');
+      document.body.classList.add('sidebar-open');
       toggleIcon.textContent = 'keyboard_arrow_left';
     }
 

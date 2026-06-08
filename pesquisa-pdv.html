@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>InfoPrice — Aderência de Preços</title>
+  <title>InfoPrice — Pesquisa PDV</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -404,15 +404,15 @@
         <span class="menu-product-name">Essential</span>
         <div class="view-picker" id="view-picker">
           <button class="view-picker-btn" id="view-picker-btn">
-            Visão Indústria
+            Visão Varejo
             <span class="material-icons-outlined">keyboard_arrow_down</span>
           </button>
           <div class="view-picker-dropdown" id="view-picker-dropdown">
-            <a class="view-picker-option" href="competitividade-free.html">
-              <span class="view-picker-dot-empty"></span>Visão Varejo
-            </a>
             <a class="view-picker-option active" href="#">
-              <span class="view-picker-dot"></span>Visão Indústria
+              <span class="view-picker-dot"></span>Visão Varejo
+            </a>
+            <a class="view-picker-option" href="pesquisa-pdv-industria.html">
+              <span class="view-picker-dot-empty"></span>Visão Indústria
             </a>
           </div>
         </div>
@@ -438,7 +438,7 @@
       <div class="sidebar-top">
 
         <!-- Preço e concorrência -->
-        <div class="sidebar-item expandable has-active-child" id="cat-preco-ind" data-page="Preço e concorrência" data-subs="subs-preco-ind">
+        <div class="sidebar-item expandable has-active-child" id="cat-preco" data-page="Preço e concorrência" data-subs="subs-preco">
           <span class="sidebar-icon">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9.58331 14.7346H3.74998L3.74998 3.33594L12.0833 3.29507V8.62803C12.5 8.22093 13.3333 7.81384 13.75 7.81384V3.29507C13.75 2.39946 13 1.66669 12.0833 1.66669L3.74998 1.70756C2.83331 1.70756 2.08331 2.44033 2.08331 3.33594L2.08331 14.7346C2.08331 15.6302 2.83331 16.363 3.74998 16.363H7.91665L9.58331 14.7346ZM13.0083 15.7931C13.5916 16.1513 14.2666 16.363 15 16.363C17.075 16.363 18.75 14.7265 18.75 12.6991C18.75 10.6718 17.075 9.03528 15 9.03528C12.925 9.03528 11.25 10.6718 11.25 12.691C11.25 13.4075 11.4666 14.0751 11.8333 14.6369L9.23331 17.1772L10.4166 18.3334L13.0083 15.7931ZM12.9166 12.6991C12.9166 11.5756 13.85 10.6637 15 10.6637C16.15 10.6637 17.0833 11.5756 17.0833 12.6991C17.0833 13.8227 16.15 14.7346 15 14.7346C13.85 14.7346 12.9166 13.8227 12.9166 12.6991Z" fill="currentColor"/>
@@ -450,44 +450,73 @@
             <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
           </span>
         </div>
-        <div class="sidebar-subitems" id="subs-preco-ind">
+        <div class="sidebar-subitems" id="subs-preco">
           <div class="sidebar-subitems-inner">
             <div class="sidebar-subitem" data-href="#">Painel geral</div>
-            <div class="sidebar-subitem" data-href="competitividade-free-industria.html">Módulo de competitividade</div>
-            <div class="sidebar-subitem" data-href="omnichannel-essential-industria.html">Módulo omnichannel</div>
+            <div class="sidebar-subitem" data-href="competitividade-free.html">Módulo de competitividade</div>
+            <div class="sidebar-subitem" data-href="omnichannel-essential.html">Módulo omnichannel</div>
             <div class="sidebar-subitem" data-href="#">Análise de cobertura</div>
-            <div class="sidebar-subitem active" data-href="aderencia-de-precos-industria-essential.html">Módulo de aderência</div>
-            <div class="sidebar-subitem" data-href="ondemand-essential-industria.html">On demand</div>
-            <div class="sidebar-subitem" data-href="pesquisa-pdv-industria.html">Pesquisa PDV</div>
+            <div class="sidebar-subitem" data-href="ondemand-essential.html">On demand</div>
+            <div class="sidebar-subitem active" data-href="pesquisa-pdv.html">Pesquisa PDV</div>
           </div>
         </div>
 
         <!-- Inteligência -->
-        <div class="sidebar-item expandable" id="cat-intel-ind" data-page="Inteligência" data-subs="subs-intel-ind">
+        <div class="sidebar-item expandable" id="cat-inteligencia" data-page="Inteligência" data-subs="subs-inteligencia">
           <span class="sidebar-icon material-icons">psychology</span>
           <span class="sidebar-inner-group">
             <span class="sidebar-label">Inteligência</span>
             <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
           </span>
         </div>
-        <div class="sidebar-subitems" id="subs-intel-ind">
+        <div class="sidebar-subitems" id="subs-inteligencia">
           <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem" data-href="#">Visão geral de elasticidade cruzada</div>
-            <div class="sidebar-subitem" data-href="#">Análise de elasticidade</div>
+            <div class="sidebar-subitem" data-href="lojas-concorrentes-essential.html">Módulo de lojas concorrentes</div>
+            <div class="sidebar-subitem" data-href="#">Previsão de demanda</div>
+            <div class="sidebar-subitem" data-href="#">Sensibilidade Infoprice</div>
+          </div>
+        </div>
+
+        <!-- Precificação estratégica -->
+        <div class="sidebar-item expandable" id="cat-precificacao" data-page="Precificação estratégica" data-subs="subs-precificacao">
+          <span class="sidebar-icon material-icons">price_change</span>
+          <span class="sidebar-inner-group">
+            <span class="sidebar-label">Precificação estratégica</span>
+            <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
+          </span>
+        </div>
+        <div class="sidebar-subitems" id="subs-precificacao">
+          <div class="sidebar-subitems-inner">
+            <div class="sidebar-subitem" data-href="#">Gerenciador de preços</div>
+          </div>
+        </div>
+
+        <!-- Negociação -->
+        <div class="sidebar-item expandable" id="cat-negociacao" data-page="Negociação" data-subs="subs-negociacao">
+          <span class="sidebar-icon material-icons">handshake</span>
+          <span class="sidebar-inner-group">
+            <span class="sidebar-label">Negociação</span>
+            <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
+          </span>
+        </div>
+        <div class="sidebar-subitems" id="subs-negociacao">
+          <div class="sidebar-subitems-inner">
+            <div class="sidebar-subitem" data-href="#">Módulo de negociação</div>
           </div>
         </div>
 
         <!-- Análises e relatórios -->
-        <div class="sidebar-item expandable" id="cat-analises-ind" data-page="Análises e relatórios" data-subs="subs-analises-ind">
+        <div class="sidebar-item expandable" id="cat-analises" data-page="Análises e relatórios" data-subs="subs-analises">
           <span class="sidebar-icon material-icons">analytics</span>
           <span class="sidebar-inner-group">
             <span class="sidebar-label">Análises e relatórios</span>
             <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
           </span>
         </div>
-        <div class="sidebar-subitems" id="subs-analises-ind">
+        <div class="sidebar-subitems" id="subs-analises">
           <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem" data-href="relatorios-essential-industria.html">Módulo de relatórios</div>
+            <div class="sidebar-subitem" data-href="relatorios-essential.html">Módulo de relatórios</div>
+            <div class="sidebar-subitem" data-href="#">IPA Analytics</div>
           </div>
         </div>
 
@@ -508,18 +537,13 @@
       <!-- CABEÇALHO DA PÁGINA -->
       <div class="page-header">
         <div class="page-header-icon">
-          <img
-            src="https://www.figma.com/api/mcp/asset/f28ab8a8-c3e8-4533-a625-1c5114e3bea2"
-            alt="Aderência de preços"
-            style="width:20px;height:20px;display:block;"
-          >
+          <span class="material-icons-outlined" style="font-size:20px;color:#378ef0;">storefront</span>
         </div>
         <div class="page-header-text">
           <div class="page-header-title-row">
-            <p class="page-header-title">Aderência de preços</p>
-            <span class="page-header-badge">ATUALIZADO EM 30/05/26</span>
+            <p class="page-header-title">Pesquisa PDV</p>
           </div>
-          <p class="page-header-desc">Monitore, analise e garanta que os preços praticados estejam alinhados com sua estratégia.</p>
+          <p class="page-header-desc">Colete, analise e monitore dados de preços diretamente nos pontos de venda.</p>
         </div>
       </div>
 
@@ -585,51 +609,51 @@
           </div>
         </div>
 
-        <!-- BANNER DE UPGRADE — Enterprise Indústria -->
+        <!-- BANNER DE UPGRADE -->
         <div class="upgrade-banner">
           <div class="upgrade-left">
             <div class="upgrade-headline">
               <div class="upgrade-title-wrap">
-                <span class="upgrade-title">Evolua seu plano,</span>
-                <span class="upgrade-title">desbloqueie o <span class="upgrade-title-highlight">Enterprise</span></span>
+                <span class="upgrade-title">Lorem ipsum dolor</span>
+                <span class="upgrade-title">sit amet <span class="upgrade-title-highlight">consectetur</span></span>
               </div>
-              <p class="upgrade-sub">Com o upgrade, você também garante:</p>
+              <p class="upgrade-sub">Lorem ipsum dolor sit amet, consectetur adipiscing:</p>
             </div>
             <div class="upgrade-features">
               <div class="upgrade-features-col">
                 <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">thermostat</span>
-                  <span class="upgrade-feature-text">Sensibilidade Infoprice</span>
+                  <span class="material-icons-outlined">check_circle_outline</span>
+                  <span class="upgrade-feature-text">Lorem ipsum dolor sit amet</span>
                 </div>
                 <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">trending_up</span>
-                  <span class="upgrade-feature-text">Previsão de demanda</span>
+                  <span class="material-icons-outlined">check_circle_outline</span>
+                  <span class="upgrade-feature-text">Consectetur adipiscing elit</span>
                 </div>
                 <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">emoji_events</span>
-                  <span class="upgrade-feature-text">Papel de categoria</span>
+                  <span class="material-icons-outlined">check_circle_outline</span>
+                  <span class="upgrade-feature-text">Ut enim ad minim veniam</span>
                 </div>
                 <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">account_tree</span>
-                  <span class="upgrade-feature-text">Arquitetura de preços</span>
+                  <span class="material-icons-outlined">check_circle_outline</span>
+                  <span class="upgrade-feature-text">Quis nostrud exercitation</span>
                 </div>
               </div>
               <div class="upgrade-features-col">
                 <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">play_circle_outline</span>
-                  <span class="upgrade-feature-text">Pricing Class presencial</span>
+                  <span class="material-icons-outlined">check_circle_outline</span>
+                  <span class="upgrade-feature-text">Ullamco laboris nisi</span>
                 </div>
                 <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">auto_awesome</span>
-                  <span class="upgrade-feature-text">Otimização com IA</span>
+                  <span class="material-icons-outlined">check_circle_outline</span>
+                  <span class="upgrade-feature-text">Ut aliquip ex ea commodo</span>
                 </div>
                 <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">science</span>
-                  <span class="upgrade-feature-text">Simulação de estratégia com IA</span>
+                  <span class="material-icons-outlined">check_circle_outline</span>
+                  <span class="upgrade-feature-text">Duis aute irure dolor</span>
                 </div>
                 <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">tune</span>
-                  <span class="upgrade-feature-text">Segmentações personalizadas</span>
+                  <span class="material-icons-outlined">check_circle_outline</span>
+                  <span class="upgrade-feature-text">Excepteur sint occaecat</span>
                 </div>
               </div>
             </div>
@@ -639,7 +663,7 @@
               <span class="material-icons-outlined">mode_comment</span>
               FALAR COM UM ESPECIALISTA
             </button>
-            <a class="btn-link-white" href="bundle-industria.html">Ver todos os benefícios</a>
+            <a class="btn-link-white" href="bundle-varejo.html" style="display:none;">Ver todos os benefícios</a>
           </div>
         </div>
 

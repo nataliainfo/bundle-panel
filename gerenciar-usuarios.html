@@ -30,7 +30,11 @@
       display: flex;
       height: 52px;
       width: 100%;
+      padding-left: 48px;
+      transition: padding-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
+    body.sidebar-open .menu-bar { padding-left: 224px; }
 
     .menu-apps-btn {
       width: 48px;
@@ -84,6 +88,7 @@
       display: flex;
       align-items: center;
       padding: 16px 12px;
+      gap: 8px;
     }
 
     .menu-product-name {
@@ -138,24 +143,28 @@
     .below-menu {
       display: flex;
       align-items: flex-start;
+      margin-left: 48px;
+      transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
+    body.sidebar-open .below-menu { margin-left: 224px; }
 
     /* ════════════════════════════════════
        SIDEBAR (admin — 3 itens, interativa)
     ════════════════════════════════════ */
     .sidebar {
       width: 48px;
-      flex-shrink: 0;
       background: #fff;
-      position: sticky;
-      top: 52px;
-      height: calc(100vh - 52px);
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       overflow: hidden;
       transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 10;
+      z-index: 200;
     }
 
     .sidebar.open { width: 224px; }
@@ -1431,6 +1440,69 @@
       background: #ede8f8;
       color: #7b4ea6;
     }
+
+    /* ════ VIEW PICKER ════ */
+    .view-picker {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-left: 8px;
+    }
+    .view-picker-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      background: #fff;
+      border: 1px solid #d3d3d3;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: #505050;
+      white-space: nowrap;
+      transition: border-color 0.15s;
+      line-height: 18px;
+    }
+    .view-picker-btn:hover { border-color: #bcbcbc; }
+    .view-picker-btn .material-icons-outlined { font-size: 14px; }
+    .view-picker-dropdown {
+      position: fixed;
+      background: #fff;
+      border: 1px solid #d3d3d3;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 9999;
+      display: none;
+      overflow: hidden;
+      min-width: 160px;
+    }
+    .view-picker-dropdown.open { display: block; }
+    .view-picker-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      font-size: 14px;
+      color: #323232;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+      font-family: 'Open Sans', sans-serif;
+    }
+    .view-picker-option:hover { background: #f5f9fe; color: #378ef0; }
+    .view-picker-option.active { color: #378ef0; font-weight: 600; }
+    .view-picker-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #378ef0;
+      flex-shrink: 0;
+    }
+    .view-picker-dot-empty {
+      width: 6px; height: 6px;
+      flex-shrink: 0;
+    }
   </style>
 </head>
 <body>
@@ -1439,9 +1511,6 @@
        MENU BAR
   ══════════════════════════════════════ -->
   <div class="menu-bar">
-    <div class="menu-apps-btn" id="apps-btn">
-      <span class="material-icons-outlined">apps</span>
-    </div>
     <div class="menu-right">
       <div class="menu-logo-area">
         <img
@@ -1452,7 +1521,21 @@
       </div>
       <div class="menu-divider"></div>
       <div class="menu-product">
-        <span class="menu-product-name">Administrador</span>
+        <span class="menu-product-name">Essential</span>
+        <div class="view-picker" id="view-picker">
+          <button class="view-picker-btn" id="view-picker-btn">
+            Visão Varejo
+            <span class="material-icons-outlined">keyboard_arrow_down</span>
+          </button>
+          <div class="view-picker-dropdown" id="view-picker-dropdown">
+            <a class="view-picker-option active" href="#">
+              <span class="view-picker-dot"></span>Visão Varejo
+            </a>
+            <a class="view-picker-option" href="#">
+              <span class="view-picker-dot-empty"></span>Visão Indústria
+            </a>
+          </div>
+        </div>
       </div>
       <div class="menu-actions">
         <div class="menu-icon-btn"><span class="material-icons-outlined">person_add</span></div>
@@ -1474,7 +1557,7 @@
     <nav class="sidebar" id="sidebar">
       <div class="sidebar-top">
 
-        <div class="sidebar-item" data-page="Configuração de produtos" data-href="#">
+        <div class="sidebar-item" data-page="Configuração de produtos" data-href="configuracoes.html">
           <span class="sidebar-icon material-icons">settings</span>
           <span class="sidebar-label">Configuração de produtos</span>
         </div>
@@ -1502,12 +1585,6 @@
 
     <!-- CONTEÚDO PRINCIPAL -->
     <div class="main-content">
-
-      <!-- Back button -->
-      <a class="back-btn" href="#">
-        <span class="material-icons-outlined">arrow_back</span>
-        Voltar para Gerenciador de preços
-      </a>
 
       <!-- Header cards -->
       <div class="header-row">
@@ -1897,7 +1974,11 @@
       <p class="udrop-email">marcus@infoprice.co</p>
     </div>
     <div class="udrop-divider"></div>
-    <a class="udrop-item" href="#">
+    <a class="udrop-item" href="competitividade-free.html">
+      <span class="material-icons-outlined">grid_view</span>
+      Acessar produtos
+    </a>
+    <a class="udrop-item" href="configuracoes.html">
       <span class="material-icons-outlined">settings</span>
       Configurações
     </a>
@@ -1953,6 +2034,7 @@
     toggleBtn.addEventListener('click', () => {
       isOpen = !isOpen;
       sidebar.classList.toggle('open', isOpen);
+      document.body.classList.toggle('sidebar-open', isOpen);
       toggleIcon.textContent = isOpen ? 'keyboard_arrow_left' : 'keyboard_arrow_right';
     });
 
@@ -2625,6 +2707,22 @@
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') appsMenu.classList.remove('open');
       });
+    })();
+
+    /* ── View picker ── */
+    (function(){
+      var btn = document.getElementById('view-picker-btn');
+      var dropdown = document.getElementById('view-picker-dropdown');
+      if(!btn||!dropdown) return;
+      btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        var rect = btn.getBoundingClientRect();
+        dropdown.style.left = rect.left + 'px';
+        dropdown.style.top  = (rect.bottom + 4) + 'px';
+        dropdown.classList.toggle('open');
+      });
+      document.addEventListener('click', function(){ dropdown.classList.remove('open'); });
+      document.addEventListener('keydown', function(e){ if(e.key==='Escape') dropdown.classList.remove('open'); });
     })();
   </script>
 </body>

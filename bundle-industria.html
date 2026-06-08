@@ -31,7 +31,10 @@
         display: flex;
         align-items: stretch;
         z-index: 100;
+        padding-left: 48px;
+        transition: padding-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       }
+      body.sidebar-open .plano-menubar { padding-left: 224px; }
       .plano-menubar__apps-btn {
         width: 48px;
         flex-shrink: 0;
@@ -131,42 +134,24 @@
       /* ─── SIDEBAR (Figma-accurate) ─── */
       .plano-sidebar {
         position: fixed;
-        top: 52px;
+        top: 0;
         left: 0;
         width: 48px;
-        height: calc(100vh - 52px);
+        height: 100vh;
         background: #fff;
-        z-index: 90;
+        z-index: 200;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         align-items: stretch;
+        overflow: hidden;
+        transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       }
+      .plano-sidebar.open { width: 224px; }
       .plano-sidebar__top,
       .plano-sidebar__bottom {
         display: flex;
         flex-direction: column;
-      }
-      .plano-sidebar__item {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 48px;
-        height: 48px;
-        text-decoration: none;
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 14px;
-      }
-      .plano-sidebar__item .material-icons-outlined,
-      .plano-sidebar__item .material-icons {
-        font-size: 20px;
-        color: #747474;
-      }
-      .plano-sidebar__item--active .material-icons-outlined,
-      .plano-sidebar__item--active .material-icons {
-        color: #378ef0;
       }
 
       /* ─── MAIN SCROLL AREA ─── */
@@ -178,7 +163,9 @@
         bottom: 0;
         overflow: auto;
         padding: 8px 8px 40px;
+        transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       }
+      body.sidebar-open .plano-page { left: 224px; }
 
       /* ─── NAV LINK BUTTON (breadcrumb) ─── */
       .plano-nav-link {
@@ -425,6 +412,15 @@
         border: 1px solid #7db6f5;
       }
       .plan-col--free .plan-section {
+        background: #f5f9fe;
+        border: 1px solid #7db6f5;
+      }
+      .plan-col--essential .plan-col__header,
+      .plan-col__header--essential {
+        background: #f5f9fe;
+        border: 1px solid #7db6f5;
+      }
+      .plan-col--essential .plan-section {
         background: #f5f9fe;
         border: 1px solid #7db6f5;
       }
@@ -701,16 +697,173 @@
     .udrop-sair { padding: 10px 16px 12px; font-size: 14px; color: #505050; cursor: pointer; display: block; text-decoration: none; font-family: 'Open Sans', sans-serif; transition: color .15s; }
     .udrop-sair:hover { color: #d93025; }
 
+      /* ─── SIDEBAR EXPANDED (labels + toggle) ─── */
+      .plano-sidebar__item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 14px;
+        white-space: nowrap;
+        cursor: pointer;
+        text-decoration: none;
+        background: none;
+        border: none;
+        width: 100%;
+        transition: background 0.15s, color 0.15s;
+        color: #747474;
+      }
+      .plano-sidebar__item:hover { background: #f5f9fe; }
+      .plano-sidebar__item:hover .plano-sidebar__icon,
+      .plano-sidebar__item:hover .plano-sidebar__label { color: #378ef0; }
+      .plano-sidebar__item--active .plano-sidebar__icon,
+      .plano-sidebar__item--active .plano-sidebar__label { color: #378ef0; }
+      .plano-sidebar__icon {
+        font-size: 20px;
+        flex-shrink: 0;
+        width: 20px;
+        height: 20px;
+        color: #747474;
+        transition: color 0.15s;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .plano-sidebar__item--active .plano-sidebar__icon { color: #378ef0; }
+      .plano-sidebar__label {
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 18px;
+        color: #505050;
+        flex: 1;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        opacity: 0;
+        transition: color 0.15s, opacity 0.12s ease;
+      }
+      .plano-sidebar.open .plano-sidebar__label {
+        opacity: 1;
+        transition: color 0.15s, opacity 0.18s ease 0.14s;
+      }
+      .plano-sidebar__item:hover .plano-sidebar__label { color: #378ef0; }
+      .plano-sidebar__toggle {
+        display: flex;
+        align-items: center;
+        padding: 14px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        width: 100%;
+        transition: background 0.15s;
+        gap: 6px;
+        white-space: nowrap;
+      }
+      .plano-sidebar__toggle:hover { background: #f5f9fe; }
+      .plano-sidebar__toggle:hover .plano-sidebar__toggle-icon { color: #378ef0; }
+      .plano-sidebar__toggle-icon {
+        font-size: 20px;
+        color: #747474;
+        transition: color 0.15s;
+        flex-shrink: 0;
+      }
+      #sidebar-tooltip-bundle {
+        position: fixed;
+        background: #323232;
+        color: #fff;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 5px 10px;
+        border-radius: 4px;
+        pointer-events: none;
+        z-index: 9999;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.15s ease;
+        box-shadow: 0 2px 8px rgba(0,0,0,.18);
+      }
+      #sidebar-tooltip-bundle.visible { opacity: 1; }
+      #sidebar-tooltip-bundle::before {
+        content: '';
+        position: absolute;
+        right: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 5px solid transparent;
+        border-right-color: #323232;
+      }
+
+    /* ════ VIEW PICKER ════ */
+    .view-picker {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-left: 8px;
+    }
+    .view-picker-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      background: #fff;
+      border: 1px solid #d3d3d3;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: #505050;
+      white-space: nowrap;
+      transition: border-color 0.15s;
+      line-height: 18px;
+    }
+    .view-picker-btn:hover { border-color: #bcbcbc; }
+    .view-picker-btn .material-icons-outlined { font-size: 14px; }
+    .view-picker-dropdown {
+      position: fixed;
+      background: #fff;
+      border: 1px solid #d3d3d3;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 9999;
+      display: none;
+      overflow: hidden;
+      min-width: 160px;
+    }
+    .view-picker-dropdown.open { display: block; }
+    .view-picker-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      font-size: 14px;
+      color: #323232;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+      font-family: 'Open Sans', sans-serif;
+    }
+    .view-picker-option:hover { background: #f5f9fe; color: #378ef0; }
+    .view-picker-option.active { color: #378ef0; font-weight: 600; }
+    .view-picker-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #378ef0;
+      flex-shrink: 0;
+    }
+    .view-picker-dot-empty {
+      width: 6px; height: 6px;
+      flex-shrink: 0;
+    }
+
     </style>
   </head>
 
   <body>
     <!-- ═══ HEADER (Figma-accurate) ═══ -->
     <header class="plano-menubar">
-      <!-- Blue apps button -->
-      <button class="plano-menubar__apps-btn" id="apps-btn" aria-label="Menu">
-        <span class="material-icons-outlined">apps</span>
-      </button>
       <!-- Main bar -->
       <div class="plano-menubar__main">
         <!-- Logo -->
@@ -722,7 +875,21 @@
         <div class="plano-menubar__divider"></div>
         <!-- Product status -->
         <div class="plano-menubar__status">
-          <span class="plano-menubar__status-text">Administrador</span>
+          <span class="plano-menubar__status-text">Essential</span>
+          <div class="view-picker" id="view-picker">
+            <button class="view-picker-btn" id="view-picker-btn">
+              Visão Indústria
+              <span class="material-icons-outlined">keyboard_arrow_down</span>
+            </button>
+            <div class="view-picker-dropdown" id="view-picker-dropdown">
+              <a class="view-picker-option" href="bundle-varejo.html">
+                <span class="view-picker-dot-empty"></span>Visão Varejo
+              </a>
+              <a class="view-picker-option active" href="#">
+                <span class="view-picker-dot"></span>Visão Indústria
+              </a>
+            </div>
+          </div>
         </div>
         <!-- Right actions -->
         <div class="plano-menubar__actions">
@@ -740,25 +907,30 @@
       </div>
     </header>
 
-    <!-- ═══ SIDEBAR (Figma-accurate) ═══ -->
+    <!-- ═══ SIDEBAR ═══ -->
     <nav class="plano-sidebar" id="sidebar" aria-label="Menu principal">
       <div class="plano-sidebar__top">
-        <a href="#" class="plano-sidebar__item" aria-label="Configurações">
-          <span class="material-icons">settings</span>
+        <a href="configuracoes.html" class="plano-sidebar__item" data-page="Configurações">
+          <span class="plano-sidebar__icon material-icons">settings</span>
+          <span class="plano-sidebar__label">Configurações</span>
         </a>
-        <a href="gerenciar-usuarios.html" class="plano-sidebar__item" aria-label="Convidar usuário">
-          <span class="material-icons">person_add</span>
+        <a href="gerenciar-usuarios.html" class="plano-sidebar__item" data-page="Gerenciar pessoas">
+          <span class="plano-sidebar__icon material-icons">person_add</span>
+          <span class="plano-sidebar__label">Gerenciar pessoas</span>
         </a>
-        <a href="#" class="plano-sidebar__item plano-sidebar__item--active" aria-label="Planos">
-          <span class="material-icons">work</span>
+        <a href="bundle-industria.html" class="plano-sidebar__item plano-sidebar__item--active" data-page="Planos">
+          <span class="plano-sidebar__icon material-icons">work</span>
+          <span class="plano-sidebar__label">Planos</span>
         </a>
       </div>
       <div class="plano-sidebar__bottom">
-        <button class="plano-sidebar__item" id="sidebarSeta" aria-label="Expandir menu">
-          <span class="material-icons-outlined">chevron_right</span>
+        <button class="plano-sidebar__toggle" id="sidebarToggle">
+          <span class="plano-sidebar__toggle-icon material-icons-outlined" id="toggleIcon">keyboard_arrow_right</span>
+          <span class="plano-sidebar__label" style="color:#747474; font-weight:400;">Recolher menu</span>
         </button>
       </div>
     </nav>
+    <div id="sidebar-tooltip-bundle" role="tooltip" aria-hidden="true"></div>
 
     <!-- ═══ MAIN CONTENT ═══ -->
     <main class="plano-page" id="planoPage">
@@ -771,25 +943,13 @@
             <span class="plano-header__subtitle">Compare planos, faça um upgrade ou conheça os benefícios do seu plano atual</span>
           </div>
         </div>
-        <div class="plano-header__info-card segment-card" id="segment-card">
-          <div class="segment-card-inner">
-            <div class="plano-header__info-inner">
-              <div class="plano-header__info-label">
-                <span class="material-icons-outlined" style="font-size:16px;color:#378ef0;">factory</span>
-                <span class="plano-header__info-label-text">Segmento</span>
-              </div>
-              <span class="plano-header__info-value">Indústria</span>
-            </div>
-            <span class="material-icons-outlined segment-chevron">keyboard_arrow_down</span>
-          </div>
-        </div>
         <div class="plano-header__info-card">
           <div class="plano-header__info-inner">
             <div class="plano-header__info-label">
               <span class="material-icons-outlined" style="font-size:16px;color:#378ef0;">workspace_premium</span>
               <span class="plano-header__info-label-text">Seu plano atual</span>
             </div>
-            <span class="plano-header__info-value">Free</span>
+            <span class="plano-header__info-value">Essential</span>
           </div>
         </div>
       </div>
@@ -878,12 +1038,9 @@
         <div class="plan-cols">
 
           <!-- ─── FREE ─── -->
-          <div class="plan-col plan-col--free">
-            <div class="plan-col__header plan-col__header--free">
+          <div class="plan-col">
+            <div class="plan-col__header" style="justify-content:flex-start;">
               <span class="plan-col__name">Free</span>
-              <button class="plan-col__btn plan-col__btn--current" disabled>
-                SEU PLANO ATUAL
-              </button>
             </div>
             <!-- Preço e concorrência -->
             <div class="plan-section">
@@ -917,12 +1074,11 @@
           </div>
 
           <!-- ─── ESSENTIAL ─── -->
-          <div class="plan-col">
-            <div class="plan-col__header">
+          <div class="plan-col plan-col--essential">
+            <div class="plan-col__header plan-col__header--essential">
               <span class="plan-col__name">Essential</span>
-              <button class="plan-col__btn">
-                <span class="material-icons-outlined">arrow_upward</span>
-                FAZER UM UPGRADE DE PLANO
+              <button class="plan-col__btn plan-col__btn--current" disabled>
+                SEU PLANO ATUAL
               </button>
             </div>
             <!-- Preço e concorrência -->
@@ -1117,7 +1273,11 @@
         <p class="udrop-email">marcus@infoprice.co</p>
       </div>
       <div class="udrop-divider"></div>
-      <a class="udrop-item" href="#">
+      <a class="udrop-item" href="competitividade-free.html">
+        <span class="material-icons-outlined">grid_view</span>
+        Acessar produtos
+      </a>
+      <a class="udrop-item" href="configuracoes.html">
         <span class="material-icons-outlined">settings</span>
         Configurações
       </a>
@@ -1150,17 +1310,42 @@
       })();
     </script>
 
-    <!-- Segment dropdown -->
-    <div id="segment-dropdown">
-      <a class="segment-option" href="bundle-varejo.html">
-        <span class="material-icons-outlined">store</span>
-        Varejo
-      </a>
-      <a class="segment-option active" href="bundle-industria.html">
-        <span class="material-icons-outlined">factory</span>
-        Indústria
-      </a>
-    </div>
+    <script>
+      /* ── Sidebar toggle ── */
+      (function(){
+        var sidebar    = document.getElementById('sidebar');
+        var toggleBtn  = document.getElementById('sidebarToggle');
+        var toggleIcon = document.getElementById('toggleIcon');
+        var tooltip    = document.getElementById('sidebar-tooltip-bundle');
+        if(!sidebar||!toggleBtn) return;
+        var isOpen = false;
+
+        toggleBtn.addEventListener('click', function(){
+          isOpen = !isOpen;
+          sidebar.classList.toggle('open', isOpen);
+          document.body.classList.toggle('sidebar-open', isOpen);
+          toggleIcon.textContent = isOpen ? 'keyboard_arrow_left' : 'keyboard_arrow_right';
+        });
+
+        if(tooltip) {
+          document.querySelectorAll('.plano-sidebar__item[data-page]').forEach(function(item){
+            item.addEventListener('mouseenter', function(){
+              if(isOpen) return;
+              var label = item.dataset.page;
+              if(!label) return;
+              var rect = item.getBoundingClientRect();
+              tooltip.textContent = label;
+              tooltip.style.left = (rect.right + 12) + 'px';
+              tooltip.style.top  = (rect.top + (rect.height - 28)/2) + 'px';
+              tooltip.classList.add('visible');
+            });
+            item.addEventListener('mouseleave', function(){
+              tooltip.classList.remove('visible');
+            });
+          });
+        }
+      })();
+    </script>
 
     <script>
       (function() {
@@ -1212,6 +1397,22 @@
         b.addEventListener('click', function(e){ e.stopPropagation(); m.classList.toggle('open'); });
         document.addEventListener('click', function(){ m.classList.remove('open'); });
         document.addEventListener('keydown', function(e){ if(e.key==='Escape') m.classList.remove('open'); });
+      })();
+
+      /* ── View picker ── */
+      (function(){
+        var btn = document.getElementById('view-picker-btn');
+        var dropdown = document.getElementById('view-picker-dropdown');
+        if(!btn||!dropdown) return;
+        btn.addEventListener('click', function(e){
+          e.stopPropagation();
+          var rect = btn.getBoundingClientRect();
+          dropdown.style.left = rect.left + 'px';
+          dropdown.style.top  = (rect.bottom + 4) + 'px';
+          dropdown.classList.toggle('open');
+        });
+        document.addEventListener('click', function(){ dropdown.classList.remove('open'); });
+        document.addEventListener('keydown', function(e){ if(e.key==='Escape') dropdown.classList.remove('open'); });
       })();
     </script>
   </body>

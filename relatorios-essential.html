@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Raleway:wght@700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,7 +31,11 @@
       display: flex;
       height: 52px;
       width: 100%;
+      padding-left: 48px;
+      transition: padding-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
+    body.sidebar-open .menu-bar { padding-left: 224px; }
 
     .menu-apps-btn {
       width: 48px;
@@ -157,24 +162,28 @@
     .below-menu {
       display: flex;
       align-items: flex-start;
+      margin-left: 48px;
+      transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
+    body.sidebar-open .below-menu { margin-left: 224px; }
 
     /* ════════════════════════════════════════════════
        SIDEBAR
     ════════════════════════════════════════════════ */
     .sidebar {
       width: 48px;
-      flex-shrink: 0;
       background: #fff;
-      position: sticky;
-      top: 52px;
-      height: calc(100vh - 52px);
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       overflow: hidden;
       transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 10;
+      z-index: 200;
     }
 
     .sidebar.open { width: 224px; }
@@ -303,8 +312,7 @@
     }
 
     .sidebar-subitem {
-      display: flex;
-      align-items: center;
+      display: block;
       padding: 10px 14px 10px 36px;
       cursor: pointer;
       font-weight: 400;
@@ -312,6 +320,8 @@
       line-height: 16px;
       color: #505050;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       list-style: none;
       opacity: 0;
       text-decoration: none;
@@ -890,6 +900,69 @@
 
     .btn-link-white:hover { text-decoration: underline; }
 
+    /* ════ VIEW PICKER ════ */
+    .view-picker {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-left: 8px;
+    }
+    .view-picker-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      background: #fff;
+      border: 1px solid #d3d3d3;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: #505050;
+      white-space: nowrap;
+      transition: border-color 0.15s;
+      line-height: 18px;
+    }
+    .view-picker-btn:hover { border-color: #bcbcbc; }
+    .view-picker-btn .material-icons-outlined { font-size: 14px; }
+    .view-picker-dropdown {
+      position: fixed;
+      background: #fff;
+      border: 1px solid #d3d3d3;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 9999;
+      display: none;
+      overflow: hidden;
+      min-width: 160px;
+    }
+    .view-picker-dropdown.open { display: block; }
+    .view-picker-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      font-size: 14px;
+      color: #323232;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+      font-family: 'Open Sans', sans-serif;
+    }
+    .view-picker-option:hover { background: #f5f9fe; color: #378ef0; }
+    .view-picker-option.active { color: #378ef0; font-weight: 600; }
+    .view-picker-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #378ef0;
+      flex-shrink: 0;
+    }
+    .view-picker-dot-empty {
+      width: 6px; height: 6px;
+      flex-shrink: 0;
+    }
+
     /* ════════════════════════════════════
        USER DROPDOWN MENU
     ════════════════════════════════════ */
@@ -1059,9 +1132,6 @@
        MENU BAR
   ══════════════════════════════════════ -->
   <div class="menu-bar">
-    <div class="menu-apps-btn" id="apps-btn">
-      <span class="material-icons-outlined">apps</span>
-    </div>
     <div class="menu-right">
       <div class="menu-logo-area">
         <img
@@ -1072,8 +1142,21 @@
       </div>
       <div class="menu-divider"></div>
       <div class="menu-product">
-        <span class="menu-product-name">ISA | InfoPanel</span>
-        <div class="menu-badge"><span>essential</span></div>
+        <span class="menu-product-name">Essential</span>
+        <div class="view-picker" id="view-picker">
+          <button class="view-picker-btn" id="view-picker-btn">
+            Visão Varejo
+            <span class="material-icons-outlined">keyboard_arrow_down</span>
+          </button>
+          <div class="view-picker-dropdown" id="view-picker-dropdown">
+            <a class="view-picker-option active" href="#">
+              <span class="view-picker-dot"></span>Visão Varejo
+            </a>
+            <a class="view-picker-option" href="relatorios-essential-industria.html">
+              <span class="view-picker-dot-empty"></span>Visão Indústria
+            </a>
+          </div>
+        </div>
       </div>
       <div class="menu-actions">
         <div class="menu-icon-btn"><span class="material-icons-outlined">person_add</span></div>
@@ -1095,81 +1178,87 @@
     <nav class="sidebar" id="sidebar">
       <div class="sidebar-top">
 
-        <div class="sidebar-item" data-page="Panel" data-href="#">
+        <!-- Preço e concorrência -->
+        <div class="sidebar-item expandable" id="cat-preco" data-page="Preço e concorrência" data-subs="subs-preco">
           <span class="sidebar-icon">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9.58331 14.7346H3.74998L3.74998 3.33594L12.0833 3.29507V8.62803C12.5 8.22093 13.3333 7.81384 13.75 7.81384V3.29507C13.75 2.39946 13 1.66669 12.0833 1.66669L3.74998 1.70756C2.83331 1.70756 2.08331 2.44033 2.08331 3.33594L2.08331 14.7346C2.08331 15.6302 2.83331 16.363 3.74998 16.363H7.91665L9.58331 14.7346ZM13.0083 15.7931C13.5916 16.1513 14.2666 16.363 15 16.363C17.075 16.363 18.75 14.7265 18.75 12.6991C18.75 10.6718 17.075 9.03528 15 9.03528C12.925 9.03528 11.25 10.6718 11.25 12.691C11.25 13.4075 11.4666 14.0751 11.8333 14.6369L9.23331 17.1772L10.4166 18.3334L13.0083 15.7931ZM12.9166 12.6991C12.9166 11.5756 13.85 10.6637 15 10.6637C16.15 10.6637 17.0833 11.5756 17.0833 12.6991C17.0833 13.8227 16.15 14.7346 15 14.7346C13.85 14.7346 12.9166 13.8227 12.9166 12.6991Z" fill="currentColor"/>
               <path d="M10.4166 11.7493V9.03528C10.4166 8.66211 10.0952 8.35679 9.70236 8.35679H6.84522V6.9998H10.4166V5.64282H8.63093V4.96432H7.20236V5.64282H6.13093C5.73808 5.64282 5.41665 5.94814 5.41665 6.32131V9.03528C5.41665 9.40845 5.73808 9.71378 6.13093 9.71378H8.98808V11.0708H5.41665V12.4277H7.20236V13.1062H8.63093V12.4277H9.70236C10.0952 12.4277 10.4166 12.1224 10.4166 11.7493Z" fill="currentColor"/>
             </svg>
           </span>
-          <span class="sidebar-label">Panel</span>
-        </div>
-
-        <div class="sidebar-item active" data-page="Módulo de relatórios" data-href="relatorios-essential.html">
-          <span class="sidebar-icon material-icons">assignment</span>
-          <span class="sidebar-label">Módulo de relatórios</span>
-        </div>
-
-        <div class="sidebar-item" data-page="Análise de competitividade" data-href="competitividade-free.html">
-          <span class="sidebar-icon material-icons">emoji_events</span>
-          <span class="sidebar-label">Análise de competitividade</span>
-        </div>
-
-        <div class="sidebar-item" data-page="Lojas concorrentes" data-href="lojas-concorrentes-essential.html">
-          <span class="sidebar-icon material-icons">store</span>
-          <span class="sidebar-label">Lojas concorrentes</span>
-        </div>
-
-        <div class="sidebar-item" data-page="Módulo omnichannel" data-href="omnichannel-essential.html">
-          <span class="sidebar-icon material-icons">hub</span>
-          <span class="sidebar-label">Módulo omnichannel</span>
-        </div>
-
-        <div class="sidebar-item" data-page="On demand" data-href="ondemand-essential.html">
-          <span class="sidebar-icon material-icons">ads_click</span>
-          <span class="sidebar-label">On demand</span>
-        </div>
-
-        <div class="sidebar-item" data-page="Análise de cobertura" data-href="#">
-          <span class="sidebar-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M13.8217 18C13.8217 19.4197 12.6698 20.5717 11.25 20.5717C9.83025 20.5717 8.67825 19.4197 8.67825 18C8.67825 16.9282 9.348 15.951 10.3927 15.576V6.85723H12.1072V15.576C13.152 15.951 13.8217 16.929 13.8217 18ZM15.5355 18C15.5355 16.5937 14.8658 15.3615 13.821 14.5717V4.28623C13.821 2.86648 12.669 1.71448 11.2492 1.71448C9.8295 1.71448 8.6775 2.86648 8.6775 4.28623V14.5717C7.63275 15.3622 6.963 16.5937 6.963 18C6.963 20.3707 8.8785 22.2855 11.2485 22.2855C13.6185 22.2855 15.534 20.37 15.534 18H15.5355ZM17.25 18C17.25 21.3082 14.5582 24 11.25 24C7.94175 24 5.25 21.3082 5.25 18C5.25 16.3657 5.90625 14.8927 6.9645 13.8082V4.28623C6.9645 1.91548 8.88 0.000732422 11.25 0.000732422C13.62 0.000732422 15.5355 1.91623 15.5355 4.28623V13.8082C16.5938 14.8927 17.25 16.3665 17.25 18ZM18.9645 10.2855V12H16.3927V10.2855H18.9645ZM18.9645 6.85723V8.57173H16.3927V6.85723H18.9645ZM18.9645 3.42823V5.14273H16.3927V3.42823H18.9645Z" fill="currentColor"/>
-            </svg>
-          </span>
-          <span class="sidebar-label">Análise de cobertura</span>
-        </div>
-
-        <div class="sidebar-item" id="industria-trigger" data-page="Inteligência para a Indústria" data-href="#">
-          <span class="sidebar-icon">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <g clip-path="url(#clip-factory)">
-                <path d="M11.6667 8.33324V7.06657C11.6667 6.4749 11.075 6.0749 10.525 6.29157L7.49999 7.4999V7.0999C7.49999 6.4999 6.89166 6.09157 6.34166 6.33324L2.67499 7.8999C2.06666 8.16657 1.66666 8.76657 1.66666 9.43324V16.6666C1.66666 17.5832 2.41666 18.3332 3.33332 18.3332H16.6667C17.5833 18.3332 18.3333 17.5832 18.3333 16.6666V8.33324H11.6667ZM7.49999 14.1666C7.49999 14.6249 7.12499 14.9999 6.66666 14.9999C6.20832 14.9999 5.83332 14.6249 5.83332 14.1666V12.4999C5.83332 12.0416 6.20832 11.6666 6.66666 11.6666C7.12499 11.6666 7.49999 12.0416 7.49999 12.4999V14.1666ZM10.8333 14.1666C10.8333 14.6249 10.4583 14.9999 9.99999 14.9999C9.54166 14.9999 9.16666 14.6249 9.16666 14.1666V12.4999C9.16666 12.0416 9.54166 11.6666 9.99999 11.6666C10.4583 11.6666 10.8333 12.0416 10.8333 12.4999V14.1666ZM14.1667 14.1666C14.1667 14.6249 13.7917 14.9999 13.3333 14.9999C12.875 14.9999 12.5 14.6249 12.5 14.1666V12.4999C12.5 12.0416 12.875 11.6666 13.3333 11.6666C13.7917 11.6666 14.1667 12.0416 14.1667 12.4999V14.1666Z" fill="currentColor"/>
-                <path d="M16.7666 1.66663H15.7416C15.3166 1.66663 14.9666 1.98329 14.9166 2.39996L14.3333 7.08329H18.1666L17.5916 2.39996C17.5416 1.98329 17.1833 1.66663 16.7666 1.66663Z" fill="currentColor"/>
-              </g>
-              <defs>
-                <clipPath id="clip-factory">
-                  <rect width="20" height="20" fill="white"/>
-                </clipPath>
-              </defs>
-            </svg>
-          </span>
           <span class="sidebar-inner-group">
-            <span class="sidebar-label">Inteligência para a Indústria</span>
+            <span class="sidebar-label">Preço e concorrência</span>
             <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
           </span>
         </div>
-
-        <div class="sidebar-subitems" id="industria-subitems">
+        <div class="sidebar-subitems" id="subs-preco">
           <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem" data-href="#">Visão geral de Elasticidade</div>
-            <div class="sidebar-subitem" data-href="#">Análise de Elasticidade</div>
-            <div class="sidebar-subitem" data-href="aderencia-de-precos-industria-essential.html">Aderência de Preços</div>
+            <div class="sidebar-subitem" data-href="#">Painel geral</div>
+            <div class="sidebar-subitem" data-href="competitividade-free.html">Módulo de competitividade</div>
+            <div class="sidebar-subitem" data-href="omnichannel-essential.html">Módulo omnichannel</div>
+            <div class="sidebar-subitem" data-href="#">Análise de cobertura</div>
+            <div class="sidebar-subitem" data-href="ondemand-essential.html">On demand</div>
+            <div class="sidebar-subitem" data-href="pesquisa-pdv.html">Pesquisa PDV</div>
           </div>
         </div>
 
-        <div class="sidebar-item" data-page="Central de Monitoramentos" data-href="#">
-          <span class="sidebar-icon material-icons">notifications</span>
-          <span class="sidebar-label">Central de Monitoramentos</span>
+        <!-- Inteligência -->
+        <div class="sidebar-item expandable" id="cat-inteligencia" data-page="Inteligência" data-subs="subs-inteligencia">
+          <span class="sidebar-icon material-icons">psychology</span>
+          <span class="sidebar-inner-group">
+            <span class="sidebar-label">Inteligência</span>
+            <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
+          </span>
+        </div>
+        <div class="sidebar-subitems" id="subs-inteligencia">
+          <div class="sidebar-subitems-inner">
+            <div class="sidebar-subitem" data-href="lojas-concorrentes-essential.html">Módulo de lojas concorrentes</div>
+            <div class="sidebar-subitem" data-href="#">Previsão de demanda</div>
+            <div class="sidebar-subitem" data-href="#">Sensibilidade Infoprice</div>
+          </div>
+        </div>
+
+        <!-- Precificação estratégica -->
+        <div class="sidebar-item expandable" id="cat-precificacao" data-page="Precificação estratégica" data-subs="subs-precificacao">
+          <span class="sidebar-icon material-icons-round">price_change</span>
+          <span class="sidebar-inner-group">
+            <span class="sidebar-label">Precificação estratégica</span>
+            <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
+          </span>
+        </div>
+        <div class="sidebar-subitems" id="subs-precificacao">
+          <div class="sidebar-subitems-inner">
+            <div class="sidebar-subitem" data-href="#">Gerenciador de preços</div>
+          </div>
+        </div>
+
+        <!-- Negociação -->
+        <div class="sidebar-item expandable" id="cat-negociacao" data-page="Negociação" data-subs="subs-negociacao">
+          <span class="sidebar-icon material-icons">handshake</span>
+          <span class="sidebar-inner-group">
+            <span class="sidebar-label">Negociação</span>
+            <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
+          </span>
+        </div>
+        <div class="sidebar-subitems" id="subs-negociacao">
+          <div class="sidebar-subitems-inner">
+            <div class="sidebar-subitem" data-href="#">Módulo de negociação</div>
+          </div>
+        </div>
+
+        <!-- Análises e relatórios -->
+        <div class="sidebar-item expandable has-active-child" id="cat-analises" data-page="Análises e relatórios" data-subs="subs-analises">
+          <span class="sidebar-icon material-icons">analytics</span>
+          <span class="sidebar-inner-group">
+            <span class="sidebar-label">Análises e relatórios</span>
+            <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
+          </span>
+        </div>
+        <div class="sidebar-subitems" id="subs-analises">
+          <div class="sidebar-subitems-inner">
+            <div class="sidebar-subitem active" data-href="relatorios-essential.html">Módulo de relatórios</div>
+            <div class="sidebar-subitem" data-href="#">IPA Analytics</div>
+          </div>
         </div>
 
       </div>
@@ -1396,7 +1485,11 @@
       <p class="udrop-email">marcus@infoprice.co</p>
     </div>
     <div class="udrop-divider"></div>
-    <a class="udrop-item" href="#">
+    <a class="udrop-item" href="competitividade-free.html">
+      <span class="material-icons-outlined">grid_view</span>
+      Acessar produtos
+    </a>
+    <a class="udrop-item" href="configuracoes.html">
       <span class="material-icons-outlined">settings</span>
       Configurações
     </a>
@@ -1454,57 +1547,60 @@
     });
   </script>
   <script>
-    const sidebar        = document.getElementById('sidebar');
-    const toggleBtn      = document.getElementById('sidebar-toggle');
-    const toggleIcon     = document.getElementById('toggle-icon');
-    const industriaTrigger = document.getElementById('industria-trigger');
-    const industriaSubs  = document.getElementById('industria-subitems');
-    const tooltip        = document.getElementById('sidebar-tooltip');
+    const sidebar    = document.getElementById('sidebar');
+    const toggleBtn  = document.getElementById('sidebar-toggle');
+    const toggleIcon = document.getElementById('toggle-icon');
+    const tooltip    = document.getElementById('sidebar-tooltip');
+    let isOpen = false;
 
-    let isOpen     = false;
-    let isExpanded = false;
+    function openSidebar() {
+      isOpen = true;
+      sidebar.classList.add('open');
+      document.body.classList.add('sidebar-open');
+      toggleIcon.textContent = 'keyboard_arrow_left';
+      const active = sidebar.querySelector('.sidebar-item.expandable.has-active-child');
+      if (active) {
+        active.classList.add('expanded');
+        const subs = document.getElementById(active.dataset.subs);
+        if (subs) subs.classList.add('expanded');
+      }
+    }
 
-    /* ── Toggle open / close ── */
+    function closeSidebar() {
+      isOpen = false;
+      sidebar.classList.remove('open');
+      document.body.classList.remove('sidebar-open');
+      toggleIcon.textContent = 'keyboard_arrow_right';
+      sidebar.querySelectorAll('.sidebar-item.expandable').forEach(item => {
+        item.classList.remove('expanded');
+        const subs = document.getElementById(item.dataset.subs);
+        if (subs) subs.classList.remove('expanded');
+      });
+    }
+
     toggleBtn.addEventListener('click', () => {
-      isOpen = !isOpen;
-      sidebar.classList.toggle('open', isOpen);
-      toggleIcon.textContent = isOpen ? 'keyboard_arrow_left' : 'keyboard_arrow_right';
-      if (!isOpen && isExpanded) {
-        isExpanded = false;
-        industriaTrigger.classList.remove('expanded');
-        industriaSubs.classList.remove('expanded');
-      }
+      isOpen ? closeSidebar() : openSidebar();
     });
 
-    /* ── Expandir sub-itens ── */
-    industriaTrigger.addEventListener('click', () => {
-      if (!isOpen) {
-        isOpen = true;
-        sidebar.classList.add('open');
-        toggleIcon.textContent = 'keyboard_arrow_left';
-      }
-      isExpanded = !isExpanded;
-      industriaTrigger.classList.toggle('expanded', isExpanded);
-      industriaSubs.classList.toggle('expanded', isExpanded);
-    });
-
-    /* ── Navegação ── */
-    document.querySelectorAll('.sidebar-item[data-href]').forEach(item => {
-      if (item.id === 'industria-trigger') return;
+    sidebar.querySelectorAll('.sidebar-item.expandable').forEach(item => {
       item.addEventListener('click', () => {
-        const href = item.dataset.href;
-        if (href && href !== '#') window.location.href = href;
+        if (!isOpen) openSidebar();
+        else {
+          const wasExpanded = item.classList.contains('expanded');
+          item.classList.toggle('expanded', !wasExpanded);
+          const subs = document.getElementById(item.dataset.subs);
+          if (subs) subs.classList.toggle('expanded', !wasExpanded);
+        }
       });
     });
 
-    document.querySelectorAll('.sidebar-subitem[data-href]').forEach(sub => {
+    sidebar.querySelectorAll('.sidebar-subitem[data-href]').forEach(sub => {
       sub.addEventListener('click', () => {
         const href = sub.dataset.href;
         if (href && href !== '#') window.location.href = href;
       });
     });
 
-    /* ── Tooltips ── */
     function showTooltip(item) {
       const label = item.dataset.page;
       if (!label) return;
@@ -1514,14 +1610,10 @@
       tooltip.style.top  = (rect.top + (rect.height - 28) / 2) + 'px';
       tooltip.classList.add('visible');
     }
-
     function hideTooltip() { tooltip.classList.remove('visible'); }
 
-    document.querySelectorAll('.sidebar-item[data-page]').forEach(item => {
-      const isIndustria = item.id === 'industria-trigger';
-      item.addEventListener('mouseenter', () => {
-        if (!isOpen || isIndustria) showTooltip(item);
-      });
+    sidebar.querySelectorAll('.sidebar-item[data-page]').forEach(item => {
+      item.addEventListener('mouseenter', () => { if (!isOpen) showTooltip(item); });
       item.addEventListener('mouseleave', hideTooltip);
     });
 
@@ -1543,6 +1635,22 @@
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') appsMenu.classList.remove('open');
       });
+    })();
+
+    /* ── View picker ── */
+    (function(){
+      var btn = document.getElementById('view-picker-btn');
+      var dropdown = document.getElementById('view-picker-dropdown');
+      if(!btn||!dropdown) return;
+      btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        var rect = btn.getBoundingClientRect();
+        dropdown.style.left = rect.left + 'px';
+        dropdown.style.top  = (rect.bottom + 4) + 'px';
+        dropdown.classList.toggle('open');
+      });
+      document.addEventListener('click', function(){ dropdown.classList.remove('open'); });
+      document.addEventListener('keydown', function(e){ if(e.key==='Escape') dropdown.classList.remove('open'); });
     })();
   </script>
 </body>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>InfoPrice — Módulo Omnichannel</title>
+  <title>InfoPrice — Módulo de Relatório</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -427,11 +427,6 @@
       color: #378ef0;
     }
 
-    .page-header-text {
-      flex: 1;
-      min-width: 0;
-    }
-
     .page-header-title {
       font-weight: 600;
       font-size: 18px;
@@ -445,17 +440,6 @@
       line-height: 20px;
       color: #747474;
     }
-
-    .page-header-link {
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 20px;
-      color: #378ef0;
-      text-decoration: none;
-      margin-left: 8px;
-    }
-
-    .page-header-link:hover { text-decoration: underline; }
 
     /* ════════════════════════════════════
        MAIN CARD
@@ -549,11 +533,64 @@
     .btn-outline-blue .material-icons-outlined { font-size: 18px; }
     .btn-outline-blue:hover { background: #f0f7ff; }
 
-    /* ── HERO IMAGE (vídeo player) ── */
+    /* ── GALERIA ── */
+    .hero-gallery {
+      width: 600px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hero-gallery-slides {
+      width: 600px;
+      height: 291px;
+      position: relative;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .gallery-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+    }
+
+    .gallery-slide.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Dots de navegação da galeria */
+    .gallery-dots {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .gallery-dot {
+      height: 8px;
+      width: 8px;
+      border-radius: 4px;
+      background: #d3d3d3;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: width 0.25s ease, background 0.25s ease;
+    }
+
+    .gallery-dot.active {
+      width: 24px;
+      background: #378ef0;
+    }
+
+    /* Base visual compartilhada dos slides */
     .hero-image {
       width: 600px;
       height: 291px;
-      flex-shrink: 0;
       border-radius: 6px;
       overflow: hidden;
       position: relative;
@@ -564,6 +601,7 @@
         0px 3px 6px -4px rgba(0,0,0,0.12);
     }
 
+    /* Camadas decorativas de borda */
     .hero-image-frame {
       position: absolute;
       border: 1.263px solid #559ff2;
@@ -595,6 +633,7 @@
       border-radius: 7.6px 7.6px 0 0;
     }
 
+    /* Overlay do vídeo */
     .video-overlay {
       position: absolute;
       inset: 0;
@@ -664,7 +703,7 @@
       color: #fff;
     }
 
-    /* ── FEATURES ── */
+    /* ── FEATURES (3 colunas) ── */
     .features {
       display: flex;
       gap: 48px;
@@ -1106,15 +1145,15 @@
         <span class="menu-product-name">Essential</span>
         <div class="view-picker" id="view-picker">
           <button class="view-picker-btn" id="view-picker-btn">
-            Visão Varejo
+            Visão Indústria
             <span class="material-icons-outlined">keyboard_arrow_down</span>
           </button>
           <div class="view-picker-dropdown" id="view-picker-dropdown">
-            <a class="view-picker-option active" href="#">
-              <span class="view-picker-dot"></span>Visão Varejo
+            <a class="view-picker-option" href="relatorios-essential.html">
+              <span class="view-picker-dot-empty"></span>Visão Varejo
             </a>
-            <a class="view-picker-option" href="omnichannel-essential-industria.html">
-              <span class="view-picker-dot-empty"></span>Visão Indústria
+            <a class="view-picker-option active" href="#">
+              <span class="view-picker-dot"></span>Visão Indústria
             </a>
           </div>
         </div>
@@ -1140,7 +1179,7 @@
       <div class="sidebar-top">
 
         <!-- Preço e concorrência -->
-        <div class="sidebar-item expandable has-active-child" id="cat-preco" data-page="Preço e concorrência" data-subs="subs-preco">
+        <div class="sidebar-item expandable" id="cat-preco-ind" data-page="Preço e concorrência" data-subs="subs-preco-ind">
           <span class="sidebar-icon">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9.58331 14.7346H3.74998L3.74998 3.33594L12.0833 3.29507V8.62803C12.5 8.22093 13.3333 7.81384 13.75 7.81384V3.29507C13.75 2.39946 13 1.66669 12.0833 1.66669L3.74998 1.70756C2.83331 1.70756 2.08331 2.44033 2.08331 3.33594L2.08331 14.7346C2.08331 15.6302 2.83331 16.363 3.74998 16.363H7.91665L9.58331 14.7346ZM13.0083 15.7931C13.5916 16.1513 14.2666 16.363 15 16.363C17.075 16.363 18.75 14.7265 18.75 12.6991C18.75 10.6718 17.075 9.03528 15 9.03528C12.925 9.03528 11.25 10.6718 11.25 12.691C11.25 13.4075 11.4666 14.0751 11.8333 14.6369L9.23331 17.1772L10.4166 18.3334L13.0083 15.7931ZM12.9166 12.6991C12.9166 11.5756 13.85 10.6637 15 10.6637C16.15 10.6637 17.0833 11.5756 17.0833 12.6991C17.0833 13.8227 16.15 14.7346 15 14.7346C13.85 14.7346 12.9166 13.8227 12.9166 12.6991Z" fill="currentColor"/>
@@ -1152,78 +1191,48 @@
             <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
           </span>
         </div>
-        <div class="sidebar-subitems" id="subs-preco">
+        <div class="sidebar-subitems" id="subs-preco-ind">
           <div class="sidebar-subitems-inner">
             <div class="sidebar-subitem" data-href="#">Painel geral</div>
-            <div class="sidebar-subitem" data-href="competitividade-free.html">Módulo de competitividade</div>
-            <div class="sidebar-subitem active" data-href="omnichannel-essential.html">Módulo omnichannel</div>
+            <div class="sidebar-subitem" data-href="competitividade-free-industria.html">Módulo de competitividade</div>
+            <div class="sidebar-subitem" data-href="omnichannel-essential-industria.html">Módulo omnichannel</div>
             <div class="sidebar-subitem" data-href="#">Análise de cobertura</div>
-            <div class="sidebar-subitem" data-href="ondemand-essential.html">On demand</div>
-            <div class="sidebar-subitem" data-href="pesquisa-pdv.html">Pesquisa PDV</div>
+            <div class="sidebar-subitem" data-href="aderencia-de-precos-industria-essential.html">Módulo de aderência</div>
+            <div class="sidebar-subitem" data-href="ondemand-essential-industria.html">On demand</div>
+            <div class="sidebar-subitem" data-href="pesquisa-pdv-industria.html">Pesquisa PDV</div>
           </div>
         </div>
 
         <!-- Inteligência -->
-        <div class="sidebar-item expandable" id="cat-inteligencia" data-page="Inteligência" data-subs="subs-inteligencia">
+        <div class="sidebar-item expandable" id="cat-intel-ind" data-page="Inteligência" data-subs="subs-intel-ind">
           <span class="sidebar-icon material-icons">psychology</span>
           <span class="sidebar-inner-group">
             <span class="sidebar-label">Inteligência</span>
             <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
           </span>
         </div>
-        <div class="sidebar-subitems" id="subs-inteligencia">
+        <div class="sidebar-subitems" id="subs-intel-ind">
           <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem" data-href="lojas-concorrentes-essential.html">Módulo de lojas concorrentes</div>
-            <div class="sidebar-subitem" data-href="#">Previsão de demanda</div>
-            <div class="sidebar-subitem" data-href="#">Sensibilidade Infoprice</div>
-          </div>
-        </div>
-
-        <!-- Precificação estratégica -->
-        <div class="sidebar-item expandable" id="cat-precificacao" data-page="Precificação estratégica" data-subs="subs-precificacao">
-          <span class="sidebar-icon material-icons-round">price_change</span>
-          <span class="sidebar-inner-group">
-            <span class="sidebar-label">Precificação estratégica</span>
-            <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
-          </span>
-        </div>
-        <div class="sidebar-subitems" id="subs-precificacao">
-          <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem" data-href="#">Gerenciador de preços</div>
-          </div>
-        </div>
-
-        <!-- Negociação -->
-        <div class="sidebar-item expandable" id="cat-negociacao" data-page="Negociação" data-subs="subs-negociacao">
-          <span class="sidebar-icon material-icons">handshake</span>
-          <span class="sidebar-inner-group">
-            <span class="sidebar-label">Negociação</span>
-            <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
-          </span>
-        </div>
-        <div class="sidebar-subitems" id="subs-negociacao">
-          <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem" data-href="#">Módulo de negociação</div>
+            <div class="sidebar-subitem" data-href="#">Visão geral de elasticidade cruzada</div>
+            <div class="sidebar-subitem" data-href="#">Análise de elasticidade</div>
           </div>
         </div>
 
         <!-- Análises e relatórios -->
-        <div class="sidebar-item expandable" id="cat-analises" data-page="Análises e relatórios" data-subs="subs-analises">
+        <div class="sidebar-item expandable has-active-child" id="cat-analises-ind" data-page="Análises e relatórios" data-subs="subs-analises-ind">
           <span class="sidebar-icon material-icons">analytics</span>
           <span class="sidebar-inner-group">
             <span class="sidebar-label">Análises e relatórios</span>
             <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
           </span>
         </div>
-        <div class="sidebar-subitems" id="subs-analises">
+        <div class="sidebar-subitems" id="subs-analises-ind">
           <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem" data-href="relatorios-essential.html">Módulo de relatórios</div>
-            <div class="sidebar-subitem" data-href="#">IPA Analytics</div>
+            <div class="sidebar-subitem active" data-href="relatorios-essential-industria.html">Módulo de relatórios</div>
           </div>
         </div>
 
       </div>
-
       <div class="sidebar-bottom" style="flex-shrink:0;">
         <button class="sidebar-toggle-btn" id="sidebar-toggle">
           <span class="sidebar-toggle-icon material-icons-outlined" id="toggle-icon">keyboard_arrow_right</span>
@@ -1239,11 +1248,11 @@
       <!-- CABEÇALHO DA PÁGINA -->
       <div class="page-header">
         <div class="page-header-icon">
-          <span class="material-icons-outlined">hub</span>
+          <span class="material-icons-outlined">assignment</span>
         </div>
-        <div class="page-header-text">
-          <p class="page-header-title">Módulo Omnichannel</p>
-          <p class="page-header-desc">Analise e compare os preços de cada produto entre todos os canais <a class="page-header-link" href="#">Entenda como funciona</a></p>
+        <div>
+          <p class="page-header-title">Módulo de relatório</p>
+          <p class="page-header-desc">Construa relatórios personalizados com os dados do InfoPanel</p>
         </div>
       </div>
 
@@ -1254,8 +1263,8 @@
         <div class="hero">
           <div class="hero-text">
             <div class="hero-heading">
-              <p class="hero-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam.</p>
-              <p class="hero-subtitle">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+              <p class="hero-title">Obtenha relatórios de preço personalizados para decisões mais estratégicas.</p>
+              <p class="hero-subtitle">Personalize seus relatórios de acordo com suas necessidades e obtenha insights mais estratégicos.</p>
             </div>
             <div class="hero-buttons">
               <button class="btn-orange">EXPERIMENTE</button>
@@ -1266,49 +1275,90 @@
             </div>
           </div>
 
-          <!-- Player de vídeo -->
-          <div class="hero-image">
-            <div class="hero-image-frame hero-image-frame-1"></div>
-            <div class="hero-image-frame hero-image-frame-2"></div>
-            <div class="hero-image-frame hero-image-frame-3"></div>
-            <div class="hero-image-inner">
-              <img src="" alt="Interface do Módulo Omnichannel">
-            </div>
-            <div class="video-overlay">
-              <div class="play-btn">
-                <div class="play-ring play-ring-1"></div>
-                <div class="play-ring play-ring-2"></div>
-                <div class="play-ring play-ring-3"></div>
-                <div class="play-icon"></div>
+          <div class="hero-gallery">
+            <div class="hero-gallery-slides">
+
+              <!-- Slide 1: screenshot -->
+              <div class="gallery-slide active">
+                <div class="hero-image">
+                  <div class="hero-image-frame hero-image-frame-1"></div>
+                  <div class="hero-image-frame hero-image-frame-2"></div>
+                  <div class="hero-image-frame hero-image-frame-3"></div>
+                  <div class="hero-image-inner">
+                    <img
+                      src="https://www.figma.com/api/mcp/asset/0bd80ffb-c54c-424a-99a5-8880df006b5f"
+                      alt="Interface do módulo de relatório"
+                    >
+                  </div>
+                </div>
               </div>
-              <p class="video-label">Assista ao vídeo</p>
+
+              <!-- Slide 2: player de vídeo -->
+              <div class="gallery-slide">
+                <div class="hero-image">
+                  <div class="hero-image-frame hero-image-frame-1"></div>
+                  <div class="hero-image-frame hero-image-frame-2"></div>
+                  <div class="hero-image-frame hero-image-frame-3"></div>
+                  <div class="hero-image-inner">
+                    <img
+                      src="https://www.figma.com/api/mcp/asset/5e8f6b59-40bc-4694-8043-224ba4cbefc4"
+                      alt="Vídeo do módulo de relatório"
+                    >
+                  </div>
+                  <div class="video-overlay">
+                    <div class="play-btn">
+                      <div class="play-ring play-ring-1"></div>
+                      <div class="play-ring play-ring-2"></div>
+                      <div class="play-ring play-ring-3"></div>
+                      <div class="play-icon"></div>
+                    </div>
+                    <p class="video-label">Assista ao vídeo</p>
+                  </div>
+                </div>
+              </div>
+
+            </div><!-- /hero-gallery-slides -->
+
+            <!-- Dots de navegação -->
+            <div class="gallery-dots">
+              <button class="gallery-dot active" data-slide="0"></button>
+              <button class="gallery-dot" data-slide="1"></button>
             </div>
-          </div>
+          </div><!-- /hero-gallery -->
         </div>
 
         <!-- FEATURES -->
         <div class="features">
           <div class="features-heading-col">
-            <p class="features-heading">Lorem ipsum dolor sit amet</p>
+            <p class="features-heading">O poder da visão estratégica</p>
           </div>
           <div class="features-cols">
             <div class="feature-card">
               <div class="feature-card-top">
                 <div class="feature-icon-box">
-                  <span class="material-icons-outlined">hub</span>
+                  <span class="material-icons-outlined">edit</span>
                 </div>
-                <p class="feature-title">Lorem ipsum dolor sit amet consectetur adipiscing elit</p>
+                <p class="feature-title">Personalize os relatórios da sua maneira</p>
               </div>
-              <p class="feature-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+              <p class="feature-desc">A partir de filtros específicos, crie análises sob medida para o que mais importa ao seu negócio.</p>
             </div>
             <div class="feature-card">
               <div class="feature-card-top">
                 <div class="feature-icon-box">
-                  <span class="material-icons-outlined">compare_arrows</span>
+                  <span class="material-icons-outlined">group_work</span>
                 </div>
-                <p class="feature-title">Ut enim ad minim veniam quis nostrud exercitation</p>
+                <p class="feature-title">Consolide dados em granularidade específicas</p>
               </div>
-              <p class="feature-desc">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat.</p>
+              <p class="feature-desc">Agrupe dados por filtros de produto, local e métricas, tornando o seu relatório mais objetivo.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-card-top">
+                <div class="feature-icon-box">
+                  <span class="material-icons-outlined">schedule</span>
+                </div>
+                <p class="feature-title">Automatize relatórios com recorrência</p>
+              </div>
+              <p class="feature-desc">Ganhe tempo e receba relatórios na frequência que escolher.</p>
             </div>
           </div>
         </div>
@@ -1326,23 +1376,27 @@
             <div class="upgrade-features">
               <div class="upgrade-features-col">
                 <div class="upgrade-feature-item">
+                  <span class="material-icons-outlined">person</span>
+                  <span class="upgrade-feature-text">Usuários ilimitados</span>
+                </div>
+                <div class="upgrade-feature-item">
                   <span class="material-icons-outlined">emoji_events</span>
                   <span class="upgrade-feature-text">Competitividade de Redes e Produtos</span>
+                </div>
+                <div class="upgrade-feature-item">
+                  <span class="material-icons-outlined">hub</span>
+                  <span class="upgrade-feature-text">Módulo Omnichannel</span>
                 </div>
                 <div class="upgrade-feature-item">
                   <span class="material-icons-outlined">store</span>
                   <span class="upgrade-feature-text">Módulo de Lojas Concorrentes</span>
                 </div>
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">assignment</span>
-                  <span class="upgrade-feature-text">Módulo de relatórios</span>
-                </div>
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">ads_click</span>
-                  <span class="upgrade-feature-text">500 solicitações sob demanda/semana</span>
-                </div>
               </div>
               <div class="upgrade-features-col">
+                <div class="upgrade-feature-item">
+                  <span class="material-icons-outlined">handshake</span>
+                  <span class="upgrade-feature-text">Módulo de negociação</span>
+                </div>
                 <div class="upgrade-feature-item">
                   <span class="material-icons-outlined">edit</span>
                   <span class="upgrade-feature-text">Regras e limites ilimitados</span>
@@ -1352,12 +1406,8 @@
                   <span class="upgrade-feature-text">Preço regular, psicológico e atacado</span>
                 </div>
                 <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">tune</span>
-                  <span class="upgrade-feature-text">Gerenciador de preços ilimitado</span>
-                </div>
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">handshake</span>
-                  <span class="upgrade-feature-text">Módulo de negociação</span>
+                  <span class="material-icons-outlined">assignment</span>
+                  <span class="upgrade-feature-text">500 solicitações sob demanda/semana</span>
                 </div>
               </div>
             </div>
@@ -1454,6 +1504,19 @@
       });
     })();
 
+    /* ── Galeria: troca de slides pelos dots ── */
+    const slides = document.querySelectorAll('.gallery-slide');
+    const dots   = document.querySelectorAll('.gallery-dot');
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', function () {
+        const idx = parseInt(this.dataset.slide);
+        slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+        dots.forEach((d, i)   => d.classList.toggle('active', i === idx));
+      });
+    });
+  </script>
+  <script>
     const sidebar    = document.getElementById('sidebar');
     const toggleBtn  = document.getElementById('sidebar-toggle');
     const toggleIcon = document.getElementById('toggle-icon');

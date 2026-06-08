@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InfoPrice — Configurações</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Raleway:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Open Sans', sans-serif; background: #f4f4f4; min-height: 100vh; }
+
+    /* ════ MENU BAR ════ */
+    .menu-bar {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; height: 52px; width: 100%;
+      padding-left: 48px;
+      transition: padding-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    body.sidebar-open .menu-bar { padding-left: 224px; }
+    .menu-right { flex: 1; height: 52px; background: #f0f0f0; display: flex; align-items: center; padding: 0 8px; }
+    .menu-logo-area { padding: 8px 12px 8px 8px; display: flex; align-items: center; }
+    .menu-logo { height: 15px; width: 99px; object-fit: contain; object-position: left center; display: block; flex-shrink: 0; }
+    .menu-divider { width: 1px; height: 24px; background: #d3d3d3; flex-shrink: 0; }
+    .menu-product { flex: 1; display: flex; align-items: center; padding: 16px 12px; gap: 8px; }
+    .menu-product-name { font-weight: 600; font-size: 14px; color: #505050; white-space: nowrap; }
+    .menu-actions { display: flex; align-items: center; }
+    .menu-icon-btn { width: 44px; height: 52px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .menu-icon-btn .material-icons-outlined { font-size: 20px; color: #505050; }
+    .menu-user { display: flex; align-items: center; gap: 10px; padding: 16px 8px; cursor: pointer; }
+    .menu-user-name { font-weight: 600; font-size: 14px; color: #505050; white-space: nowrap; }
+    .menu-user .material-icons-outlined { font-size: 16px; color: #505050; }
+
+    /* ════ LAYOUT ════ */
+    .below-menu {
+      display: flex; align-items: flex-start;
+      margin-left: 48px;
+      transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    body.sidebar-open .below-menu { margin-left: 224px; }
+
+    /* ════ SIDEBAR ════ */
+    .sidebar {
+      width: 48px; background: #fff;
+      position: fixed; top: 0; left: 0; height: 100vh;
+      display: flex; flex-direction: column; justify-content: space-between;
+      overflow: hidden; transition: width 0.25s cubic-bezier(0.4,0,0.2,1); z-index: 200;
+    }
+    .sidebar.open { width: 224px; }
+    .sidebar-top, .sidebar-bottom { display: flex; flex-direction: column; flex-shrink: 0; }
+    .sidebar-item { display: flex; align-items: center; gap: 6px; padding: 14px; cursor: pointer; white-space: nowrap; color: #747474; transition: background 0.15s, color 0.15s; text-decoration: none; }
+    .sidebar-item:hover { background: #f5f9fe; color: #378ef0; }
+    .sidebar-item:hover .sidebar-icon, .sidebar-item:hover .sidebar-label { color: #378ef0; }
+    .sidebar-item.active .sidebar-icon, .sidebar-item.active .sidebar-label { color: #378ef0; }
+    .sidebar-icon { font-size: 20px; flex-shrink: 0; width: 20px; height: 20px; color: #747474; transition: color 0.15s; line-height: 1; display: flex; align-items: center; justify-content: center; }
+    .sidebar-item.active .sidebar-icon { color: #378ef0; }
+    .sidebar-label { font-weight: 600; font-size: 12px; line-height: 18px; color: #505050; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: 0; transition: color 0.15s, opacity 0.12s ease; }
+    .sidebar.open .sidebar-label { opacity: 1; transition: color 0.15s, opacity 0.18s ease 0.14s; }
+    .sidebar-item:hover .sidebar-label, .sidebar-item.active .sidebar-label { color: #378ef0; }
+    .sidebar-toggle-btn { display: flex; align-items: center; padding: 14px; cursor: pointer; background: none; border: none; width: 100%; transition: background 0.15s; gap: 6px; white-space: nowrap; }
+    .sidebar-toggle-btn:hover { background: #f5f9fe; }
+    .sidebar-toggle-btn:hover .sidebar-toggle-icon { color: #378ef0; }
+    .sidebar-toggle-icon { font-size: 20px; color: #747474; transition: color 0.15s; flex-shrink: 0; }
+
+    /* ════ TOOLTIP ════ */
+    #sidebar-tooltip { position: fixed; background: #323232; color: #fff; font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: 4px; pointer-events: none; z-index: 9999; white-space: nowrap; opacity: 0; transition: opacity 0.15s ease; box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+    #sidebar-tooltip.visible { opacity: 1; }
+    #sidebar-tooltip::before { content: ''; position: absolute; right: 100%; top: 50%; transform: translateY(-50%); border: 5px solid transparent; border-right-color: #323232; }
+
+    /* ════ MAIN CONTENT ════ */
+    .main-content { flex: 1; min-width: 0; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+
+    /* ════ SECTION HEADER ════ */
+    .section-header {
+      background: #fff;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .section-title {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 20px;
+      color: #323232;
+      padding: 12px 12px 0;
+    }
+
+    /* ── Tabs ── */
+    .cfg-tabs {
+      display: flex;
+      align-items: stretch;
+      border-bottom: 1px solid #eaeaea;
+      padding: 0 0;
+      gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .cfg-tabs::-webkit-scrollbar { display: none; }
+
+    .cfg-tab {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 12px;
+      font-size: 14px;
+      font-weight: 400;
+      color: #bcbcbc;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      font-family: 'Open Sans', sans-serif;
+      transition: color 0.15s;
+      margin-bottom: -1px;
+      flex-shrink: 0;
+    }
+
+    .cfg-tab.active {
+      color: #1473e6;
+      border-bottom-color: #1473e6;
+      font-weight: 400;
+    }
+
+    .cfg-tab.locked { cursor: default; }
+    .cfg-tab:not(.locked):not(.active):hover { color: #505050; }
+
+    .cfg-tab .material-icons-outlined,
+    .cfg-tab .material-icons {
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    /* ════ CONTENT BODY ════ */
+    .content-body {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    /* ── Left menu panel ── */
+    .cfg-menu {
+      width: 260px;
+      flex-shrink: 0;
+      background: #fff;
+      border-radius: 6px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cfg-menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.15s;
+      text-decoration: none;
+    }
+
+    .cfg-menu-item:hover { background: #f5f9fe; }
+
+    .cfg-menu-item.active { background: #f5f9fe; }
+
+    .cfg-menu-item-name {
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 20px;
+      color: #323232;
+    }
+
+    .cfg-menu-item.active .cfg-menu-item-name { color: #505050; }
+
+    .cfg-menu-item .material-icons-outlined {
+      font-size: 20px;
+      color: #bcbcbc;
+      flex-shrink: 0;
+    }
+
+    /* ── Right content panel ── */
+    .cfg-content {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cfg-content-card {
+      background: #fff;
+      border-radius: 6px;
+      padding: 12px;
+    }
+
+    .cfg-content-title {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 20px;
+      color: #323232;
+      margin-bottom: 4px;
+    }
+
+    .cfg-content-desc {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 18px;
+      color: #323232;
+    }
+
+    /* ── Range card ── */
+    .cfg-range-card {
+      background: #fff;
+      border-radius: 6px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .cfg-section-title {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 20px;
+      color: #323232;
+    }
+
+    .cfg-section-desc {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 18px;
+      color: #323232;
+    }
+
+    .cfg-subsection-title {
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 20px;
+      color: #323232;
+      margin-bottom: 4px;
+    }
+
+    .cfg-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      line-height: 18px;
+      color: #378ef0;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .cfg-link:hover { text-decoration: underline; }
+    .cfg-link .material-icons-outlined { font-size: 12px; }
+
+    /* ── Upload box ── */
+    .cfg-upload-box {
+      border: 1px solid #eaeaea;
+      border-radius: 6px;
+      padding: 12px;
+    }
+
+    .cfg-upload-btn {
+      background: #fff;
+      border: 1px solid #a5ccf8;
+      border-radius: 6px;
+      padding: 8px 12px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-family: 'Open Sans', sans-serif;
+      text-align: left;
+      transition: background 0.15s;
+    }
+    .cfg-upload-btn:hover { background: #f5f9fe; }
+
+    .cfg-upload-btn-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #505050;
+    }
+    .cfg-upload-btn-top .material-icons-outlined { font-size: 16px; color: #505050; }
+
+    .cfg-upload-btn-sub {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 18px;
+      color: #323232;
+    }
+
+    /* ════ FOOTER BUTTONS ════ */
+    .cfg-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 4px 0;
+    }
+
+    .btn-discard {
+      border: 1px solid #378ef0;
+      background: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #378ef0;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-discard:hover { background: #f0f7ff; }
+
+    .btn-save {
+      background: #378ef0;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-save:hover { background: #2478d8; }
+
+    /* ════ USER DROPDOWN ════ */
+    #user-dropdown { position: fixed; background: #fff; border-radius: 6px; box-shadow: 0px 9px 28px 8px rgba(0,0,0,.05),0px 6px 16px rgba(0,0,0,.08),0px 3px 6px -4px rgba(0,0,0,.12); min-width: 240px; z-index: 9999; display: none; overflow: hidden; }
+    #user-dropdown.visible { display: block; }
+    .udrop-profile { padding: 14px 16px 12px; }
+    .udrop-name { font-weight: 600; font-size: 14px; color: #323232; }
+    .udrop-email { font-size: 12px; color: #747474; margin-top: 2px; }
+    .udrop-divider { height: 1px; background: #eaeaea; margin: 2px 0; }
+    .udrop-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px; font-size: 14px; color: #323232; cursor: pointer; text-decoration: none; font-family: 'Open Sans', sans-serif; background: none; border: none; width: 100%; text-align: left; transition: background .15s, color .15s; }
+    .udrop-item:hover { background: #f5f9fe; color: #378ef0; }
+    .udrop-item .material-icons-outlined { font-size: 20px; color: #505050; flex-shrink: 0; transition: color .15s; }
+    .udrop-item:hover .material-icons-outlined { color: #378ef0; }
+    .udrop-badge { margin-left: auto; background: #33ab84; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; flex-shrink: 0; }
+    .udrop-sair { padding: 10px 16px 12px; font-size: 14px; color: #505050; cursor: pointer; display: block; text-decoration: none; font-family: 'Open Sans', sans-serif; transition: color .15s; }
+    .udrop-sair:hover { color: #d93025; }
+
+    /* ════ APPS MENU ════ */
+    #apps-menu { position: fixed; top: 52px; left: 0; background: #fff; border-right: 1px solid #eaeaea; border-bottom: 1px solid #eaeaea; border-radius: 0 0 6px 0; min-width: 240px; z-index: 9998; display: none; padding: 12px 0 8px; box-shadow: 4px 4px 12px rgba(0,0,0,.08); }
+    #apps-menu.open { display: block; }
+    .apps-menu-title { font-weight: 700; font-size: 13px; color: #323232; padding: 0 16px 8px; }
+    .apps-menu-item { display: flex; align-items: center; gap: 10px; padding: 8px 16px; font-size: 14px; color: #323232; text-decoration: none; transition: background .15s; }
+    .apps-menu-item:hover { background: #f5f9fe; }
+    .apps-badge { font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 4px; flex-shrink: 0; }
+    .apps-badge--isa { background: #e0f0fd; color: #0e9ce3; }
+    .apps-badge--ipa { background: #ede8f7; color: #7b4ea6; }
+
+    /* ════ VIEW PICKER ════ */
+    .view-picker {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-left: 8px;
+    }
+    .view-picker-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      background: #fff;
+      border: 1px solid #d3d3d3;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: #505050;
+      white-space: nowrap;
+      transition: border-color 0.15s;
+      line-height: 18px;
+    }
+    .view-picker-btn:hover { border-color: #bcbcbc; }
+    .view-picker-btn .material-icons-outlined { font-size: 14px; }
+    .view-picker-dropdown {
+      position: fixed;
+      background: #fff;
+      border: 1px solid #d3d3d3;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 9999;
+      display: none;
+      overflow: hidden;
+      min-width: 160px;
+    }
+    .view-picker-dropdown.open { display: block; }
+    .view-picker-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      font-size: 14px;
+      color: #323232;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+      font-family: 'Open Sans', sans-serif;
+    }
+    .view-picker-option:hover { background: #f5f9fe; color: #378ef0; }
+    .view-picker-option.active { color: #378ef0; font-weight: 600; }
+    .view-picker-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #378ef0;
+      flex-shrink: 0;
+    }
+    .view-picker-dot-empty {
+      width: 6px; height: 6px;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MENU BAR -->
+  <div class="menu-bar">
+    <div class="menu-right">
+      <div class="menu-logo-area">
+        <img class="menu-logo" src="https://marcoskip.github.io/infoprice-prototipos/assets/logo-principal.svg" alt="InfoPrice">
+      </div>
+      <div class="menu-divider"></div>
+      <div class="menu-product">
+        <span class="menu-product-name">Essential</span>
+        <div class="view-picker" id="view-picker">
+          <button class="view-picker-btn" id="view-picker-btn">
+            Visão Varejo
+            <span class="material-icons-outlined">keyboard_arrow_down</span>
+          </button>
+          <div class="view-picker-dropdown" id="view-picker-dropdown">
+            <a class="view-picker-option active" href="#">
+              <span class="view-picker-dot"></span>Visão Varejo
+            </a>
+            <a class="view-picker-option" href="#">
+              <span class="view-picker-dot-empty"></span>Visão Indústria
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="menu-actions">
+        <div class="menu-icon-btn"><span class="material-icons-outlined">person_add</span></div>
+        <div class="menu-icon-btn"><span class="material-icons-outlined">help_outline</span></div>
+        <div class="menu-user" id="user-menu-btn">
+          <span class="menu-user-name">Olá, Marcus</span>
+          <span class="material-icons-outlined">keyboard_arrow_down</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="below-menu">
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <div class="sidebar-item active" data-page="Configurações" data-href="configuracoes.html">
+          <span class="sidebar-icon material-icons">settings</span>
+          <span class="sidebar-label">Configurações</span>
+        </div>
+        <div class="sidebar-item" data-page="Gerenciar pessoas" data-href="gerenciar-usuarios.html">
+          <span class="sidebar-icon material-icons">person_add</span>
+          <span class="sidebar-label">Gerenciar pessoas</span>
+        </div>
+        <div class="sidebar-item" data-page="Planos" data-href="bundle-varejo.html">
+          <span class="sidebar-icon material-icons">work</span>
+          <span class="sidebar-label">Planos</span>
+        </div>
+      </div>
+      <div class="sidebar-bottom">
+        <button class="sidebar-toggle-btn" id="sidebar-toggle">
+          <span class="sidebar-toggle-icon material-icons-outlined" id="toggle-icon">keyboard_arrow_right</span>
+          <span class="sidebar-label" style="color:#747474; font-weight:400; margin-left:2px;">Recolher menu</span>
+        </button>
+      </div>
+    </nav>
+
+    <div id="sidebar-tooltip" role="tooltip" aria-hidden="true"></div>
+
+    <!-- CONTEÚDO -->
+    <div class="main-content">
+
+      <!-- Section header + tabs -->
+      <div class="section-header">
+        <p class="section-title">Configurações de produto</p>
+
+        <div class="cfg-tabs" style="margin-top:12px;">
+          <button class="cfg-tab active" data-tab="infopanel">
+            <span class="material-icons" style="font-size:16px;">settings</span>
+            ISA | InfoPanel
+          </button>
+          <button class="cfg-tab" data-tab="ipa-software">IPA | Software de Precificação</button>
+          <button class="cfg-tab locked">
+            <span class="material-icons-outlined">lock</span>
+            IPA | Simulador de Demanda
+          </button>
+          <button class="cfg-tab locked">
+            <span class="material-icons-outlined">lock</span>
+            Painéis Customizados
+          </button>
+        </div>
+      </div>
+
+      <!-- Content body: left menu + right panel -->
+      <div class="content-body" id="tab-infopanel-content">
+
+        <!-- Left: menu de configurações -->
+        <div class="cfg-menu">
+          <a class="cfg-menu-item" href="#" id="menu-cobertura" onclick="selectMenu('cobertura'); return false;">
+            <span class="cfg-menu-item-name">Análise de Cobertura</span>
+            <span class="material-icons-outlined">chevron_right</span>
+          </a>
+          <a class="cfg-menu-item active" href="#" id="menu-aderencia" onclick="selectMenu('aderencia'); return false;">
+            <span class="cfg-menu-item-name">Aderência de preços</span>
+            <span class="material-icons-outlined">chevron_right</span>
+          </a>
+          <a class="cfg-menu-item" href="#" id="menu-segmentos" onclick="selectMenu('segmentos'); return false;">
+            <span class="cfg-menu-item-name">Segmentos personalizados</span>
+            <span class="material-icons-outlined">chevron_right</span>
+          </a>
+        </div>
+
+        <!-- Right: conteúdo do item selecionado -->
+        <div class="cfg-content">
+
+          <!-- Aderência de preços — info card -->
+          <div class="cfg-content-card" id="content-aderencia">
+            <p class="cfg-content-title">Aderência de preços</p>
+            <p class="cfg-content-desc">Envie seus parâmetros para alimentar o painel de aderência de preços.</p>
+          </div>
+
+          <!-- Cadastro de range de preços -->
+          <div class="cfg-range-card">
+            <div>
+              <p class="cfg-section-title">Cadastro de range de preços</p>
+              <p class="cfg-section-desc" style="margin-top:4px;">Os ranges cadastrados serão utilizados para mostrar, no painel de aderência, se os preços estão dentro ou fora do range e seus detalhamentos.</p>
+            </div>
+
+            <div>
+              <p class="cfg-subsection-title">Quais produtos incluir na minha lista?</p>
+              <p class="cfg-section-desc">Uma lista de produtos de aderência de preços é composta por itens estratégicos usados para monitorar se redes e lojas estão praticando preços competitivos e alinhados ao mercado, ou respeitando o range de preços definidos pela estratégia.</p>
+              <p class="cfg-section-desc" style="margin-top:12px;">Para garantir uma análise mais precisa e relevante, cadastre o seu sortimento próprio completo.</p>
+            </div>
+
+            <div>
+              <p class="cfg-section-desc">A aderência de preços será calculada com base na lista de produtos enviada por meio do arquivo abaixo.<br>Para atualizar os dados exibidos no painel, basta enviar uma nova versão da lista.</p>
+            </div>
+
+            <a class="cfg-link" href="#">
+              <span class="material-icons-outlined">open_in_new</span>
+              Baixe o modelo de arquivo
+            </a>
+
+            <div class="cfg-upload-box">
+              <button class="cfg-upload-btn">
+                <div class="cfg-upload-btn-top">
+                  Enviar produtos via arquivo
+                  <span class="material-icons-outlined">upload</span>
+                </div>
+                <p class="cfg-upload-btn-sub">Suba a sua lista de produtos selecionados para a análise através de um arquivo .csv</p>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- IPA Software tab content (hidden by default) -->
+      <div class="content-body" id="tab-ipa-software-content" style="display:none;">
+        <div class="cfg-content">
+          <div class="cfg-content-card">
+            <p class="cfg-content-title">IPA | Software de Precificação</p>
+            <p class="cfg-content-desc">Configurações do IPA Software de Precificação serão exibidas aqui.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer buttons -->
+      <div class="cfg-footer">
+        <button class="btn-discard">DESCARTAR ALTERAÇÕES</button>
+        <button class="btn-save">SALVAR</button>
+      </div>
+
+    </div><!-- /main-content -->
+  </div><!-- /below-menu -->
+
+  <!-- User dropdown -->
+  <div id="user-dropdown">
+    <div class="udrop-profile">
+      <p class="udrop-name">Marcus Roggero</p>
+      <p class="udrop-email">marcus@infoprice.co</p>
+    </div>
+    <div class="udrop-divider"></div>
+    <a class="udrop-item" href="competitividade-free.html"><span class="material-icons-outlined">grid_view</span>Acessar produtos</a>
+    <a class="udrop-item" href="configuracoes.html"><span class="material-icons-outlined">settings</span>Configurações</a>
+    <a class="udrop-item" href="gerenciar-usuarios.html"><span class="material-icons-outlined">people</span>Pessoas<span class="udrop-badge">CONVIDAR</span></a>
+    <div class="udrop-divider"></div>
+    <a class="udrop-sair" href="#">Sair</a>
+  </div>
+
+  <!-- Apps menu -->
+  <div id="apps-menu">
+    <p class="apps-menu-title">Produtos</p>
+    <a class="apps-menu-item" href="competitividade-free.html"><span class="apps-badge apps-badge--isa">ISA</span> InfoPanel</a>
+    <a class="apps-menu-item" href="#"><span class="apps-badge apps-badge--isa">ISA</span> Monitoramento PDV</a>
+    <a class="apps-menu-item" href="#"><span class="apps-badge apps-badge--ipa">IPA</span> Software de precificação</a>
+    <a class="apps-menu-item" href="#"><span class="apps-badge apps-badge--ipa">IPA</span> Simulador de demanda</a>
+  </div>
+
+  <script>
+    /* ── User dropdown ── */
+    (function(){
+      var btn  = document.getElementById('user-menu-btn');
+      var menu = document.getElementById('user-dropdown');
+      if(!btn||!menu) return;
+      btn.style.cursor = 'pointer';
+      btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        var v = menu.classList.contains('visible');
+        if(v){ menu.classList.remove('visible'); } else {
+          var rect = btn.getBoundingClientRect();
+          menu.style.right = (window.innerWidth - rect.right) + 'px';
+          menu.style.top   = rect.bottom + 'px';
+          menu.style.left  = 'auto';
+          menu.classList.add('visible');
+        }
+      });
+      document.addEventListener('click', function(){ menu.classList.remove('visible'); });
+      document.addEventListener('keydown', function(e){ if(e.key==='Escape') menu.classList.remove('visible'); });
+    })();
+
+    /* ── Sidebar ── */
+    const sidebar    = document.getElementById('sidebar');
+    const toggleBtn  = document.getElementById('sidebar-toggle');
+    const toggleIcon = document.getElementById('toggle-icon');
+    const tooltip    = document.getElementById('sidebar-tooltip');
+    let isOpen = false;
+
+    toggleBtn.addEventListener('click', () => {
+      isOpen = !isOpen;
+      sidebar.classList.toggle('open', isOpen);
+      document.body.classList.toggle('sidebar-open', isOpen);
+      toggleIcon.textContent = isOpen ? 'keyboard_arrow_left' : 'keyboard_arrow_right';
+    });
+
+    document.querySelectorAll('.sidebar-item[data-href]').forEach(item => {
+      item.addEventListener('click', () => {
+        const h = item.dataset.href;
+        if(h && h !== '#') window.location.href = h;
+      });
+    });
+
+    function showTooltip(item) {
+      const label = item.dataset.page; if (!label) return;
+      const rect = item.getBoundingClientRect();
+      tooltip.textContent = label;
+      tooltip.style.left = (rect.right + 12) + 'px';
+      tooltip.style.top  = (rect.top + (rect.height - 28) / 2) + 'px';
+      tooltip.classList.add('visible');
+    }
+    function hideTooltip() { tooltip.classList.remove('visible'); }
+    document.querySelectorAll('.sidebar-item[data-page]').forEach(item => {
+      item.addEventListener('mouseenter', () => { if (!isOpen) showTooltip(item); });
+      item.addEventListener('mouseleave', hideTooltip);
+    });
+
+    /* ── Tabs ── */
+    document.querySelectorAll('.cfg-tab[data-tab]').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.cfg-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('[id^="tab-"][id$="-content"]').forEach(c => c.style.display = 'none');
+        tab.classList.add('active');
+        const content = document.getElementById('tab-' + tab.dataset.tab + '-content');
+        if (content) content.style.display = 'flex';
+      });
+    });
+
+    /* ── Left menu selection ── */
+    function selectMenu(name) {
+      document.querySelectorAll('.cfg-menu-item').forEach(i => i.classList.remove('active'));
+      document.getElementById('menu-' + name).classList.add('active');
+    }
+
+    /* ── View picker ── */
+    (function(){
+      var btn = document.getElementById('view-picker-btn');
+      var dropdown = document.getElementById('view-picker-dropdown');
+      if(!btn||!dropdown) return;
+      btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        var rect = btn.getBoundingClientRect();
+        dropdown.style.left = rect.left + 'px';
+        dropdown.style.top  = (rect.bottom + 4) + 'px';
+        dropdown.classList.toggle('open');
+      });
+      document.addEventListener('click', function(){ dropdown.classList.remove('open'); });
+      document.addEventListener('keydown', function(e){ if(e.key==='Escape') dropdown.classList.remove('open'); });
+    })();
+  </script>
+
+</body>
+</html>
