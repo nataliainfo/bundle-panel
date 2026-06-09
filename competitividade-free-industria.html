@@ -112,6 +112,8 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      text-decoration: none;
+      color: inherit;
     }
 
     .menu-icon-btn .material-icons-outlined {
@@ -320,6 +322,94 @@
 
     .sidebar-subitem:hover { background: #f5f9fe; color: #378ef0; }
     .sidebar-subitem.active { color: #378ef0; font-weight: 600; }
+
+    .sub-tooltip {
+      position: fixed;
+      background: #505050;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 400;
+      padding: 5px 10px;
+      border-radius: 4px;
+      white-space: nowrap;
+      z-index: 500;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.12s ease;
+      line-height: 18px;
+      transform: translateY(-50%);
+    }
+
+    /* ── Mini painel flutuante (sidebar fechada) ── */
+    .sidebar-mini-panel {
+      position: fixed;
+      left: 56px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.14), 0 1px 4px rgba(0,0,0,0.08);
+      min-width: 192px;
+      z-index: 300;
+      padding: 4px 0 6px;
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      pointer-events: none;
+    }
+    .sidebar-mini-panel.visible {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+    .sidebar-mini-panel-header {
+      padding: 8px 14px 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #747474;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      border-bottom: 1px solid #f0f0f0;
+      margin-bottom: 2px;
+    }
+    .sidebar-mini-panel-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 14px;
+      font-size: 12px;
+      line-height: 16px;
+      font-weight: 400;
+      color: #505050;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.12s, color 0.12s;
+    }
+    .sidebar-mini-panel-item:hover { background: #f5f9fe; color: #378ef0; }
+    .sidebar-mini-panel-item.active { color: #378ef0; font-weight: 600; }
+    .sidebar-mini-ia-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #fde3f7;
+      color: #e663c9;
+      border-radius: 100px;
+      padding: 3px 8px 3px 3px;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-left: 4px;
+      line-height: 1;
+    }
+    .sidebar-mini-ia-badge::before {
+      content: '';
+      display: block;
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzU0Nl8yMzEzKSI+CjxjaXJjbGUgY3g9IjYiIGN5PSI2IiByPSI1LjUiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcl81NDZfMjMxMykiLz4KPGNpcmNsZSBjeD0iNiIgY3k9IjYiIHI9IjUuNSIgZmlsbD0idXJsKCNwYWludDFfbGluZWFyXzU0Nl8yMzEzKSIgZmlsbC1vcGFjaXR5PSIwLjUiLz4KPGcgZmlsdGVyPSJ1cmwoI2ZpbHRlcjBfZF81NDZfMjMxMykiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTcuNzk5NiA0LjU3ODAxQzcuNjM2MjEgNC40OTYzMiA3LjUwMzcyIDQuMzYzODMgNy40MjIwMiA0LjIwMDQzTDYuNjIxNDcgMi44NjY3NEM2LjMxMDMzIDIuMjQ0NDUgNS42NjYxOCAyLjI0NDQ1IDUuMzU1MDQgMi44NjY3NEw0LjU3ODAxIDQuMjAwNDNDNC40OTYzMiA0LjM2MzgzIDQuMzYzODMgNC40OTYzMiA0LjIwMDQ0IDQuNTc4MDFMMi44NjY3NCA1LjM1NTA0QzIuMjQ0NDUgNS42NjYxOCAyLjI0NDU1IDYuMzEwMzMgMi44NjY3NCA2LjYyMTQ3TDQuMjAwNDQgNy40MjIwMkM0LjM2MzgzIDcuNTAzNzIgNC40OTYzMiA3LjYzNjIxIDQuNTc4MDEgNy43OTk2TDUuMzU1MDQgOS4xMzMzQzUuNjY2MTggOS43NTU1OCA2LjMxMDMzIDkuNzU1NTggNi42MjE0NyA5LjEzMzNMNy40MjIwMiA3Ljc5OTZDNy41MDM3MiA3LjYzNjIxIDcuNjM2MjEgNy41MDM3MiA3Ljc5OTYgNy40MjIwMkw5LjEzMzMgNi42MjE0N0M5Ljc1NTU4IDYuMzEwMzMgOS43NTU1OCA1LjY2NjE4IDkuMTMzMyA1LjM1NTA0TDcuNzk5NiA0LjU3ODAxWiIgZmlsbD0idXJsKCNwYWludDJfbGluZWFyXzU0Nl8yMzEzKSIvPgo8L2c+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNOC4wMTM1IDYuMjM1OTlDNy45NjI0NCA2LjA4MjggNy45NjI0NCA1LjkxNzE5IDguMDEzNSA1Ljc2NDAxTDguMzQ2NzEgNC40MzAxMUM4LjU0MTE4IDMuODQ2NzEgOC4xMzg1OCAzLjQ0NDEyIDcuNTU1MTkgMy42Mzg1OEw2LjIzNTk5IDMuOTg2NUM2LjA4MjgxIDQuMDM3NTYgNS45MTcxOSA0LjAzNzU2IDUuNzY0MDEgMy45ODY1TDQuNDQ0ODEgMy42Mzg1OEMzLjg2MTQyIDMuNDQ0MTIgMy40NTg4MiAzLjg0NjcxIDMuNjUzMjkgNC40MzAxMUwzLjk4NjUgNS43NjQwMUM0LjAzNzU2IDUuOTE3MiA0LjAzNzU2IDYuMDgyODEgMy45ODY1IDYuMjM1OTlMMy42Mzg1OCA3LjU1NTE5QzMuNDQ0MTIgOC4xMzg1OCAzLjg0NjcxIDguNTQxMTggNC40MzAxMSA4LjM0NjcxTDUuNzY0MDEgOC4wMTM1QzUuOTE3MiA3Ljk2MjQ0IDYuMDgyODEgNy45NjI0NCA2LjIzNTk5IDguMDEzNUw3LjU2OTg5IDguMzQ2NzJDOC4xNTMyOSA4LjU0MTE4IDguNTU1ODggOC4xMzg1OCA4LjM2MTQyIDcuNTU1MTlMOC4wMTM1IDYuMjM1OTlaIiBmaWxsPSJ1cmwoI3BhaW50M19saW5lYXJfNTQ2XzIzMTMpIi8+CjwvZz4KPGRlZnM+CjxmaWx0ZXIgaWQ9ImZpbHRlcjBfZF81NDZfMjMxMyIgeD0iMC40MDAwMjQiIHk9IjEuNDAwMDIiIHdpZHRoPSIxMS4yIiBoZWlnaHQ9IjExLjIiIGZpbHRlclVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY29sb3ItaW50ZXJwb2xhdGlvbi1maWx0ZXJzPSJzUkdCIj4KPGZlRmxvb2QgZmxvb2Qtb3BhY2l0eT0iMCIgcmVzdWx0PSJCYWNrZ3JvdW5kSW1hZ2VGaXgiLz4KPGZlQ29sb3JNYXRyaXggaW49IlNvdXJjZUFscGhhIiB0eXBlPSJtYXRyaXgiIHZhbHVlcz0iMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMTI3IDAiIHJlc3VsdD0iaGFyZEFscGhhIi8+CjxmZU9mZnNldCBkeT0iMSIvPgo8ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSIxIi8+CjxmZUNvbXBvc2l0ZSBpbjI9ImhhcmRBbHBoYSIgb3BlcmF0b3I9Im91dCIvPgo8ZmVDb2xvck1hdHJpeCB0eXBlPSJtYXRyaXgiIHZhbHVlcz0iMCAwIDAgMCAwLjUwOTgwNCAwIDAgMCAwIDAuMzY0NzA2IDAgMCAwIDAgMC43OTYwNzggMCAwIDAgMC40IDAiLz4KPGZlQmxlbmQgbW9kZT0ibm9ybWFsIiBpbjI9IkJhY2tncm91bmRJbWFnZUZpeCIgcmVzdWx0PSJlZmZlY3QxX2Ryb3BTaGFkb3dfNTQ2XzIzMTMiLz4KPGZlQmxlbmQgbW9kZT0ibm9ybWFsIiBpbj0iU291cmNlR3JhcGhpYyIgaW4yPSJlZmZlY3QxX2Ryb3BTaGFkb3dfNTQ2XzIzMTMiIHJlc3VsdD0ic2hhcGUiLz4KPC9maWx0ZXI+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhcl81NDZfMjMxMyIgeDE9Ii0yLjI1IiB5MT0iLTEuMjUiIHgyPSIxMC41IiB5Mj0iMTQuNSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjODI1RENCIi8+CjxzdG9wIG9mZnNldD0iMC41NDYzODkiIHN0b3AtY29sb3I9IiNFNjYzQzkiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkY3NTZCIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQxX2xpbmVhcl81NDZfMjMxMyIgeDE9IjEwLjUiIHkxPSItNi41MDIzMmUtMDgiIHgyPSI0IiB5Mj0iOCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMEQ2NkQwIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0U2NjNDOSIgc3RvcC1vcGFjaXR5PSIwIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQyX2xpbmVhcl81NDZfMjMxMyIgeDE9IjYuMDAwMDIiIHkxPSIyLjQwMDAyIiB4Mj0iNi4wMDAwMiIgeTI9IjkuNjAwMDEiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0id2hpdGUiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkVDNUZGIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQzX2xpbmVhcl81NDZfMjMxMyIgeDE9IjguNDU0NTQiIHkxPSI4LjI0OTk5IiB4Mj0iMy41NDU0NiIgeTI9IjMuNTQ1NDUiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0id2hpdGUiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkVDNUZGIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxjbGlwUGF0aCBpZD0iY2xpcDBfNTQ2XzIzMTMiPgo8cmVjdCB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIGZpbGw9IndoaXRlIi8+CjwvY2xpcFBhdGg+CjwvZGVmcz4KPC9zdmc+Cg==");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      flex-shrink: 0;
+    }
 
     .sidebar-toggle-btn {
       display: flex;
@@ -925,9 +1015,9 @@
     }
 
     .udrop-item:hover { background: #f5f9fe; color: #378ef0; }
-    .udrop-item:hover .material-icons-outlined { color: #378ef0; }
+    .udrop-item:hover .material-icons { color: #378ef0; }
 
-    .udrop-item .material-icons-outlined {
+    .udrop-item .material-icons {
       font-size: 20px;
       color: #505050;
       flex-shrink: 0;
@@ -1058,8 +1148,7 @@
         </div>
       </div>
       <div class="menu-actions">
-        <div class="menu-icon-btn"><span class="material-icons-outlined">person_add</span></div>
-        <div class="menu-icon-btn"><span class="material-icons-outlined">help_outline</span></div>
+        <a class="menu-icon-btn" href="gerenciar-usuarios.html"><span class="material-icons-outlined">person_add</span></a>
         <div class="menu-user" id="user-menu-btn">
           <span class="menu-user-name">Olá, Marcus</span>
           <span class="material-icons-outlined">keyboard_arrow_down</span>
@@ -1292,17 +1381,21 @@
     </div>
     <div class="udrop-divider"></div>
     <a class="udrop-item" href="competitividade-free.html">
-      <span class="material-icons-outlined">grid_view</span>
+      <span class="material-icons">grid_view</span>
       Acessar produtos
     </a>
     <a class="udrop-item" href="configuracoes.html">
-      <span class="material-icons-outlined">settings</span>
+      <span class="material-icons">settings</span>
       Configurações
     </a>
     <a class="udrop-item" href="gerenciar-usuarios.html">
-      <span class="material-icons-outlined">people</span>
+      <span class="material-icons">people</span>
       Pessoas
       <span class="udrop-badge">CONVIDAR</span>
+    </a>
+    <a class="udrop-item" href="bundle-varejo.html">
+      <span class="material-icons">work</span>
+      Planos
     </a>
     <div class="udrop-divider"></div>
     <a class="udrop-sair" href="#">Sair</a>
@@ -1347,6 +1440,7 @@
     let isOpen = false;
 
     function openSidebar() {
+      hideMiniPanel();
       isOpen = true;
       sidebar.classList.add('open');
       document.body.classList.add('sidebar-open');
@@ -1378,11 +1472,64 @@
       isOpen ? closeSidebar() : openSidebar();
     });
 
+    /* ── Mini painel flutuante ── */
+    const miniPanel = document.createElement('div');
+    miniPanel.className = 'sidebar-mini-panel';
+    document.body.appendChild(miniPanel);
+    let activeMiniItem = null;
+
+    function showMiniPanel(item) {
+      const subsEl = document.getElementById(item.dataset.subs);
+      if (!subsEl) return;
+      const label = item.dataset.page || '';
+      let html = label ? `<div class="sidebar-mini-panel-header">${label}</div>` : '';
+      subsEl.querySelectorAll('.sidebar-subitem').forEach(sub => {
+        const isActive = sub.classList.contains('active');
+        const href     = sub.dataset.href || '#';
+        const textEl   = sub.querySelector('.sidebar-subitem-text');
+        const text     = textEl
+          ? textEl.textContent.trim()
+          : Array.from(sub.childNodes)
+              .filter(n => n.nodeType === 3)
+              .map(n => n.textContent)
+              .join('').trim();
+        const badge = sub.querySelector('.sidebar-ia-badge')
+          ? '<span class="sidebar-mini-ia-badge">IA</span>' : '';
+        html += `<div class="sidebar-mini-panel-item${isActive ? ' active' : ''}" data-href="${href}">${text}${badge}</div>`;
+      });
+      miniPanel.innerHTML = html;
+      const rect = item.getBoundingClientRect();
+      miniPanel.style.top = rect.top + 'px';
+      miniPanel.classList.add('visible');
+      requestAnimationFrame(() => {
+        const maxTop = window.innerHeight - miniPanel.offsetHeight - 8;
+        if (parseFloat(miniPanel.style.top) > maxTop) miniPanel.style.top = Math.max(8, maxTop) + 'px';
+      });
+      miniPanel.querySelectorAll('.sidebar-mini-panel-item').forEach(pi => {
+        pi.addEventListener('click', e => {
+          e.stopPropagation();
+          if (pi.dataset.href && pi.dataset.href !== '#') window.location.href = pi.dataset.href;
+          hideMiniPanel();
+        });
+      });
+      activeMiniItem = item;
+    }
+
+    function hideMiniPanel() {
+      if (!miniPanel) return;
+      miniPanel.classList.remove('visible');
+      activeMiniItem = null;
+    }
+
     /* ── Clique nas categorias expansíveis ── */
     sidebar.querySelectorAll('.sidebar-item.expandable').forEach(item => {
-      item.addEventListener('click', () => {
-        if (!isOpen) openSidebar();
-        else {
+      item.addEventListener('click', e => {
+        e.stopPropagation();
+        if (!isOpen) {
+          hideTooltip();
+          activeMiniItem === item ? hideMiniPanel() : showMiniPanel(item);
+        } else {
+          hideMiniPanel();
           const wasExpanded = item.classList.contains('expanded');
           item.classList.toggle('expanded', !wasExpanded);
           const subs = document.getElementById(item.dataset.subs);
@@ -1390,6 +1537,10 @@
         }
       });
     });
+
+    // Fechar mini painel ao clicar fora ou pressionar Escape
+    document.addEventListener('click', hideMiniPanel);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') hideMiniPanel(); });
 
     /* ── Navegação nos sub-itens ── */
     sidebar.querySelectorAll('.sidebar-subitem[data-href]').forEach(sub => {
@@ -1412,7 +1563,10 @@
     function hideTooltip() { tooltip.classList.remove('visible'); }
 
     sidebar.querySelectorAll('.sidebar-item[data-page]').forEach(item => {
-      item.addEventListener('mouseenter', () => { if (!isOpen) showTooltip(item); });
+      // Expandable items agora usam mini painel — tooltip só para itens não-expansíveis
+      item.addEventListener('mouseenter', () => {
+        if (!isOpen && activeMiniItem !== item) showTooltip(item);
+      });
       item.addEventListener('mouseleave', hideTooltip);
     });
 
@@ -1451,6 +1605,34 @@
       document.addEventListener('click', function(){ dropdown.classList.remove('open'); });
       document.addEventListener('keydown', function(e){ if(e.key==='Escape') dropdown.classList.remove('open'); });
     })();
+
+    // Tooltip para subitens truncados
+    const subTip = document.createElement('div');
+    subTip.className = 'sub-tooltip';
+    document.body.appendChild(subTip);
+    let subTipTimer = null;
+
+    sidebar.querySelectorAll('.sidebar-subitem').forEach(sub => {
+      sub.addEventListener('mouseenter', () => {
+        const textEl = sub.querySelector('.sidebar-subitem-text') || sub;
+        if (textEl.scrollWidth <= textEl.clientWidth) return;
+        const text = textEl.textContent.trim();
+        subTip.textContent = text;
+        const r = sub.getBoundingClientRect();
+        subTip.style.left = (r.right + 8) + 'px';
+        subTip.style.top = (r.top + r.height / 2) + 'px';
+        clearTimeout(subTipTimer);
+        subTipTimer = setTimeout(() => { subTip.style.opacity = '1'; }, 300);
+      });
+      sub.addEventListener('mouseleave', () => {
+        clearTimeout(subTipTimer);
+        subTip.style.opacity = '0';
+      });
+      sub.addEventListener('click', () => {
+        clearTimeout(subTipTimer);
+        subTip.style.opacity = '0';
+      });
+    });
   </script>
 </body>
 </html>

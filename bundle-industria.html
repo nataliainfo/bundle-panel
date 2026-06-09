@@ -691,8 +691,8 @@
     .udrop-divider { height: 1px; background: #eaeaea; margin: 2px 0; }
     .udrop-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px; font-size: 14px; color: #323232; cursor: pointer; text-decoration: none; font-family: 'Open Sans', sans-serif; font-weight: 400; background: none; border: none; width: 100%; text-align: left; transition: background .15s, color .15s; }
     .udrop-item:hover { background: #f5f9fe; color: #378ef0; }
-    .udrop-item .material-icons-outlined { font-size: 20px; color: #505050; flex-shrink: 0; transition: color .15s; }
-    .udrop-item:hover .material-icons-outlined { color: #378ef0; }
+    .udrop-item .material-icons { font-size: 20px; color: #505050; flex-shrink: 0; transition: color .15s; }
+    .udrop-item:hover .material-icons { color: #378ef0; }
     .udrop-badge { margin-left: auto; background: #33ab84; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; flex-shrink: 0; }
     .udrop-sair { padding: 10px 16px 12px; font-size: 14px; color: #505050; cursor: pointer; display: block; text-decoration: none; font-family: 'Open Sans', sans-serif; transition: color .15s; }
     .udrop-sair:hover { color: #d93025; }
@@ -896,9 +896,6 @@
           <button class="plano-menubar__action-btn" aria-label="Convidar usuário">
             <span class="material-icons-outlined">person_add</span>
           </button>
-          <button class="plano-menubar__action-btn" aria-label="Ajuda">
-            <span class="material-icons-outlined">help_outline</span>
-          </button>
           <button class="plano-menubar__user-btn" id="userBtn">
             <span class="plano-menubar__user-name">Olá, Marcus</span>
             <span class="material-icons-outlined plano-menubar__arrow">keyboard_arrow_down</span>
@@ -941,15 +938,6 @@
           <div class="plano-header__title-inner">
             <span class="plano-header__title">Planos</span>
             <span class="plano-header__subtitle">Compare planos, faça um upgrade ou conheça os benefícios do seu plano atual</span>
-          </div>
-        </div>
-        <div class="plano-header__info-card">
-          <div class="plano-header__info-inner">
-            <div class="plano-header__info-label">
-              <span class="material-icons-outlined" style="font-size:16px;color:#378ef0;">workspace_premium</span>
-              <span class="plano-header__info-label-text">Seu plano atual</span>
-            </div>
-            <span class="plano-header__info-value">Essential</span>
           </div>
         </div>
       </div>
@@ -1274,17 +1262,21 @@
       </div>
       <div class="udrop-divider"></div>
       <a class="udrop-item" href="competitividade-free.html">
-        <span class="material-icons-outlined">grid_view</span>
+        <span class="material-icons">grid_view</span>
         Acessar produtos
       </a>
       <a class="udrop-item" href="configuracoes.html">
-        <span class="material-icons-outlined">settings</span>
+        <span class="material-icons">settings</span>
         Configurações
       </a>
       <a class="udrop-item" href="gerenciar-usuarios.html">
-        <span class="material-icons-outlined">people</span>
+        <span class="material-icons">people</span>
         Pessoas
         <span class="udrop-badge">CONVIDAR</span>
+      </a>
+      <a class="udrop-item" href="bundle-varejo.html">
+        <span class="material-icons">work</span>
+        Planos
       </a>
       <div class="udrop-divider"></div>
       <a class="udrop-sair" href="#">Sair</a>
