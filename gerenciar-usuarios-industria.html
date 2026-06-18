@@ -1526,21 +1526,21 @@
         <span class="menu-product-name">Essential</span>
         <div class="view-picker" id="view-picker">
           <button class="view-picker-btn" id="view-picker-btn">
-            Visão Varejo
+            Visão Indústria
             <span class="material-icons-outlined">keyboard_arrow_down</span>
           </button>
           <div class="view-picker-dropdown" id="view-picker-dropdown">
-            <a class="view-picker-option active" href="#">
-              <span class="view-picker-dot"></span>Visão Varejo
-            </a>
             <a class="view-picker-option" href="#">
-              <span class="view-picker-dot-empty"></span>Visão Indústria
+              <span class="view-picker-dot-empty"></span>Visão Varejo
+            </a>
+            <a class="view-picker-option active" href="#">
+              <span class="view-picker-dot"></span>Visão Indústria
             </a>
           </div>
         </div>
       </div>
       <div class="menu-actions">
-        <a class="menu-icon-btn" href="gerenciar-usuarios.html"><span class="material-icons">person_add</span></a>
+        <a class="menu-icon-btn" href="gerenciar-usuarios-industria.html"><span class="material-icons">person_add</span></a>
         <div class="menu-user" id="user-menu-btn">
           <span class="menu-user-name">Olá, Marcus</span>
           <span class="material-icons-outlined">keyboard_arrow_down</span>
@@ -1563,12 +1563,12 @@
           <span class="sidebar-label">Configuração de produtos</span>
         </div>
 
-        <div class="sidebar-item active" data-page="Gerenciar pessoas" data-href="gerenciar-usuarios.html">
+        <div class="sidebar-item active" data-page="Gerenciar pessoas" data-href="gerenciar-usuarios-industria.html">
           <span class="sidebar-icon material-icons">person_add</span>
           <span class="sidebar-label">Gerenciar pessoas</span>
         </div>
 
-        <div class="sidebar-item" data-page="Planos" data-href="bundle-varejo.html">
+        <div class="sidebar-item" data-page="Planos" data-href="bundle-industria.html">
           <span class="sidebar-icon material-icons">work</span>
           <span class="sidebar-label">Planos</span>
         </div>
@@ -1663,7 +1663,7 @@
             <div class="table-row" data-status="admin,ativo"
               data-name="Tiago Rodrigues Machado"
               data-email="tiago.rodrigues@email.com"
-              data-acessos="preco-concorrencia,inteligencia,precificacao">
+              data-acessos="preco-concorrencia,inteligencia">
               <button class="toggle on"></button>
               <div class="user-info">
                 <div class="user-name-row">
@@ -1677,7 +1677,6 @@
               <div class="user-acessos">
                 <span class="access-tag">Preço e concorrência</span>
                 <span class="access-tag">Inteligência</span>
-                <span class="access-tag">Precificação estratégica</span>
               </div>
               <div class="user-last-access">
                 <span class="last-access-date">21 mai 2025, 09:14</span>
@@ -1720,7 +1719,7 @@
             <div class="table-row" data-status="inativo"
               data-name="Maria Garcia da Silva"
               data-email="maria.garcia@email.com"
-              data-acessos="inteligencia,negociacao">
+              data-acessos="analises">
               <button class="toggle off"></button>
               <div class="user-info">
                 <div class="user-name-row">
@@ -1731,8 +1730,7 @@
                 </div>
               </div>
               <div class="user-acessos">
-                <span class="access-tag">Inteligência</span>
-                <span class="access-tag">Negociação</span>
+                <span class="access-tag">Análises e relatórios</span>
               </div>
               <div class="user-last-access">
                 <span class="last-access-date">03 jan 2025, 17:45</span>
@@ -1838,14 +1836,6 @@
                 <div class="multiselect-checkbox"><span class="multiselect-checkbox-tick material-icons">check</span></div>
                 <span class="multiselect-option-label">Inteligência</span>
               </div>
-              <div class="multiselect-option" data-value="precificacao">
-                <div class="multiselect-checkbox"><span class="multiselect-checkbox-tick material-icons">check</span></div>
-                <span class="multiselect-option-label">Precificação estratégica</span>
-              </div>
-              <div class="multiselect-option" data-value="negociacao">
-                <div class="multiselect-checkbox"><span class="multiselect-checkbox-tick material-icons">check</span></div>
-                <span class="multiselect-option-label">Negociação</span>
-              </div>
               <div class="multiselect-option" data-value="analises">
                 <div class="multiselect-checkbox"><span class="multiselect-checkbox-tick material-icons">check</span></div>
                 <span class="multiselect-option-label">Análises e relatórios</span>
@@ -1911,14 +1901,6 @@
                 <div class="multiselect-checkbox"><span class="multiselect-checkbox-tick material-icons">check</span></div>
                 <span class="multiselect-option-label">Inteligência</span>
               </div>
-              <div class="multiselect-option" data-value="precificacao">
-                <div class="multiselect-checkbox"><span class="multiselect-checkbox-tick material-icons">check</span></div>
-                <span class="multiselect-option-label">Precificação estratégica</span>
-              </div>
-              <div class="multiselect-option" data-value="negociacao">
-                <div class="multiselect-checkbox"><span class="multiselect-checkbox-tick material-icons">check</span></div>
-                <span class="multiselect-option-label">Negociação</span>
-              </div>
               <div class="multiselect-option" data-value="analises">
                 <div class="multiselect-checkbox"><span class="multiselect-checkbox-tick material-icons">check</span></div>
                 <span class="multiselect-option-label">Análises e relatórios</span>
@@ -1983,12 +1965,12 @@
       <span class="material-icons">settings</span>
       Configurações
     </a>
-    <a class="udrop-item" href="gerenciar-usuarios.html">
+    <a class="udrop-item" href="gerenciar-usuarios-industria.html">
       <span class="material-icons">people</span>
       Pessoas
       <span class="udrop-badge">CONVIDAR</span>
     </a>
-    <a class="udrop-item" href="bundle-varejo.html">
+    <a class="udrop-item" href="bundle-industria.html">
       <span class="material-icons">work</span>
       Planos
     </a>
@@ -2770,8 +2752,8 @@
           var label = opt.textContent.trim();
           btn.innerHTML = label + ' <span class="material-icons-outlined">keyboard_arrow_down</span>';
           var view = label.includes('Indústria') ? 'industria' : 'varejo';
-          if (view === 'industria') {
-            window.location.href = 'gerenciar-usuarios-industria.html';
+          if (view === 'varejo') {
+            window.location.href = 'gerenciar-usuarios.html';
           } else {
             dropdown.classList.remove('open');
           }

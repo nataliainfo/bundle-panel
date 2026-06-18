@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -104,6 +104,8 @@
         align-items: center;
         justify-content: center;
         padding: 16px 12px;
+        text-decoration: none;
+        color: inherit;
       }
       .plano-menubar__action-btn .material-icons-outlined {
         font-size: 20px;
@@ -893,9 +895,9 @@
         </div>
         <!-- Right actions -->
         <div class="plano-menubar__actions">
-          <button class="plano-menubar__action-btn" aria-label="Convidar usuário">
-            <span class="material-icons-outlined">person_add</span>
-          </button>
+          <a class="plano-menubar__action-btn" href="gerenciar-usuarios-industria.html" aria-label="Convidar usuário">
+            <span class="material-icons">person_add</span>
+          </a>
           <button class="plano-menubar__user-btn" id="userBtn">
             <span class="plano-menubar__user-name">Olá, Marcus</span>
             <span class="material-icons-outlined plano-menubar__arrow">keyboard_arrow_down</span>
