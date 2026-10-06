@@ -128,10 +128,10 @@
       transition: grid-template-rows 0.25s cubic-bezier(0.4,0,0.2,1);
     }
     .sidebar-subitems.expanded { grid-template-rows: 1fr; }
-    .sidebar-subitems-inner { overflow: hidden; }
+    .sidebar-subitems-inner { overflow: hidden; margin-left: 23px; border-left: 1px solid #d0d0d0; padding-left: 6px; }
 
     .sidebar-subitem {
-      display: block; padding: 10px 14px 10px 36px;
+      display: block; padding: 10px 14px 10px 10px; border-radius: 6px;
       cursor: pointer; font-weight: 400; font-size: 12px; line-height: 16px;
       color: #505050; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       list-style: none; text-decoration: none;
@@ -139,7 +139,13 @@
     }
     .sidebar.open .sidebar-subitem { opacity: 1; transition: background 0.15s ease, color 0.15s ease, opacity 0.18s ease 0.14s; }
     .sidebar-subitem:hover { background: #f5f9fe; color: #378ef0; }
-    .sidebar-subitem.active { color: #378ef0; font-weight: 600; }
+    .sidebar-subitem.active { background: #e8f1fd; width: fit-content; max-width: 100%; }
+    .sidebar-subitem--featured { font-weight: 600; color: #323232; }
+    .sidebar-subitem--featured:hover { color: #378ef0; }
+    .sidebar-subitems-divider { height: 1px; background: #e0e0e0; margin: 6px 20px 6px 6px; }
+    .sidebar-mini-panel-divider { height: 1px; background: #f0f0f0; margin: 4px 14px; }
+    .sidebar-mini-panel-item--featured { font-weight: 600; color: #323232; }
+    .sidebar-mini-panel-item--featured:hover { background: #f5f9fe; color: #378ef0; }
 
     .sub-tooltip {
       position: fixed;
@@ -202,7 +208,7 @@
       transition: background 0.12s, color 0.12s;
     }
     .sidebar-mini-panel-item:hover { background: #f5f9fe; color: #378ef0; }
-    .sidebar-mini-panel-item.active { color: #378ef0; font-weight: 600; }
+    .sidebar-mini-panel-item.active { background: #e8f1fd; border-radius: 6px; margin: 2px 8px; padding: 8px 6px; }
     .sidebar-mini-ia-badge {
       display: inline-flex;
       align-items: center;
@@ -493,6 +499,18 @@
               <span class="view-picker-dot"></span>Visão Indústria
             </a>
           </div>
+        <div class="view-picker" id="plan-picker" style="margin-left: 4px;">
+          <button class="view-picker-btn" id="plan-picker-btn" style="border-color: #378ef0; color: #378ef0;">
+            <span class="material-icons-outlined" style="font-size:14px;">workspace_premium</span>
+            Plano: <span id="plan-picker-label">Free</span>
+            <span class="material-icons-outlined">keyboard_arrow_down</span>
+          </button>
+          <div class="view-picker-dropdown" id="plan-picker-dropdown">
+            <div class="view-picker-option" data-plan="free"><span class="view-picker-dot-empty"></span>Free</div>
+            <div class="view-picker-option" data-plan="essential"><span class="view-picker-dot-empty"></span>Essential</div>
+            <div class="view-picker-option" data-plan="pro"><span class="view-picker-dot-empty"></span>Pro</div>
+            <div class="view-picker-option" data-plan="enterprise"><span class="view-picker-dot-empty"></span>Enterprise</div>
+          </div>
         </div>
       </div>
       <div class="menu-actions">
@@ -529,13 +547,14 @@
         </div>
         <div class="sidebar-subitems" id="subs-preco-ind">
           <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem" data-href="#">Painel geral</div>
+            <div class="sidebar-subitem sidebar-subitem--featured" data-href="painel-geral-industria.html">Painel geral</div>
+            <div class="sidebar-subitem sidebar-subitem--featured" data-href="pesquisa-pdv-industria.html">Pesquisa PDV</div>
+            <div class="sidebar-subitems-divider"></div>
             <div class="sidebar-subitem" data-href="competitividade-free-industria.html">Módulo de competitividade</div>
             <div class="sidebar-subitem" data-href="omnichannel-essential-industria.html">Módulo omnichannel</div>
-            <div class="sidebar-subitem" data-href="#">Análise de cobertura</div>
+            <div class="sidebar-subitem" data-href="analise-cobertura-industria.html">Análise de cobertura</div>
             <div class="sidebar-subitem" data-href="aderencia-de-precos-industria-essential.html">Módulo de aderência</div>
             <div class="sidebar-subitem" data-href="ondemand-essential-industria.html">On demand</div>
-            <div class="sidebar-subitem" data-href="pesquisa-pdv-industria.html">Pesquisa PDV</div>
           </div>
         </div>
 
@@ -564,7 +583,7 @@
         </div>
         <div class="sidebar-subitems" id="subs-analises-ind">
           <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem" data-href="relatorios-essential-industria.html">Módulo de relatórios</div>
+            <div class="sidebar-subitem sidebar-subitem--featured" data-href="relatorios-essential-industria.html">Módulo de relatórios</div>
           </div>
         </div>
 
@@ -822,19 +841,25 @@
       if (!subsEl) return;
       const label = item.dataset.page || '';
       let html = label ? `<div class="sidebar-mini-panel-header">${label}</div>` : '';
-      subsEl.querySelectorAll('.sidebar-subitem').forEach(sub => {
-        const isActive = sub.classList.contains('active');
-        const href     = sub.dataset.href || '#';
-        const textEl   = sub.querySelector('.sidebar-subitem-text');
-        const text     = textEl
-          ? textEl.textContent.trim()
-          : Array.from(sub.childNodes)
-              .filter(n => n.nodeType === 3)
-              .map(n => n.textContent)
-              .join('').trim();
-        const badge = sub.querySelector('.sidebar-ia-badge')
-          ? '<span class="sidebar-mini-ia-badge">IA</span>' : '';
-        html += `<div class="sidebar-mini-panel-item${isActive ? ' active' : ''}" data-href="${href}">${text}${badge}</div>`;
+      const inner = subsEl.querySelector('.sidebar-subitems-inner') || subsEl;
+      Array.from(inner.children).forEach(el => {
+        if (el.classList.contains('sidebar-subitems-divider')) {
+          html += '<div class="sidebar-mini-panel-divider"></div>';
+        } else if (el.classList.contains('sidebar-subitem')) {
+          const isActive   = el.classList.contains('active');
+          const isFeatured = el.classList.contains('sidebar-subitem--featured');
+          const href       = el.dataset.href || '#';
+          const textEl     = el.querySelector('.sidebar-subitem-text');
+          const text       = textEl
+            ? textEl.textContent.trim()
+            : Array.from(el.childNodes)
+                .filter(n => n.nodeType === 3)
+                .map(n => n.textContent)
+                .join('').trim();
+          const badge = el.querySelector('.sidebar-ia-badge')
+            ? '<span class="sidebar-mini-ia-badge">IA</span>' : '';
+          html += `<div class="sidebar-mini-panel-item${isActive ? ' active' : ''}${isFeatured ? ' sidebar-mini-panel-item--featured' : ''}" data-href="${href}">${text}${badge}</div>`;
+        }
       });
       miniPanel.innerHTML = html;
       const rect = item.getBoundingClientRect();
@@ -884,7 +909,7 @@
     sidebar.querySelectorAll('.sidebar-subitem[data-href]').forEach(sub => {
       sub.addEventListener('click', () => {
         const href = sub.dataset.href;
-        if (href && href !== '#') window.location.href = href;
+        if (href && href !== '#') { /* navigateTo: preservado pelo plan picker JS */ window.location.href = href; }
       });
     });
 
@@ -950,6 +975,95 @@
         subTip.style.opacity = '0';
       });
     });
+  
+    /* ── Plan picker: estado e interações (injetado) ── */
+    (function() {
+      var PLAN_ORDER = ['free', 'essential', 'pro', 'enterprise'];
+      var params = new URLSearchParams(window.location.search);
+      var currentPlan = params.get('plano') || sessionStorage.getItem('plano') || 'free';
+      if (!PLAN_ORDER.includes(currentPlan)) currentPlan = 'free';
+      sessionStorage.setItem('plano', currentPlan);
+
+      if (!params.get('plano')) {
+        var fixedUrl = new URL(window.location.href);
+        fixedUrl.searchParams.set('plano', currentPlan);
+        history.replaceState(null, '', fixedUrl.toString());
+      }
+
+      function navigateTo(href) {
+        if (!href || href === '#') return;
+        try {
+          var url = new URL(href, window.location.href);
+          url.searchParams.set('plano', currentPlan);
+          window.location.href = url.toString();
+        } catch (e) { window.location.href = href; }
+      }
+
+      /* Atualizar label e estado ativo do plan picker */
+      var labelEl = document.getElementById('plan-picker-label');
+      if (labelEl) {
+        labelEl.textContent = currentPlan.charAt(0).toUpperCase() + currentPlan.slice(1);
+      }
+      document.querySelectorAll('#plan-picker-dropdown .view-picker-option').forEach(function(opt) {
+        var dot = opt.querySelector('span');
+        if (opt.dataset.plan === currentPlan) {
+          opt.classList.add('active');
+          if (dot) dot.className = 'view-picker-dot';
+        } else {
+          opt.classList.remove('active');
+          if (dot) dot.className = 'view-picker-dot-empty';
+        }
+      });
+
+      /* Plan picker: abrir/fechar e trocar plano */
+      var ppBtn = document.getElementById('plan-picker-btn');
+      var ppDrop = document.getElementById('plan-picker-dropdown');
+      if (ppBtn && ppDrop) {
+        ppBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var rect = ppBtn.getBoundingClientRect();
+          ppDrop.style.left = rect.left + 'px';
+          ppDrop.style.top = (rect.bottom + 4) + 'px';
+          ppDrop.classList.toggle('open');
+          var vdrop = document.getElementById('view-picker-dropdown');
+          if (vdrop) vdrop.classList.remove('open');
+        });
+        ppDrop.querySelectorAll('.view-picker-option[data-plan]').forEach(function(opt) {
+          opt.addEventListener('click', function(e) {
+            e.stopPropagation();
+            sessionStorage.setItem('plano', opt.dataset.plan);
+            var url = new URL(window.location.href);
+            url.searchParams.set('plano', opt.dataset.plan);
+            window.location.href = url.toString();
+          });
+        });
+        document.addEventListener('click', function() { ppDrop.classList.remove('open'); });
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') ppDrop.classList.remove('open'); });
+      }
+
+      /* Interceptar links do view-picker para preservar plano */
+      document.querySelectorAll('#view-picker-dropdown a[href]').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+          var href = link.getAttribute('href');
+          if (href && href !== '#') { e.preventDefault(); navigateTo(href); }
+        });
+      });
+      /* Interceptar data-href no view-picker (páginas novas) */
+      document.querySelectorAll('#view-picker-dropdown [data-href]').forEach(function(opt) {
+        opt.addEventListener('click', function(e) {
+          e.stopPropagation();
+          navigateTo(opt.dataset.href);
+        });
+      });
+
+      /* Sobrescrever navegação dos sub-itens da sidebar */
+      document.querySelectorAll('.sidebar-subitem[data-href]').forEach(function(sub) {
+        sub.addEventListener('click', function() {
+          var href = sub.dataset.href;
+          if (href && href !== '#') navigateTo(href);
+        });
+      });
+    })();
   </script>
 
 </body>
