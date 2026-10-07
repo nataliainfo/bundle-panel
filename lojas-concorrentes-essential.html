@@ -1037,5 +1037,35 @@
     })();
   </script>
 
+
+  <style>
+    .plan-gate-available { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:80px 32px; gap:16px; width:100%; text-align:center; }
+    .plan-gate-available .gate-icon { font-size:56px; color:#378ef0; opacity:0.25; }
+    .plan-gate-available .gate-title { font-weight:600; font-size:18px; line-height:26px; color:#505050; }
+    .plan-gate-available .gate-desc { font-weight:400; font-size:14px; line-height:20px; color:#747474; }
+  </style>
+  <script>
+    (function() {
+      var PAGE_UNLOCKS_AT = 'pro';
+      var PLAN_ORDER = ['free', 'essential', 'pro', 'enterprise'];
+      var planIdx = function(p) { var i = PLAN_ORDER.indexOf(p); return i === -1 ? 0 : i; };
+      var currentPlan = new URLSearchParams(window.location.search).get('plano')
+                        || sessionStorage.getItem('plano') || 'free';
+      if (!PLAN_ORDER.includes(currentPlan)) currentPlan = 'free';
+      var isBlocked = planIdx(currentPlan) < planIdx(PAGE_UNLOCKS_AT);
+      var banner = document.querySelector('.upgrade-banner');
+      if (banner) {
+        banner.style.display = isBlocked ? '' : 'none';
+        if (!isBlocked) {
+          var card = document.createElement('div');
+          card.className = 'plan-gate-available';
+          card.innerHTML = '<span class="material-icons-outlined gate-icon">check_circle</span>'
+            + '<p class="gate-title">Módulo disponível no plano selecionado</p>'
+            + '<p class="gate-desc">Este módulo está incluso no seu plano atual. Acesse-o pelo sistema em produção.</p>';
+          banner.parentNode.insertBefore(card, banner);
+        }
+      }
+    })();
+  </script>
 </body>
 </html>
