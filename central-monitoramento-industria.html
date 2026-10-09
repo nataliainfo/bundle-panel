@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>InfoPrice — Aderência de Preços</title>
+  <title>InfoPrice — Central de Monitoramento</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -54,9 +54,9 @@
       padding: 1px 6px; border: 1px solid #959595; border-radius: 10px;
     }
     .menu-badge span { font-weight: 700; font-size: 10px; color: #959595; text-transform: uppercase; }
-    .menu-actions { display: flex; align-items: center; }
+    .menu-actions { display: flex; align-items: center; margin-left: auto; }
     .menu-icon-btn { width: 44px; height: 52px; display: flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; color: inherit; }
-    .menu-icon-btn .material-icons-outlined { font-size: 20px; color: #505050; }
+    .menu-icon-btn .material-icons-outlined, .menu-icon-btn .material-icons { font-size: 20px; color: #505050; }
     .menu-user { display: flex; align-items: center; gap: 10px; padding: 16px 8px; cursor: pointer; }
     .menu-user-name { font-weight: 600; font-size: 14px; color: #505050; white-space: nowrap; }
     .menu-user .material-icons-outlined { font-size: 16px; color: #505050; }
@@ -128,6 +128,7 @@
       transition: grid-template-rows 0.25s cubic-bezier(0.4,0,0.2,1);
     }
     .sidebar-subitems.expanded { grid-template-rows: 1fr; }
+    .sidebar:not(.open) .sidebar-subitems { grid-template-rows: 0fr; }
     .sidebar-subitems-inner { overflow: hidden; margin-left: 23px; border-left: 1px solid #d0d0d0; padding-left: 6px; }
 
     .sidebar-subitem {
@@ -502,7 +503,7 @@
             <span class="material-icons-outlined">keyboard_arrow_down</span>
           </button>
           <div class="view-picker-dropdown" id="view-picker-dropdown">
-            <a class="view-picker-option" href="competitividade-free.html">
+            <a class="view-picker-option" href="modulo-competitividade.html">
               <span class="view-picker-dot-empty"></span>Visão Varejo
             </a>
             <a class="view-picker-option active" href="#">
@@ -544,7 +545,7 @@
       <div class="sidebar-top">
 
         <!-- Preço e concorrência -->
-        <div class="sidebar-item expandable has-active-child" id="cat-preco-ind" data-page="Preço e concorrência" data-subs="subs-preco-ind">
+        <div class="sidebar-item expandable" id="cat-preco-ind" data-page="Preço e concorrência" data-subs="subs-preco-ind">
           <span class="sidebar-icon">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9.58331 14.7346H3.74998L3.74998 3.33594L12.0833 3.29507V8.62803C12.5 8.22093 13.3333 7.81384 13.75 7.81384V3.29507C13.75 2.39946 13 1.66669 12.0833 1.66669L3.74998 1.70756C2.83331 1.70756 2.08331 2.44033 2.08331 3.33594L2.08331 14.7346C2.08331 15.6302 2.83331 16.363 3.74998 16.363H7.91665L9.58331 14.7346ZM13.0083 15.7931C13.5916 16.1513 14.2666 16.363 15 16.363C17.075 16.363 18.75 14.7265 18.75 12.6991C18.75 10.6718 17.075 9.03528 15 9.03528C12.925 9.03528 11.25 10.6718 11.25 12.691C11.25 13.4075 11.4666 14.0751 11.8333 14.6369L9.23331 17.1772L10.4166 18.3334L13.0083 15.7931ZM12.9166 12.6991C12.9166 11.5756 13.85 10.6637 15 10.6637C16.15 10.6637 17.0833 11.5756 17.0833 12.6991C17.0833 13.8227 16.15 14.7346 15 14.7346C13.85 14.7346 12.9166 13.8227 12.9166 12.6991Z" fill="currentColor"/>
@@ -561,11 +562,11 @@
             <div class="sidebar-subitem sidebar-subitem--featured" data-href="painel-geral-industria.html">Painel geral</div>
             <div class="sidebar-subitem sidebar-subitem--featured" data-href="pesquisa-pdv-industria.html">Pesquisa PDV</div>
             <div class="sidebar-subitems-divider"></div>
-            <div class="sidebar-subitem" data-href="competitividade-free-industria.html">Módulo de competitividade</div>
-            <div class="sidebar-subitem" data-href="omnichannel-essential-industria.html">Módulo omnichannel</div>
+            <div class="sidebar-subitem" data-href="modulo-competitividade-industria.html">Módulo de competitividade</div>
+            <div class="sidebar-subitem" data-href="omnichannel-industria.html">Módulo omnichannel</div>
             <div class="sidebar-subitem" data-href="analise-cobertura-industria.html">Análise de cobertura</div>
-            <div class="sidebar-subitem active" data-href="aderencia-de-precos-industria-essential.html">Módulo de aderência</div>
-            <div class="sidebar-subitem" data-href="ondemand-essential-industria.html">On demand</div>
+            <div class="sidebar-subitem" data-href="aderencia-de-precos-industria.html">Módulo de aderência</div>
+            <div class="sidebar-subitem" data-href="ondemand-industria.html">On demand</div>
           </div>
         </div>
 
@@ -579,8 +580,8 @@
         </div>
         <div class="sidebar-subitems" id="subs-intel-ind">
           <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem" data-href="visao-geral-elasticidade.html">Visão geral de elasticidade cruzada</div>
-            <div class="sidebar-subitem" data-href="analise-de-elasticidade.html">Análise de elasticidade</div>
+            <div class="sidebar-subitem sidebar-subitem--ia" data-href="visao-geral-elasticidade.html"><span class="sidebar-subitem-text">Visão geral de elasticidade cruzada</span><span class="sidebar-ia-badge">IA</span></div>
+            <div class="sidebar-subitem sidebar-subitem--ia" data-href="analise-de-elasticidade.html"><span class="sidebar-subitem-text">Análise de elasticidade</span><span class="sidebar-ia-badge">IA</span></div>
           </div>
         </div>
 
@@ -594,10 +595,23 @@
         </div>
         <div class="sidebar-subitems" id="subs-analises-ind">
           <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem sidebar-subitem--featured" data-href="relatorios-essential-industria.html">Módulo de relatórios</div>
+            <div class="sidebar-subitem sidebar-subitem--featured" data-href="relatorios-industria.html">Módulo de relatórios</div>
           </div>
         </div>
 
+        <!-- Central de Monitoramento -->
+        <div class="sidebar-item expandable has-active-child" id="cat-monitoramento-ind" data-page="Central de Monitoramento" data-subs="subs-monitoramento-ind">
+          <span class="sidebar-icon material-icons">notifications</span>
+          <span class="sidebar-inner-group">
+            <span class="sidebar-label">Central de Monitoramento</span>
+            <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
+          </span>
+        </div>
+        <div class="sidebar-subitems expanded" id="subs-monitoramento-ind">
+          <div class="sidebar-subitems-inner">
+            <div class="sidebar-subitem sidebar-subitem--featured active" data-href="central-monitoramento-industria.html">Central de Monitoramento</div>
+          </div>
+        </div>
       </div>
       <div class="sidebar-bottom" style="flex-shrink:0;">
         <button class="sidebar-toggle-btn" id="sidebar-toggle">
@@ -615,18 +629,11 @@
       <!-- CABEÇALHO DA PÁGINA -->
       <div class="page-header">
         <div class="page-header-icon">
-          <img
-            src="https://www.figma.com/api/mcp/asset/f28ab8a8-c3e8-4533-a625-1c5114e3bea2"
-            alt="Aderência de preços"
-            style="width:20px;height:20px;display:block;"
-          >
+          <span class="material-icons">notifications</span>
         </div>
         <div class="page-header-text">
-          <div class="page-header-title-row">
-            <p class="page-header-title">Aderência de preços</p>
-            <span class="page-header-badge">ATUALIZADO EM 30/05/26</span>
-          </div>
-          <p class="page-header-desc">Monitore, analise e garanta que os preços praticados estejam alinhados com sua estratégia.</p>
+          <p class="page-header-title">Central de Monitoramento</p>
+          <p class="page-header-desc">Configure alertas para ser notificado sobre mudanças importantes.</p>
         </div>
       </div>
 
@@ -697,47 +704,21 @@
           <div class="upgrade-left">
             <div class="upgrade-headline">
               <div class="upgrade-title-wrap">
-                <span class="upgrade-title">Evolua seu plano,</span>
-                <span class="upgrade-title">desbloqueie o <span class="upgrade-title-highlight">Enterprise</span></span>
+                <span class="upgrade-title">Disponível sob</span>
+                <span class="upgrade-title"><span class="upgrade-title-highlight">contratação</span></span>
               </div>
-              <p class="upgrade-sub">Com o upgrade, você também garante:</p>
+              <p class="upgrade-sub">Contrate e tenha acesso a:</p>
             </div>
             <div class="upgrade-features">
               <div class="upgrade-features-col">
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">thermostat</span>
-                  <span class="upgrade-feature-text">Sensibilidade Infoprice</span>
-                </div>
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">trending_up</span>
-                  <span class="upgrade-feature-text">Previsão de demanda</span>
-                </div>
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">emoji_events</span>
-                  <span class="upgrade-feature-text">Papel de categoria</span>
-                </div>
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">account_tree</span>
-                  <span class="upgrade-feature-text">Arquitetura de preços</span>
-                </div>
+                <div class="upgrade-feature-item"><span class="material-icons-outlined">notifications_active</span><span class="upgrade-feature-text">Lorem ipsum dolor sit amet consectetur</span></div>
+                <div class="upgrade-feature-item"><span class="material-icons-outlined">speed</span><span class="upgrade-feature-text">Adipiscing elit ut aliquam blandit</span></div>
+                <div class="upgrade-feature-item"><span class="material-icons-outlined">history</span><span class="upgrade-feature-text">Duis aute irure dolor reprehenderit</span></div>
               </div>
               <div class="upgrade-features-col">
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">play_circle_outline</span>
-                  <span class="upgrade-feature-text">Pricing Class presencial</span>
-                </div>
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">auto_awesome</span>
-                  <span class="upgrade-feature-text">Otimização com IA</span>
-                </div>
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">science</span>
-                  <span class="upgrade-feature-text">Simulação de estratégia com IA</span>
-                </div>
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">tune</span>
-                  <span class="upgrade-feature-text">Segmentações personalizadas</span>
-                </div>
+                <div class="upgrade-feature-item"><span class="material-icons-outlined">emoji_events</span><span class="upgrade-feature-text">Excepteur sint occaecat cupidatat</span></div>
+                <div class="upgrade-feature-item"><span class="material-icons-outlined">tune</span><span class="upgrade-feature-text">Sunt in culpa qui officia deserunt</span></div>
+                <div class="upgrade-feature-item"><span class="material-icons-outlined">people</span><span class="upgrade-feature-text">Mollit anim id est laborum veniam</span></div>
               </div>
             </div>
           </div>
@@ -763,7 +744,7 @@
       <p class="udrop-email">marcus@infoprice.co</p>
     </div>
     <div class="udrop-divider"></div>
-    <a class="udrop-item" href="competitividade-free.html"><span class="material-icons">grid_view</span>Acessar produtos</a>
+    <a class="udrop-item" href="modulo-competitividade.html"><span class="material-icons">grid_view</span>Acessar produtos</a>
     <a class="udrop-item" href="configuracoes.html"><span class="material-icons">settings</span>Configurações</a>
     <a class="udrop-item" href="gerenciar-usuarios.html"><span class="material-icons">people</span>Pessoas<span class="udrop-badge">CONVIDAR</span></a>
     <a class="udrop-item" href="bundle-varejo.html"><span class="material-icons">work</span>Planos</a>
@@ -774,7 +755,7 @@
   <!-- Apps menu -->
   <div id="apps-menu">
     <p class="apps-menu-title">Produtos</p>
-    <a class="apps-menu-item" href="relatorios-essential.html"><span class="apps-badge apps-badge--isa">ISA</span> InfoPanel</a>
+    <a class="apps-menu-item" href="relatorios.html"><span class="apps-badge apps-badge--isa">ISA</span> InfoPanel</a>
     <a class="apps-menu-item" href="#"><span class="apps-badge apps-badge--isa">ISA</span> Monitoramento PDV</a>
     <a class="apps-menu-item" href="#"><span class="apps-badge apps-badge--ipa">IPA</span> Software de precificação</a>
     <a class="apps-menu-item" href="#"><span class="apps-badge apps-badge--ipa">IPA</span> Simulador de demanda</a>
@@ -1082,37 +1063,6 @@
           if (href && href !== '#') navigateTo(href);
         });
       });
-    })();
-  </script>
-
-
-  <style>
-    .plan-gate-available { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:80px 32px; gap:16px; width:100%; text-align:center; }
-    .plan-gate-available .gate-icon { font-size:56px; color:#378ef0; opacity:0.25; }
-    .plan-gate-available .gate-title { font-weight:600; font-size:18px; line-height:26px; color:#505050; }
-    .plan-gate-available .gate-desc { font-weight:400; font-size:14px; line-height:20px; color:#747474; }
-  </style>
-  <script>
-    (function() {
-      var PAGE_UNLOCKS_AT = 'enterprise';
-      var PLAN_ORDER = ['free', 'essential', 'pro', 'enterprise'];
-      var planIdx = function(p) { var i = PLAN_ORDER.indexOf(p); return i === -1 ? 0 : i; };
-      var currentPlan = new URLSearchParams(window.location.search).get('plano')
-                        || sessionStorage.getItem('plano') || 'free';
-      if (!PLAN_ORDER.includes(currentPlan)) currentPlan = 'free';
-      var isBlocked = planIdx(currentPlan) < planIdx(PAGE_UNLOCKS_AT);
-      var banner = document.querySelector('.upgrade-banner');
-      if (banner) {
-        banner.style.display = isBlocked ? '' : 'none';
-        if (!isBlocked) {
-          var card = document.createElement('div');
-          card.className = 'plan-gate-available';
-          card.innerHTML = '<span class="material-icons-outlined gate-icon">check_circle</span>'
-            + '<p class="gate-title">Módulo disponível no plano selecionado</p>'
-            + '<p class="gate-desc">Este módulo está incluso no seu plano atual. Acesse-o pelo sistema em produção.</p>';
-          banner.parentNode.insertBefore(card, banner);
-        }
-      }
     })();
   </script>
 </body>

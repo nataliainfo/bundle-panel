@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>InfoPrice — Módulo Omnichannel</title>
+  <title>InfoPrice — Análise de Competitividade</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,22 +36,6 @@
     }
 
     body.sidebar-open .menu-bar { padding-left: 224px; }
-
-    .menu-apps-btn {
-      width: 48px;
-      height: 52px;
-      flex-shrink: 0;
-      background: #378ef0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-
-    .menu-apps-btn .material-icons-outlined {
-      color: #fff;
-      font-size: 24px;
-    }
 
     .menu-right {
       flex: 1;
@@ -100,7 +84,7 @@
       white-space: nowrap;
     }
 
-    .menu-badge {
+    .menu-badge-free {
       display: flex;
       align-items: center;
       padding: 1px 6px;
@@ -108,7 +92,7 @@
       border-radius: 10px;
     }
 
-    .menu-badge span {
+    .menu-badge-free span {
       font-weight: 700;
       font-size: 10px;
       line-height: 12px;
@@ -118,8 +102,7 @@
 
     .menu-actions {
       display: flex;
-      align-items: center;
-    }
+      align-items: center; margin-left: auto; }
 
     .menu-icon-btn {
       width: 44px;
@@ -159,7 +142,7 @@
     }
 
     /* ════════════════════════════════════
-       BELOW MENU
+       BELOW MENU: SIDEBAR + CONTENT
     ════════════════════════════════════ */
     .below-menu {
       display: flex;
@@ -175,6 +158,7 @@
     ════════════════════════════════════════════════ */
     .sidebar {
       width: 48px;
+      flex-shrink: 0;
       background: #fff;
       position: fixed;
       top: 0;
@@ -429,10 +413,56 @@
       display: block;
       width: 16px;
       height: 16px;
+      background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzU0Nl8yMzEzKSI+CjxjaXJjbGUgY3g9IjYiIGN5PSI2IiByPSI1LjUiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcl81NDZfMjMxMykiLz4KPGNpcmNsZSBjeD0iNiIgY3k9IjYiIHI9IjUuNSIgZmlsbD0idXJsKCNwYWludDFfbGluZWFyXzU0Nl8yMzEzKSIgZmlsbC1vcGFjaXR5PSIwLjUiLz4KPGcgZmlsdGVyPSJ1cmwoI2ZpbHRlcjBfZF81NDZfMjMxMykiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTcuNzk5NiA0LjU3ODAxQzcuNjM2MjEgNC40OTYzMiA3LjUwMzcyIDQuMzYzODMgNy40MjIwMiA0LjIwMDQzTDYuNjIxNDcgMi44NjY3NEM2LjMxMDMzIDIuMjQ0NDUgNS42NjYxOCAyLjI0NDQ1IDUuMzU1MDQgMi44NjY3NEw0LjU3ODAxIDQuMjAwNDNDNC40OTYzMiA0LjM2MzgzIDQuMzYzODMgNC40OTYzMiA0LjIwMDQ0IDQuNTc4MDFMMi44NjY3NCA1LjM1NTA0QzIuMjQ0NDUgNS42NjYxOCAyLjI0NDQ1IDYuMzEwMzMgMi44NjY3NCA2LjYyMTQ3TDQuMjAwNDQgNy40MjIwMkM0LjM2MzgzIDcuNTAzNzIgNC40OTYzMiA3LjYzNjIxIDQuNTc4MDEgNy43OTk2TDUuMzU1MDQgOS4xMzMzQzUuNjY2MTggOS43NTU1OCA2LjMxMDMzIDkuNzU1NTggNi42MjE0NyA5LjEzMzNMNy40MjIwMiA3Ljc5OTZDNy41MDM3MiA3LjYzNjIxIDcuNjM2MjEgNy41MDM3MiA3Ljc5OTYgNy40MjIwMkw5LjEzMzMgNi42MjE0N0M5Ljc1NTU4IDYuMzEwMzMgOS43NTU1OCA1LjY2NjE4IDkuMTMzMyA1LjM1NTA0TDcuNzk5NiA0LjU3ODAxWiIgZmlsbD0idXJsKCNwYWludDJfbGluZWFyXzU0Nl8yMzEzKSIvPgo8L2c+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNOC4wMTM1IDYuMjM1OTlDNy45NjI0NCA2LjA4MjggNy45NjI0NCA1LjkxNzE5IDguMDEzNSA1Ljc2NDAxTDguMzQ2NzEgNC40MzAxMUM4LjU0MTE4IDMuODQ2NzEgOC4xMzg1OCAzLjQ0NDEyIDcuNTU1MTkgMy42Mzg1OEw2LjIzNTk5IDMuOTg2NUM2LjA4MjgxIDQuMDM3NTYgNS45MTcxOSA0LjAzNzU2IDUuNzY0MDEgMy45ODY1TDQuNDQ0ODEgMy42Mzg1OEMzLjg2MTQyIDMuNDQ0MTIgMy40NTg4MiAzLjg0NjcxIDMuNjUzMjkgNC40MzAxMUwzLjk4NjUgNS43NjQwMUM0LjAzNzU2IDUuOTE3MiA0LjAzNzU2IDYuMDgyODEgMy45ODY1IDYuMjM1OTlMMy42Mzg1OCA3LjU1NTE5QzMuNDQ0MTIgOC4xMzg1OCAzLjg0NjcxIDguNTQxMTggNC40MzAxMSA4LjM0NjcxTDUuNzY0MDEgOC4wMTM1QzUuOTE3MiA3Ljk2MjQ0IDYuMDgyODEgNy45NjI0NCA2LjIzNTk5IDguMDEzNUw3LjU2OTg5IDguMzQ2NzJDOC4xNTMyOSA4LjU0MTE4IDguNTU1ODggOC4xMzg1OCA4LjM2MTQyIDcuNTU1MTlMOC4wMTM1IDYuMjM1OTlaIiBmaWxsPSJ1cmwoI3BhaW50M19saW5lYXJfNTQ2XzIzMTMpIi8+CjwvZz4KPGRlZnM+CjxmaWx0ZXIgaWQ9ImZpbHRlcjBfZF81NDZfMjMxMyIgeD0iMC40MDAwMjQiIHk9IjEuNDAwMDIiIHdpZHRoPSIxMS4yIiBoZWlnaHQ9IjExLjIiIGZpbHRlclVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY29sb3ItaW50ZXJwb2xhdGlvbi1maWx0ZXJzPSJzUkdCIj4KPGZlRmxvb2QgZmxvb2Qtb3BhY2l0eT0iMCIgcmVzdWx0PSJCYWNrZ3JvdW5kSW1hZ2VGaXgiLz4KPGZlQ29sb3JNYXRyaXggaW49IlNvdXJjZUFscGhhIiB0eXBlPSJtYXRyaXgiIHZhbHVlcz0iMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMTI3IDAiIHJlc3VsdD0iaGFyZEFscGhhIi8+CjxmZU9mZnNldCBkeT0iMSIvPgo8ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSIxIi8+CjxmZUNvbXBvc2l0ZSBpbjI9ImhhcmRBbHBoYSIgb3BlcmF0b3I9Im91dCIvPgo8ZmVDb2xvck1hdHJpeCB0eXBlPSJtYXRyaXgiIHZhbHVlcz0iMCAwIDAgMCAwLjUwOTgwNCAwIDAgMCAwIDAuMzY0NzA2IDAgMCAwIDAgMC43OTYwNzggMCAwIDAgMC40IDAiLz4KPGZlQmxlbmQgbW9kZT0ibm9ybWFsIiBpbjI9IkJhY2tncm91bmRJbWFnZUZpeCIgcmVzdWx0PSJlZmZlY3QxX2Ryb3BTaGFkb3dfNTQ2XzIzMTMiLz4KPGZlQmxlbmQgbW9kZT0ibm9ybWFsIiBpbj0iU291cmNlR3JhcGhpYyIgaW4yPSJlZmZlY3QxX2Ryb3BTaGFkb3dfNTQ2XzIzMTMiIHJlc3VsdD0ic2hhcGUiLz4KPC9maWx0ZXI+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhcl81NDZfMjMxMyIgeDE9Ii0yLjI1IiB5MT0iLTEuMjUiIHgyPSIxMC41IiB5Mj0iMTQuNSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjODI1RENCIi8+CjxzdG9wIG9mZnNldD0iMC41NDYzODkiIHN0b3AtY29sb3I9IiNFNjYzQzkiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkY3NTZCIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQxX2xpbmVhcl81NDZfMjMxMyIgeDE9IjEwLjUiIHkxPSItNi41MDIzMmUtMDgiIHgyPSI0IiB5Mj0iOCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMEQ2NkQwIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0U2NjNDOSIgc3RvcC1vcGFjaXR5PSIwIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQyX2xpbmVhcl81NDZfMjMxMyIgeDE9IjYuMDAwMDIiIHkxPSIyLjQwMDAyIiB4Mj0iNi4wMDAwMiIgeTI9IjkuNjAwMDEiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0id2hpdGUiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkVDNUZGIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQzX2xpbmVhcl81NDZfMjMxMyIgeDE9IjguNDU0NTQiIHkxPSI4LjI0OTk5IiB4Mj0iMy41NDU0NiIgeTI9IjMuNTQ1NDUiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0id2hpdGUiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkVDNUZGIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxjbGlwUGF0aCBpZD0iY2xpcDBfNTQ2XzIzMTMiPgo8cmVjdCB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIGZpbGw9IndoaXRlIi8+CjwvY2xpcFBhdGg+CjwvZGVmcz4KPC9zdmc+Cg==");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      flex-shrink: 0;
+    }
+
+    /* IA badge (sidebar) */
+    .sidebar-ia-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      background: #fde3f7;
+      color: #e663c9;
+      border-radius: 100px;
+      padding: 2px 6px 2px 2px;
+      font-size: 10px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-left: 5px;
+      line-height: 1;
+      vertical-align: middle;
+    }
+    .sidebar-ia-badge::before {
+      content: '';
+      display: block;
+      width: 14px;
+      height: 14px;
       background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzU0Nl8yMzEzKSI+CjxjaXJjbGUgY3g9IjYiIGN5PSI2IiByPSI1LjUiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcl81NDZfMjMxMykiLz4KPGNpcmNsZSBjeD0iNiIgY3k9IjYiIHI9IjUuNSIgZmlsbD0idXJsKCNwYWludDFfbGluZWFyXzU0Nl8yMzEzKSIgZmlsbC1vcGFjaXR5PSIwLjUiLz4KPGcgZmlsdGVyPSJ1cmwoI2ZpbHRlcjBfZF81NDZfMjMxMykiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTcuNzk5NiA0LjU3ODAxQzcuNjM2MjEgNC40OTYzMiA3LjUwMzcyIDQuMzYzODMgNy40MjIwMiA0LjIwMDQzTDYuNjIxNDcgMi44NjY3NEM2LjMxMDMzIDIuMjQ0NDUgNS42NjYxOCAyLjI0NDQ1IDUuMzU1MDQgMi44NjY3NEw0LjU3ODAxIDQuMjAwNDNDNC40OTYzMiA0LjM2MzgzIDQuMzYzODMgNC40OTYzMiA0LjIwMDQ0IDQuNTc4MDFMMi44NjY3NCA1LjM1NTA0QzIuMjQ0NDUgNS42NjYxOCAyLjI0NDU1IDYuMzEwMzMgMi44NjY3NCA2LjYyMTQ3TDQuMjAwNDQgNy40MjIwMkM0LjM2MzgzIDcuNTAzNzIgNC40OTYzMiA3LjYzNjIxIDQuNTc4MDEgNy43OTk2TDUuMzU1MDQgOS4xMzMzQzUuNjY2MTggOS43NTU1OCA2LjMxMDMzIDkuNzU1NTggNi42MjE0NyA5LjEzMzNMNy40MjIwMiA3Ljc5OTZDNy41MDM3MiA3LjYzNjIxIDcuNjM2MjEgNy41MDM3MiA3Ljc5OTYgNy40MjIwMkw5LjEzMzMgNi42MjE0N0M5Ljc1NTU4IDYuMzEwMzMgOS43NTU1OCA1LjY2NjE4IDkuMTMzMyA1LjM1NTA0TDcuNzk5NiA0LjU3ODAxWiIgZmlsbD0idXJsKCNwYWludDJfbGluZWFyXzU0Nl8yMzEzKSIvPgo8L2c+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNOC4wMTM1IDYuMjM1OTlDNy45NjI0NCA2LjA4MjggNy45NjI0NCA1LjkxNzE5IDguMDEzNSA1Ljc2NDAxTDguMzQ2NzEgNC40MzAxMUM4LjU0MTE4IDMuODQ2NzEgOC4xMzg1OCAzLjQ0NDEyIDcuNTU1MTkgMy42Mzg1OEw2LjIzNTk5IDMuOTg2NUM2LjA4MjgxIDQuMDM3NTYgNS45MTcxOSA0LjAzNzU2IDUuNzY0MDEgMy45ODY1TDQuNDQ0ODEgMy42Mzg1OEMzLjg2MTQyIDMuNDQ0MTIgMy40NTg4MiAzLjg0NjcxIDMuNjUzMjkgNC40MzAxMUwzLjk4NjUgNS43NjQwMUM0LjAzNzU2IDUuOTE3MiA0LjAzNzU2IDYuMDgyODEgMy45ODY1IDYuMjM1OTlMMy42Mzg1OCA3LjU1NTE5QzMuNDQ0MTIgOC4xMzg1OCAzLjg0NjcxIDguNTQxMTggNC40MzAxMSA4LjM0NjcxTDUuNzY0MDEgOC4wMTM1QzUuOTE3MiA3Ljk2MjQ0IDYuMDgyODEgNy45NjI0NCA2LjIzNTk5IDguMDEzNUw3LjU2OTg5IDguMzQ2NzJDOC4xNTMyOSA4LjU0MTE4IDguNTU1ODggOC4xMzg1OCA4LjM2MTQyIDcuNTU1MTlMOC4wMTM1IDYuMjM1OTlaIiBmaWxsPSJ1cmwoI3BhaW50M19saW5lYXJfNTQ2XzIzMTMpIi8+CjwvZz4KPGRlZnM+CjxmaWx0ZXIgaWQ9ImZpbHRlcjBfZF81NDZfMjMxMyIgeD0iMC40MDAwMjQiIHk9IjEuNDAwMDIiIHdpZHRoPSIxMS4yIiBoZWlnaHQ9IjExLjIiIGZpbHRlclVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY29sb3ItaW50ZXJwb2xhdGlvbi1maWx0ZXJzPSJzUkdCIj4KPGZlRmxvb2QgZmxvb2Qtb3BhY2l0eT0iMCIgcmVzdWx0PSJCYWNrZ3JvdW5kSW1hZ2VGaXgiLz4KPGZlQ29sb3JNYXRyaXggaW49IlNvdXJjZUFscGhhIiB0eXBlPSJtYXRyaXgiIHZhbHVlcz0iMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMTI3IDAiIHJlc3VsdD0iaGFyZEFscGhhIi8+CjxmZU9mZnNldCBkeT0iMSIvPgo8ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSIxIi8+CjxmZUNvbXBvc2l0ZSBpbjI9ImhhcmRBbHBoYSIgb3BlcmF0b3I9Im91dCIvPgo8ZmVDb2xvck1hdHJpeCB0eXBlPSJtYXRyaXgiIHZhbHVlcz0iMCAwIDAgMCAwLjUwOTgwNCAwIDAgMCAwIDAuMzY0NzA2IDAgMCAwIDAgMC43OTYwNzggMCAwIDAgMC40IDAiLz4KPGZlQmxlbmQgbW9kZT0ibm9ybWFsIiBpbjI9IkJhY2tncm91bmRJbWFnZUZpeCIgcmVzdWx0PSJlZmZlY3QxX2Ryb3BTaGFkb3dfNTQ2XzIzMTMiLz4KPGZlQmxlbmQgbW9kZT0ibm9ybWFsIiBpbj0iU291cmNlR3JhcGhpYyIgaW4yPSJlZmZlY3QxX2Ryb3BTaGFkb3dfNTQ2XzIzMTMiIHJlc3VsdD0ic2hhcGUiLz4KPC9maWx0ZXI+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhcl81NDZfMjMxMyIgeDE9Ii0yLjI1IiB5MT0iLTEuMjUiIHgyPSIxMC41IiB5Mj0iMTQuNSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjODI1RENCIi8+CjxzdG9wIG9mZnNldD0iMC41NDYzODkiIHN0b3AtY29sb3I9IiNFNjYzQzkiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkY3NTZCIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQxX2xpbmVhcl81NDZfMjMxMyIgeDE9IjEwLjUiIHkxPSItNi41MDIzMmUtMDgiIHgyPSI0IiB5Mj0iOCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMEQ2NkQwIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0U2NjNDOSIgc3RvcC1vcGFjaXR5PSIwIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQyX2xpbmVhcl81NDZfMjMxMyIgeDE9IjYuMDAwMDIiIHkxPSIyLjQwMDAyIiB4Mj0iNi4wMDAwMiIgeTI9IjkuNjAwMDEiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0id2hpdGUiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkVDNUZGIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQzX2xpbmVhcl81NDZfMjMxMyIgeDE9IjguNDU0NTQiIHkxPSI4LjI0OTk5IiB4Mj0iMy41NDU0NiIgeTI9IjMuNTQ1NDUiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0id2hpdGUiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkVDNUZGIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxjbGlwUGF0aCBpZD0iY2xpcDBfNTQ2XzIzMTMiPgo8cmVjdCB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIGZpbGw9IndoaXRlIi8+CjwvY2xpcFBhdGg+CjwvZGVmcz4KPC9zdmc+Cg==");
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
+      flex-shrink: 0;
+    }
+
+    /* Subitem com badge IA: flex para badge sempre visível */
+    .sidebar-subitem--ia {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      overflow: hidden;
+    }
+    .sidebar-subitem--ia .sidebar-subitem-text {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .sidebar-subitem--ia .sidebar-ia-badge {
       flex-shrink: 0;
     }
 
@@ -509,6 +539,12 @@
       padding: 18px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
+    }
+
+    .page-header-left {
+      display: flex;
+      align-items: center;
       gap: 8px;
     }
 
@@ -527,16 +563,17 @@
       color: #378ef0;
     }
 
-    .page-header-text {
-      flex: 1;
-      min-width: 0;
-    }
-
     .page-header-title {
       font-weight: 600;
       font-size: 18px;
       line-height: 26px;
       color: #323232;
+    }
+
+    .page-header-sub {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .page-header-desc {
@@ -552,10 +589,26 @@
       line-height: 20px;
       color: #378ef0;
       text-decoration: none;
-      margin-left: 8px;
+      cursor: pointer;
     }
 
     .page-header-link:hover { text-decoration: underline; }
+
+    .page-header-action {
+      background: #f5f9fe;
+      border-radius: 4px;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+    }
+
+    .page-header-action .material-icons-outlined {
+      font-size: 18px;
+      color: #505050;
+    }
 
     /* ════════════════════════════════════
        MAIN CARD
@@ -649,119 +702,40 @@
     .btn-outline-blue .material-icons-outlined { font-size: 18px; }
     .btn-outline-blue:hover { background: #f0f7ff; }
 
-    /* ── HERO IMAGE (vídeo player) ── */
     .hero-image {
       width: 600px;
       height: 291px;
       flex-shrink: 0;
       border-radius: 6px;
       overflow: hidden;
+      background: linear-gradient(to bottom, #002946, #378ef0);
       position: relative;
-      background: linear-gradient(to top, #002946, #378ef0);
       box-shadow:
         0px 9px 28px 8px rgba(0,0,0,0.05),
         0px 6px 16px 0px rgba(0,0,0,0.08),
         0px 3px 6px -4px rgba(0,0,0,0.12);
     }
 
-    .hero-image-frame {
-      position: absolute;
-      border: 1.263px solid #559ff2;
-      border-radius: 7.6px;
-      mix-blend-mode: lighten;
-    }
-
-    .hero-image-frame-1 { inset: 18px 13px -185px; }
-    .hero-image-frame-2 { inset: 43px 34px -160px; }
-    .hero-image-frame-3 { inset: 71px 55px -130px; }
-
     .hero-image-inner {
       position: absolute;
-      top: 97px;
-      left: 80px;
-      right: -136px;
-      bottom: -110px;
-      border-radius: 7.6px 7.6px 0 0;
+      top: 31px;
+      left: 40px;
+      width: 520px;
+      height: 260px;
+      border-radius: 6px 6px 0 0;
       overflow: hidden;
-      box-shadow: -19px -9px 33px -3px rgba(0,0,0,0.1);
+      box-shadow:
+        0px 9px 28px 8px rgba(0,0,0,0.05),
+        0px 6px 16px 0px rgba(0,0,0,0.08),
+        0px 3px 6px -4px rgba(0,0,0,0.12);
     }
 
     .hero-image-inner img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: top left;
       display: block;
-      border-radius: 7.6px 7.6px 0 0;
-    }
-
-    .video-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,41,70,0.55), rgba(55,142,240,0.45));
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      cursor: pointer;
-      z-index: 3;
-    }
-
-    .play-btn {
-      position: relative;
-      width: 88px;
-      height: 88px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .play-ring {
-      position: absolute;
-      border-radius: 50%;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    .play-ring-1 {
-      width: 88px;
-      height: 88px;
-      border: 2px solid rgba(255,255,255,0.5);
-      background: rgba(255,255,255,0.08);
-    }
-
-    .play-ring-2 {
-      width: 70px;
-      height: 70px;
-      background: rgba(255,255,255,0.18);
-    }
-
-    .play-ring-3 {
-      width: 52px;
-      height: 52px;
-      background: rgba(255,255,255,0.38);
-    }
-
-    .play-icon {
-      position: relative;
-      z-index: 1;
-      width: 0;
-      height: 0;
-      border-top: 9px solid transparent;
-      border-bottom: 9px solid transparent;
-      border-left: 16px solid #fff;
-      margin-left: 4px;
-    }
-
-    .video-label {
-      font-family: 'Open Sans', sans-serif;
-      font-weight: 600;
-      font-size: 14px;
-      line-height: 20px;
-      color: #fff;
+      border-radius: 6px 6px 0 0;
     }
 
     /* ── FEATURES ── */
@@ -781,7 +755,7 @@
       font-family: 'Raleway', sans-serif;
       font-weight: 700;
       font-size: 28px;
-      line-height: 36px;
+      line-height: 32px;
       color: #378ef0;
     }
 
@@ -820,7 +794,7 @@
 
     .feature-icon-box .material-icons-outlined {
       font-size: 16px;
-      color: #378ef0;
+      color: #505050;
     }
 
     .feature-title {
@@ -875,7 +849,7 @@
     }
 
     .upgrade-title-highlight {
-      background: linear-gradient(85.56deg, #f29423 11.24%, #f9cf9c 126.22%);
+      background: linear-gradient(78.45deg, #f29423 11.24%, #f9cf9c 126.22%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -890,7 +864,9 @@
 
     .upgrade-features {
       display: flex;
-      gap: 24px;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
     }
 
     .upgrade-features-col {
@@ -917,6 +893,13 @@
       font-size: 14px;
       line-height: 20px;
       color: #fff;
+    }
+
+    .upgrade-feature-note {
+      font-weight: 400;
+      font-size: 10px;
+      line-height: 14px;
+      color: rgba(255,255,255,0.7);
     }
 
     .upgrade-actions {
@@ -1206,15 +1189,15 @@
         <span class="menu-product-name">Essential</span>
         <div class="view-picker" id="view-picker">
           <button class="view-picker-btn" id="view-picker-btn">
-            Visão Indústria
+            Visão Varejo
             <span class="material-icons-outlined">keyboard_arrow_down</span>
           </button>
           <div class="view-picker-dropdown" id="view-picker-dropdown">
-            <a class="view-picker-option" href="omnichannel-essential.html">
-              <span class="view-picker-dot-empty"></span>Visão Varejo
-            </a>
             <a class="view-picker-option active" href="#">
-              <span class="view-picker-dot"></span>Visão Indústria
+              <span class="view-picker-dot"></span>Visão Varejo
+            </a>
+            <a class="view-picker-option" href="modulo-competitividade-industria.html">
+              <span class="view-picker-dot-empty"></span>Visão Indústria
             </a>
           </div>
         </div>
@@ -1232,7 +1215,7 @@
           </div>
         </div>
         <div class="menu-actions">
-        <a class="menu-icon-btn" href="gerenciar-usuarios-industria.html"><span class="material-icons">person_add</span></a>
+        <a class="menu-icon-btn" href="gerenciar-usuarios.html"><span class="material-icons">person_add</span></a>
         <div class="menu-user" id="user-menu-btn">
           <span class="menu-user-name">Olá, Marcus</span>
           <span class="material-icons-outlined">keyboard_arrow_down</span>
@@ -1252,7 +1235,7 @@
       <div class="sidebar-top">
 
         <!-- Preço e concorrência -->
-        <div class="sidebar-item expandable has-active-child" id="cat-preco-ind" data-page="Preço e concorrência" data-subs="subs-preco-ind">
+        <div class="sidebar-item expandable has-active-child" id="cat-preco" data-page="Preço e concorrência" data-subs="subs-preco">
           <span class="sidebar-icon">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9.58331 14.7346H3.74998L3.74998 3.33594L12.0833 3.29507V8.62803C12.5 8.22093 13.3333 7.81384 13.75 7.81384V3.29507C13.75 2.39946 13 1.66669 12.0833 1.66669L3.74998 1.70756C2.83331 1.70756 2.08331 2.44033 2.08331 3.33594L2.08331 14.7346C2.08331 15.6302 2.83331 16.363 3.74998 16.363H7.91665L9.58331 14.7346ZM13.0083 15.7931C13.5916 16.1513 14.2666 16.363 15 16.363C17.075 16.363 18.75 14.7265 18.75 12.6991C18.75 10.6718 17.075 9.03528 15 9.03528C12.925 9.03528 11.25 10.6718 11.25 12.691C11.25 13.4075 11.4666 14.0751 11.8333 14.6369L9.23331 17.1772L10.4166 18.3334L13.0083 15.7931ZM12.9166 12.6991C12.9166 11.5756 13.85 10.6637 15 10.6637C16.15 10.6637 17.0833 11.5756 17.0833 12.6991C17.0833 13.8227 16.15 14.7346 15 14.7346C13.85 14.7346 12.9166 13.8227 12.9166 12.6991Z" fill="currentColor"/>
@@ -1264,49 +1247,118 @@
             <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
           </span>
         </div>
-        <div class="sidebar-subitems" id="subs-preco-ind">
+        <div class="sidebar-subitems" id="subs-preco">
           <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem sidebar-subitem--featured" data-href="painel-geral-industria.html">Painel geral</div>
-            <div class="sidebar-subitem sidebar-subitem--featured" data-href="pesquisa-pdv-industria.html">Pesquisa PDV</div>
+            <div class="sidebar-subitem sidebar-subitem--featured" data-href="painel-geral.html">Painel geral</div>
+            <div class="sidebar-subitem sidebar-subitem--featured" data-href="pesquisa-pdv.html">Pesquisa PDV</div>
             <div class="sidebar-subitems-divider"></div>
-            <div class="sidebar-subitem" data-href="competitividade-free-industria.html">Módulo de competitividade</div>
-            <div class="sidebar-subitem active" data-href="omnichannel-essential-industria.html">Módulo omnichannel</div>
-            <div class="sidebar-subitem" data-href="analise-cobertura-industria.html">Análise de cobertura</div>
-            <div class="sidebar-subitem" data-href="aderencia-de-precos-industria-essential.html">Módulo de aderência</div>
-            <div class="sidebar-subitem" data-href="ondemand-essential-industria.html">On demand</div>
+            <div class="sidebar-subitem active" data-href="modulo-competitividade.html">Módulo de competitividade</div>
+            <div class="sidebar-subitem" data-href="omnichannel.html">Módulo omnichannel</div>
+            <div class="sidebar-subitem" data-href="analise-cobertura.html">Análise de cobertura</div>
+            <div class="sidebar-subitem" data-href="ondemand.html">On demand</div>
           </div>
         </div>
 
         <!-- Inteligência -->
-        <div class="sidebar-item expandable" id="cat-intel-ind" data-page="Inteligência" data-subs="subs-intel-ind">
+        <div class="sidebar-item expandable" id="cat-inteligencia" data-page="Inteligência" data-subs="subs-inteligencia">
           <span class="sidebar-icon material-icons">psychology</span>
           <span class="sidebar-inner-group">
             <span class="sidebar-label">Inteligência</span>
             <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
           </span>
         </div>
-        <div class="sidebar-subitems" id="subs-intel-ind">
+        <div class="sidebar-subitems" id="subs-inteligencia">
           <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem" data-href="visao-geral-elasticidade.html">Visão geral de elasticidade cruzada</div>
-            <div class="sidebar-subitem" data-href="analise-de-elasticidade.html">Análise de elasticidade</div>
+            <div class="sidebar-subitem sidebar-subitem--ia" data-href="lojas-concorrentes.html"><span class="sidebar-subitem-text">Módulo de lojas concorrentes</span><span class="sidebar-ia-badge">IA</span></div>
+            <div class="sidebar-subitem sidebar-subitem--ia" data-href="previsao-demanda.html"><span class="sidebar-subitem-text">Previsão de demanda</span><span class="sidebar-ia-badge">IA</span></div>
+          </div>
+        </div>
+
+        <!-- Precificação estratégica -->
+        <div class="sidebar-item expandable" id="cat-precificacao" data-page="Precificação estratégica" data-subs="subs-precificacao">
+          <span class="sidebar-icon material-icons-round">price_change</span>
+          <span class="sidebar-inner-group">
+            <span class="sidebar-label">Precificação estratégica</span>
+            <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
+          </span>
+        </div>
+        <div class="sidebar-subitems" id="subs-precificacao">
+          <div class="sidebar-subitems-inner">
+            <div class="sidebar-subitem sidebar-subitem--featured" data-href="gerenciador-precos.html">Gerenciador de Preços</div>
+            <div class="sidebar-subitems-divider"></div>
+            <div class="sidebar-subitem" data-href="regras-preco.html">Regras de preço</div>
+            <div class="sidebar-subitem" data-href="limites-preco.html">Limites de preço</div>
+            <div class="sidebar-subitem" data-href="preco-psicologico.html">Preço psicológico</div>
+            <div class="sidebar-subitem" data-href="tabela-precos.html">Tabela de preços</div>
+            <div class="sidebar-subitem" data-href="margem-objetiva.html">Margem objetiva</div>
+            <div class="sidebar-subitem" data-href="preco-atacado.html">Preço atacado</div>
+            <div class="sidebar-subitem" data-href="simulador-demanda.html">Simulador de demanda</div>
+            <div class="sidebar-subitems-divider"></div>
+            <div class="sidebar-subitem" data-href="extracao-precos.html">Extração de preços</div>
+            <div class="sidebar-subitems-divider"></div>
+            <div class="sidebar-subitem" data-href="arquitetura-precos.html">Arquitetura de preços</div>
+          </div>
+        </div>
+
+        <!-- Campanhas -->
+        <div class="sidebar-item expandable" id="cat-campanhas" data-page="Campanhas" data-subs="subs-campanhas">
+          <span class="sidebar-icon material-icons">campaign</span>
+          <span class="sidebar-inner-group">
+            <span class="sidebar-label">Campanhas</span>
+            <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
+          </span>
+        </div>
+        <div class="sidebar-subitems" id="subs-campanhas">
+          <div class="sidebar-subitems-inner">
+            <div class="sidebar-subitem" data-href="modulo-campanhas.html">Módulo de Campanhas</div>
+          </div>
+        </div>
+
+        <!-- Negociação -->
+        <div class="sidebar-item expandable" id="cat-negociacao" data-page="Negociação" data-subs="subs-negociacao">
+          <span class="sidebar-icon material-icons">handshake</span>
+          <span class="sidebar-inner-group">
+            <span class="sidebar-label">Negociação</span>
+            <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
+          </span>
+        </div>
+        <div class="sidebar-subitems" id="subs-negociacao">
+          <div class="sidebar-subitems-inner">
+            <div class="sidebar-subitem" data-href="modulo-negociacao.html">Módulo de negociação</div>
           </div>
         </div>
 
         <!-- Análises e relatórios -->
-        <div class="sidebar-item expandable" id="cat-analises-ind" data-page="Análises e relatórios" data-subs="subs-analises-ind">
+        <div class="sidebar-item expandable" id="cat-analises" data-page="Análises e relatórios" data-subs="subs-analises">
           <span class="sidebar-icon material-icons">analytics</span>
           <span class="sidebar-inner-group">
             <span class="sidebar-label">Análises e relatórios</span>
             <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
           </span>
         </div>
-        <div class="sidebar-subitems" id="subs-analises-ind">
+        <div class="sidebar-subitems" id="subs-analises">
           <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem sidebar-subitem--featured" data-href="relatorios-essential-industria.html">Módulo de relatórios</div>
+            <div class="sidebar-subitem sidebar-subitem--featured" data-href="relatorios.html">Módulo de relatórios</div>
+            <div class="sidebar-subitems-divider"></div>
+            <div class="sidebar-subitem" data-href="ipa-analytics.html">IPA Analytics</div>
           </div>
         </div>
 
+        <!-- Central de Monitoramento -->
+        <div class="sidebar-item expandable" id="cat-monitoramento" data-page="Central de Monitoramento" data-subs="subs-monitoramento">
+          <span class="sidebar-icon material-icons">notifications</span>
+          <span class="sidebar-inner-group">
+            <span class="sidebar-label">Central de Monitoramento</span>
+            <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
+          </span>
+        </div>
+        <div class="sidebar-subitems" id="subs-monitoramento">
+          <div class="sidebar-subitems-inner">
+            <div class="sidebar-subitem sidebar-subitem--featured" data-href="central-monitoramento.html">Central de Monitoramento</div>
+          </div>
+        </div>
       </div>
+
       <div class="sidebar-bottom" style="flex-shrink:0;">
         <button class="sidebar-toggle-btn" id="sidebar-toggle">
           <span class="sidebar-toggle-icon material-icons-outlined" id="toggle-icon">keyboard_arrow_right</span>
@@ -1321,13 +1373,25 @@
 
       <!-- CABEÇALHO DA PÁGINA -->
       <div class="page-header">
-        <div class="page-header-icon">
-          <span class="material-icons-outlined">hub</span>
+        <div class="page-header-left">
+          <div class="page-header-icon">
+            <span class="material-icons-outlined">emoji_events</span>
+          </div>
+          <div>
+            <p class="page-header-title">Análise de competitividade</p>
+            <div class="page-header-sub">
+              <span class="page-header-desc">Compare preços e analise a competitividade entre produtos</span>
+              <a class="page-header-link" href="#">Entenda como calculamos</a>
+            </div>
+          </div>
         </div>
-        <div class="page-header-text">
-          <p class="page-header-title">Módulo Omnichannel</p>
-          <p class="page-header-desc">Analise e compare os preços de cada produto entre todos os canais <a class="page-header-link" href="#">Entenda como funciona</a></p>
-        </div>
+        <button class="page-header-action" style="padding:0; background:none;">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="30" height="30" rx="4" fill="#F5F9FE"/>
+            <rect width="30" height="30" rx="4" fill="#F5F9FE"/>
+            <path d="M21.75 8.25H8.25C7.4175 8.25 6.75 8.9175 6.75 9.75V18.75C6.75 19.575 7.4175 20.25 8.25 20.25H12V21.75H18V20.25H21.75C22.575 20.25 23.2425 19.575 23.2425 18.75L23.25 9.75C23.25 8.9175 22.575 8.25 21.75 8.25ZM21.75 18.75H8.25V9.75H21.75V18.75ZM18 14.25L12.75 17.25V11.25L18 14.25Z" fill="#378EF0"/>
+          </svg>
+        </button>
       </div>
 
       <!-- CARD PRINCIPAL -->
@@ -1338,7 +1402,7 @@
           <div class="hero-text">
             <div class="hero-heading">
               <p class="hero-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam.</p>
-              <p class="hero-subtitle">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+              <p class="hero-subtitle">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure.</p>
             </div>
             <div class="hero-buttons">
               <button class="btn-orange">EXPERIMENTE</button>
@@ -1349,22 +1413,12 @@
             </div>
           </div>
 
-          <!-- Player de vídeo -->
           <div class="hero-image">
-            <div class="hero-image-frame hero-image-frame-1"></div>
-            <div class="hero-image-frame hero-image-frame-2"></div>
-            <div class="hero-image-frame hero-image-frame-3"></div>
             <div class="hero-image-inner">
-              <img src="" alt="Interface do Módulo Omnichannel">
-            </div>
-            <div class="video-overlay">
-              <div class="play-btn">
-                <div class="play-ring play-ring-1"></div>
-                <div class="play-ring play-ring-2"></div>
-                <div class="play-ring play-ring-3"></div>
-                <div class="play-icon"></div>
-              </div>
-              <p class="video-label">Assista ao vídeo</p>
+              <img
+                src="https://www.figma.com/api/mcp/asset/13f9ccf7-95b3-4f38-939c-0a992cc0b3c7"
+                alt="Dashboard de análise de competitividade"
+              >
             </div>
           </div>
         </div>
@@ -1378,20 +1432,20 @@
             <div class="feature-card">
               <div class="feature-card-top">
                 <div class="feature-icon-box">
-                  <span class="material-icons-outlined">hub</span>
+                  <span class="material-icons-outlined">visibility</span>
                 </div>
-                <p class="feature-title">Lorem ipsum dolor sit amet consectetur adipiscing elit</p>
+                <p class="feature-title">Lorem ipsum dolor sit adipiscing</p>
               </div>
-              <p class="feature-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+              <p class="feature-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.</p>
             </div>
             <div class="feature-card">
               <div class="feature-card-top">
                 <div class="feature-icon-box">
-                  <span class="material-icons-outlined">compare_arrows</span>
+                  <span class="material-icons-outlined">emoji_events</span>
                 </div>
-                <p class="feature-title">Ut enim ad minim veniam quis nostrud exercitation</p>
+                <p class="feature-title">Lorem ipsum dolor sit adipiscing</p>
               </div>
-              <p class="feature-desc">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat.</p>
+              <p class="feature-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.</p>
             </div>
           </div>
         </div>
@@ -1402,46 +1456,22 @@
             <div class="upgrade-headline">
               <div class="upgrade-title-wrap">
                 <span class="upgrade-title">Evolua seu plano,</span>
-                <span class="upgrade-title">desbloqueie o <span class="upgrade-title-highlight">Pro</span></span>
+                <span class="upgrade-title">desbloqueie o <span class="upgrade-title-highlight">Essential</span></span>
               </div>
               <p class="upgrade-sub">Com o upgrade, você também garante:</p>
             </div>
             <div class="upgrade-features">
-              <div class="upgrade-features-col">
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">emoji_events</span>
-                  <span class="upgrade-feature-text">Competitividade de Redes e Produtos</span>
-                </div>
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">store</span>
-                  <span class="upgrade-feature-text">Módulo de Lojas Concorrentes</span>
-                </div>
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">assignment</span>
-                  <span class="upgrade-feature-text">Módulo de relatórios</span>
-                </div>
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">ads_click</span>
-                  <span class="upgrade-feature-text">500 solicitações sob demanda/semana</span>
-                </div>
+              <div class="upgrade-feature-item">
+                <span class="material-icons-outlined">person</span>
+                <span class="upgrade-feature-text">Lorem ipsum dolor sit</span>
               </div>
-              <div class="upgrade-features-col">
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">edit</span>
-                  <span class="upgrade-feature-text">Regras e limites ilimitados</span>
-                </div>
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">attach_money</span>
-                  <span class="upgrade-feature-text">Preço regular, psicológico e atacado</span>
-                </div>
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">tune</span>
-                  <span class="upgrade-feature-text">Gerenciador de preços ilimitado</span>
-                </div>
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">handshake</span>
-                  <span class="upgrade-feature-text">Módulo de negociação</span>
-                </div>
+              <div class="upgrade-feature-item">
+                <span class="material-icons-outlined">handshake</span>
+                <span class="upgrade-feature-text">Adipiscing elit aliquam</span>
+              </div>
+              <div class="upgrade-feature-item">
+                <span class="material-icons-outlined">play_circle_outline</span>
+                <span class="upgrade-feature-text">Duis aute irure dolor</span>
               </div>
             </div>
           </div>
@@ -1463,7 +1493,7 @@
   <!-- Apps menu -->
   <div id="apps-menu">
     <p class="apps-menu-title">Produtos</p>
-    <a class="apps-menu-item" href="relatorios-essential.html">
+    <a class="apps-menu-item" href="relatorios.html">
       <span class="apps-badge apps-badge--isa">ISA</span>
       InfoPanel
     </a>
@@ -1488,7 +1518,7 @@
       <p class="udrop-email">marcus@infoprice.co</p>
     </div>
     <div class="udrop-divider"></div>
-    <a class="udrop-item" href="competitividade-free.html">
+    <a class="udrop-item" href="modulo-competitividade.html">
       <span class="material-icons">grid_view</span>
       Acessar produtos
     </a>
@@ -1553,6 +1583,7 @@
       sidebar.classList.add('open');
       document.body.classList.add('sidebar-open');
       toggleIcon.textContent = 'keyboard_arrow_left';
+      // Auto-expande a categoria com sub-item ativo
       const active = sidebar.querySelector('.sidebar-item.expandable.has-active-child');
       if (active) {
         active.classList.add('expanded');
@@ -1566,6 +1597,7 @@
       sidebar.classList.remove('open');
       document.body.classList.remove('sidebar-open');
       toggleIcon.textContent = 'keyboard_arrow_right';
+      // Recolhe todas as categorias
       sidebar.querySelectorAll('.sidebar-item.expandable').forEach(item => {
         item.classList.remove('expanded');
         const subs = document.getElementById(item.dataset.subs);
@@ -1573,6 +1605,7 @@
       });
     }
 
+    /* ── Toggle open / close ── */
     toggleBtn.addEventListener('click', () => {
       isOpen ? closeSidebar() : openSidebar();
     });
@@ -1614,7 +1647,7 @@
       miniPanel.classList.add('visible');
       requestAnimationFrame(() => {
         const maxTop = window.innerHeight - miniPanel.offsetHeight - 8;
-        if (parseFloat(miniPanel.style.top) > maxTop) miniPanel.style.top = Math.max(8, maxTop) + 'px';
+        if (rect.top > maxTop) miniPanel.style.top = Math.max(8, maxTop) + 'px';
       });
       miniPanel.querySelectorAll('.sidebar-mini-panel-item').forEach(pi => {
         pi.addEventListener('click', e => {
@@ -1653,6 +1686,7 @@
     document.addEventListener('click', hideMiniPanel);
     document.addEventListener('keydown', e => { if (e.key === 'Escape') hideMiniPanel(); });
 
+    /* ── Navegação nos sub-itens ── */
     sidebar.querySelectorAll('.sidebar-subitem[data-href]').forEach(sub => {
       sub.addEventListener('click', () => {
         const href = sub.dataset.href;
@@ -1660,6 +1694,7 @@
       });
     });
 
+    /* ── Tooltips (categorias fechadas) ── */
     function showTooltip(item) {
       const label = item.dataset.page;
       if (!label) return;
@@ -1833,6 +1868,8 @@
     })();
   </script>
 
+
+
   <style>
     .plan-gate-available { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:80px 32px; gap:16px; width:100%; text-align:center; }
     .plan-gate-available .gate-icon { font-size:56px; color:#378ef0; opacity:0.25; }
@@ -1844,22 +1881,40 @@
       var PAGE_UNLOCKS_AT = 'pro';
       var PLAN_ORDER = ['free', 'essential', 'pro', 'enterprise'];
       var planIdx = function(p) { var i = PLAN_ORDER.indexOf(p); return i === -1 ? 0 : i; };
-      var currentPlan = new URLSearchParams(window.location.search).get('plano')
-                        || sessionStorage.getItem('plano') || 'free';
-      if (!PLAN_ORDER.includes(currentPlan)) currentPlan = 'free';
-      var isBlocked = planIdx(currentPlan) < planIdx(PAGE_UNLOCKS_AT);
-      var banner = document.querySelector('.upgrade-banner');
-      if (banner) {
-        banner.style.display = isBlocked ? '' : 'none';
-        if (!isBlocked) {
+
+      function applyGating(currentPlan) {
+        if (!PLAN_ORDER.includes(currentPlan)) currentPlan = 'free';
+        var isBlocked = planIdx(currentPlan) < planIdx(PAGE_UNLOCKS_AT);
+        var banner = document.querySelector('.upgrade-banner');
+        if (!banner) return;
+        var mainCard = banner.parentNode;
+        var existing = mainCard.querySelector('.plan-gate-available');
+        if (existing) existing.remove();
+        if (isBlocked) {
+          Array.from(mainCard.children).forEach(function(el) { el.style.display = ''; });
+        } else {
+          Array.from(mainCard.children).forEach(function(el) { el.style.display = 'none'; });
           var card = document.createElement('div');
           card.className = 'plan-gate-available';
           card.innerHTML = '<span class="material-icons-outlined gate-icon">check_circle</span>'
-            + '<p class="gate-title">Módulo disponível no plano selecionado</p>'
-            + '<p class="gate-desc">Este módulo está incluso no seu plano atual. Acesse-o pelo sistema em produção.</p>';
-          banner.parentNode.insertBefore(card, banner);
+            + '<p class="gate-title">M\u00f3dulo dispon\u00edvel no plano selecionado</p>'
+            + '<p class="gate-desc">Este m\u00f3dulo est\u00e1 incluso no seu plano atual. Acesse-o pelo sistema em produ\u00e7\u00e3o.</p>';
+          mainCard.appendChild(card);
         }
       }
+
+      // Read plan: URL param > sessionStorage > default 'free'
+      var currentPlan = new URLSearchParams(window.location.search).get('plano');
+      try { currentPlan = currentPlan || sessionStorage.getItem('plano'); } catch(e) {}
+      currentPlan = currentPlan || 'free';
+      applyGating(currentPlan);
+
+      // Re-apply gating immediately when plan picker is clicked (no reload needed)
+      document.querySelectorAll('#plan-picker-dropdown .view-picker-option[data-plan]').forEach(function(opt) {
+        opt.addEventListener('click', function() {
+          applyGating(opt.dataset.plan);
+        });
+      });
     })();
   </script>
 </body>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>InfoPrice — Módulo de Lojas Concorrentes</title>
+  <title>InfoPrice — Aderência de Preços</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,65 +15,129 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body { font-family: 'Open Sans', sans-serif; background: #f5f5f5; min-height: 100vh; }
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: #f5f5f5;
+      min-height: 100vh;
+    }
 
-    /* ════ MENU BAR ════ */
-    .menu-bar { position: sticky; top: 0; z-index: 100; display: flex; height: 52px; width: 100%; padding-left: 48px; transition: padding-left 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+    /* ════════════════════════════════════
+       MENU BAR
+    ════════════════════════════════════ */
+    .menu-bar {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; height: 52px; width: 100%;
+      padding-left: 48px;
+      transition: padding-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
     body.sidebar-open .menu-bar { padding-left: 224px; }
-    .menu-apps-btn { width: 48px; height: 52px; flex-shrink: 0; background: #378ef0; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .menu-apps-btn {
+      width: 48px; height: 52px; flex-shrink: 0;
+      background: #378ef0; display: flex;
+      align-items: center; justify-content: center; cursor: pointer;
+    }
     .menu-apps-btn .material-icons-outlined { color: #fff; font-size: 24px; }
-    .menu-right { flex: 1; height: 52px; background: #f0f0f0; display: flex; align-items: center; padding: 0 8px; }
+    .menu-right {
+      flex: 1; height: 52px; background: #f0f0f0;
+      display: flex; align-items: center; padding: 0 8px;
+    }
     .menu-logo-area { padding: 8px 12px 8px 8px; display: flex; align-items: center; }
-    .menu-logo { height: 15px; width: 99px; object-fit: contain; object-position: left center; display: block; flex-shrink: 0; }
+    .menu-logo {
+      height: 15px; width: 99px; object-fit: contain;
+      object-position: left center; display: block; flex-shrink: 0;
+    }
     .menu-divider { width: 1px; height: 24px; background: #d3d3d3; flex-shrink: 0; }
     .menu-product { flex: 1; display: flex; align-items: center; gap: 8px; padding: 16px 12px; }
     .menu-product-name { font-weight: 600; font-size: 14px; line-height: 20px; color: #505050; white-space: nowrap; }
-    .menu-badge { display: flex; align-items: center; padding: 1px 6px; border: 1px solid #959595; border-radius: 10px; }
+    .menu-badge {
+      display: flex; align-items: center;
+      padding: 1px 6px; border: 1px solid #959595; border-radius: 10px;
+    }
     .menu-badge span { font-weight: 700; font-size: 10px; color: #959595; text-transform: uppercase; }
-    .menu-actions { display: flex; align-items: center; }
+    .menu-actions { display: flex; align-items: center; margin-left: auto; }
     .menu-icon-btn { width: 44px; height: 52px; display: flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; color: inherit; }
-    .menu-icon-btn .material-icons-outlined { font-size: 20px; color: #505050; }
+    .menu-icon-btn .material-icons-outlined, .menu-icon-btn .material-icons { font-size: 20px; color: #505050; }
     .menu-user { display: flex; align-items: center; gap: 10px; padding: 16px 8px; cursor: pointer; }
     .menu-user-name { font-weight: 600; font-size: 14px; color: #505050; white-space: nowrap; }
     .menu-user .material-icons-outlined { font-size: 16px; color: #505050; }
 
-    /* ════ LAYOUT ════ */
+    /* ════════════════════════════════════
+       BELOW MENU
+    ════════════════════════════════════ */
     .below-menu { display: flex; align-items: flex-start; margin-left: 48px; transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
     body.sidebar-open .below-menu { margin-left: 224px; }
 
-    /* ════ SIDEBAR ════ */
-    .sidebar { width: 48px; background: #fff; position: fixed; top: 0; left: 0; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; transition: width 0.25s cubic-bezier(0.4,0,0.2,1); z-index: 200; }
+    /* ════════════════════════════════════
+       SIDEBAR
+    ════════════════════════════════════ */
+    .sidebar {
+      width: 48px; background: #fff;
+      position: fixed; top: 0; left: 0; height: 100vh;
+      display: flex; flex-direction: column; justify-content: space-between;
+      overflow: hidden; transition: width 0.25s cubic-bezier(0.4,0,0.2,1); z-index: 200;
+    }
     .sidebar.open { width: 224px; }
     .sidebar-top { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; }
     .sidebar-top::-webkit-scrollbar { width: 0; }
     .sidebar-top { scrollbar-width: none; }
     .sidebar-bottom { flex-shrink: 0; display: flex; flex-direction: column; }
 
-    .sidebar-item { display: flex; align-items: center; gap: 6px; padding: 14px; cursor: pointer; white-space: nowrap; position: relative; user-select: none; transition: background 0.15s ease; list-style: none; text-decoration: none; }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 6px; padding: 14px;
+      cursor: pointer; white-space: nowrap; position: relative; user-select: none;
+      transition: background 0.15s ease; list-style: none; text-decoration: none;
+    }
     .sidebar-item:hover { background: #f5f9fe; }
-    .sidebar-item:hover .sidebar-icon, .sidebar-item:hover .sidebar-label, .sidebar-item:hover .sidebar-chevron { color: #378ef0; }
-    .sidebar-item.active .sidebar-icon, .sidebar-item.active .sidebar-label { color: #378ef0; }
+    .sidebar-item:hover .sidebar-icon,
+    .sidebar-item:hover .sidebar-label,
+    .sidebar-item:hover .sidebar-chevron { color: #378ef0; }
+    .sidebar-item.active .sidebar-icon,
+    .sidebar-item.active .sidebar-label { color: #378ef0; }
+    .sidebar-item.has-active-child .sidebar-icon { color: #378ef0; }
 
-    .sidebar-icon { font-size: 20px; flex-shrink: 0; width: 20px; height: 20px; color: #747474; transition: color 0.15s ease; line-height: 1; display: flex; align-items: center; justify-content: center; }
+    .sidebar-icon {
+      font-size: 20px; flex-shrink: 0; width: 20px; height: 20px;
+      color: #747474; transition: color 0.15s ease; line-height: 1;
+      display: flex; align-items: center; justify-content: center;
+    }
     .sidebar-icon svg { display: block; width: 20px; height: 20px; flex-shrink: 0; color: inherit; }
     .sidebar-item.active .sidebar-icon { color: #378ef0; }
 
     .sidebar-inner-group { flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px; overflow: hidden; }
-    .sidebar-label { font-weight: 600; font-size: 12px; line-height: 18px; color: #505050; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.15s ease, opacity 0.12s ease; opacity: 0; }
+    .sidebar-label {
+      font-weight: 600; font-size: 12px; line-height: 18px; color: #505050;
+      flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      transition: color 0.15s ease, opacity 0.12s ease; opacity: 0;
+    }
     .sidebar.open .sidebar-label { opacity: 1; transition: color 0.15s ease, opacity 0.18s ease 0.14s; }
-    .sidebar-item:hover .sidebar-label, .sidebar-item.active .sidebar-label { color: #378ef0; }
-    .sidebar-item:hover .sidebar-inner-group .sidebar-label, .sidebar-item.active .sidebar-inner-group .sidebar-label { color: #378ef0; }
+    .sidebar-item:hover .sidebar-label,
+    .sidebar-item.active .sidebar-label { color: #378ef0; }
+    .sidebar-item:hover .sidebar-inner-group .sidebar-label,
+    .sidebar-item.active .sidebar-inner-group .sidebar-label { color: #378ef0; }
 
-    .sidebar-chevron { font-size: 16px; flex-shrink: 0; color: #747474; transition: color 0.15s ease, transform 0.2s ease, opacity 0.12s ease; opacity: 0; }
+    .sidebar-chevron {
+      font-size: 16px; flex-shrink: 0; color: #747474;
+      transition: color 0.15s ease, transform 0.2s ease, opacity 0.12s ease; opacity: 0;
+    }
     .sidebar.open .sidebar-chevron { opacity: 1; transition: color 0.15s ease, transform 0.2s ease, opacity 0.18s ease 0.14s; }
     .sidebar-item:hover .sidebar-inner-group .sidebar-chevron { color: #378ef0; }
     .sidebar-item.expanded > .sidebar-inner-group > .sidebar-chevron { transform: rotate(180deg); }
 
-    .sidebar-subitems { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.25s cubic-bezier(0.4,0,0.2,1); }
+    .sidebar-subitems {
+      display: grid; grid-template-rows: 0fr;
+      transition: grid-template-rows 0.25s cubic-bezier(0.4,0,0.2,1);
+    }
     .sidebar-subitems.expanded { grid-template-rows: 1fr; }
+    .sidebar:not(.open) .sidebar-subitems { grid-template-rows: 0fr; }
     .sidebar-subitems-inner { overflow: hidden; margin-left: 23px; border-left: 1px solid #d0d0d0; padding-left: 6px; }
 
-    .sidebar-subitem { display: block; padding: 10px 14px 10px 10px; border-radius: 6px; cursor: pointer; font-weight: 400; font-size: 12px; line-height: 16px; color: #505050; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; list-style: none; text-decoration: none; opacity: 0; transition: background 0.15s ease, color 0.15s ease, opacity 0.12s ease; }
+    .sidebar-subitem {
+      display: block; padding: 10px 14px 10px 10px; border-radius: 6px;
+      cursor: pointer; font-weight: 400; font-size: 12px; line-height: 16px;
+      color: #505050; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      list-style: none; text-decoration: none;
+      opacity: 0; transition: background 0.15s ease, color 0.15s ease, opacity 0.12s ease;
+    }
     .sidebar.open .sidebar-subitem { opacity: 1; transition: background 0.15s ease, color 0.15s ease, opacity 0.18s ease 0.14s; }
     .sidebar-subitem:hover { background: #f5f9fe; color: #378ef0; }
     .sidebar-subitem.active { background: #e8f1fd; width: fit-content; max-width: 100%; }
@@ -172,77 +236,65 @@
       flex-shrink: 0;
     }
 
-    /* IA badge (sidebar) */
-    .sidebar-ia-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 2px;
-      background: #fde3f7;
-      color: #e663c9;
-      border-radius: 100px;
-      padding: 2px 6px 2px 2px;
-      font-size: 10px;
-      font-weight: 700;
-      flex-shrink: 0;
-      margin-left: 5px;
-      line-height: 1;
-      vertical-align: middle;
+    .sidebar-toggle-btn {
+      display: flex; align-items: center; justify-content: flex-start;
+      padding: 14px; cursor: pointer; background: none; border: none;
+      width: 100%; transition: background 0.15s ease; gap: 6px; white-space: nowrap;
     }
-    .sidebar-ia-badge::before {
-      content: '';
-      display: block;
-      width: 14px;
-      height: 14px;
-      background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzU0Nl8yMzEzKSI+CjxjaXJjbGUgY3g9IjYiIGN5PSI2IiByPSI1LjUiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcl81NDZfMjMxMykiLz4KPGNpcmNsZSBjeD0iNiIgY3k9IjYiIHI9IjUuNSIgZmlsbD0idXJsKCNwYWludDFfbGluZWFyXzU0Nl8yMzEzKSIgZmlsbC1vcGFjaXR5PSIwLjUiLz4KPGcgZmlsdGVyPSJ1cmwoI2ZpbHRlcjBfZF81NDZfMjMxMykiPgo8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTcuNzk5NiA0LjU3ODAxQzcuNjM2MjEgNC40OTYzMiA3LjUwMzcyIDQuMzYzODMgNy40MjIwMiA0LjIwMDQzTDYuNjIxNDcgMi44NjY3NEM2LjMxMDMzIDIuMjQ0NDUgNS42NjYxOCAyLjI0NDQ1IDUuMzU1MDQgMi44NjY3NEw0LjU3ODAxIDQuMjAwNDNDNC40OTYzMiA0LjM2MzgzIDQuMzYzODMgNC40OTYzMiA0LjIwMDQ0IDQuNTc4MDFMMi44NjY3NCA1LjM1NTA0QzIuMjQ0NDUgNS42NjYxOCAyLjI0NDU1IDYuMzEwMzMgMi44NjY3NCA2LjYyMTQ3TDQuMjAwNDQgNy40MjIwMkM0LjM2MzgzIDcuNTAzNzIgNC40OTYzMiA3LjYzNjIxIDQuNTc4MDEgNy43OTk2TDUuMzU1MDQgOS4xMzMzQzUuNjY2MTggOS43NTU1OCA2LjMxMDMzIDkuNzU1NTggNi42MjE0NyA5LjEzMzNMNy40MjIwMiA3Ljc5OTZDNy41MDM3MiA3LjYzNjIxIDcuNjM2MjEgNy41MDM3MiA3Ljc5OTYgNy40MjIwMkw5LjEzMzMgNi42MjE0N0M5Ljc1NTU4IDYuMzEwMzMgOS43NTU1OCA1LjY2NjE4IDkuMTMzMyA1LjM1NTA0TDcuNzk5NiA0LjU3ODAxWiIgZmlsbD0idXJsKCNwYWludDJfbGluZWFyXzU0Nl8yMzEzKSIvPgo8L2c+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNOC4wMTM1IDYuMjM1OTlDNy45NjI0NCA2LjA4MjggNy45NjI0NCA1LjkxNzE5IDguMDEzNSA1Ljc2NDAxTDguMzQ2NzEgNC40MzAxMUM4LjU0MTE4IDMuODQ2NzEgOC4xMzg1OCAzLjQ0NDEyIDcuNTU1MTkgMy42Mzg1OEw2LjIzNTk5IDMuOTg2NUM2LjA4MjgxIDQuMDM3NTYgNS45MTcxOSA0LjAzNzU2IDUuNzY0MDEgMy45ODY1TDQuNDQ0ODEgMy42Mzg1OEMzLjg2MTQyIDMuNDQ0MTIgMy40NTg4MiAzLjg0NjcxIDMuNjUzMjkgNC40MzAxMUwzLjk4NjUgNS43NjQwMUM0LjAzNzU2IDUuOTE3MiA0LjAzNzU2IDYuMDgyODEgMy45ODY1IDYuMjM1OTlMMy42Mzg1OCA3LjU1NTE5QzMuNDQ0MTIgOC4xMzg1OCAzLjg0NjcxIDguNTQxMTggNC40MzAxMSA4LjM0NjcxTDUuNzY0MDEgOC4wMTM1QzUuOTE3MiA3Ljk2MjQ0IDYuMDgyODEgNy45NjI0NCA2LjIzNTk5IDguMDEzNUw3LjU2OTg5IDguMzQ2NzJDOC4xNTMyOSA4LjU0MTE4IDguNTU1ODggOC4xMzg1OCA4LjM2MTQyIDcuNTU1MTlMOC4wMTM1IDYuMjM1OTlaIiBmaWxsPSJ1cmwoI3BhaW50M19saW5lYXJfNTQ2XzIzMTMpIi8+CjwvZz4KPGRlZnM+CjxmaWx0ZXIgaWQ9ImZpbHRlcjBfZF81NDZfMjMxMyIgeD0iMC40MDAwMjQiIHk9IjEuNDAwMDIiIHdpZHRoPSIxMS4yIiBoZWlnaHQ9IjExLjIiIGZpbHRlclVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY29sb3ItaW50ZXJwb2xhdGlvbi1maWx0ZXJzPSJzUkdCIj4KPGZlRmxvb2QgZmxvb2Qtb3BhY2l0eT0iMCIgcmVzdWx0PSJCYWNrZ3JvdW5kSW1hZ2VGaXgiLz4KPGZlQ29sb3JNYXRyaXggaW49IlNvdXJjZUFscGhhIiB0eXBlPSJtYXRyaXgiIHZhbHVlcz0iMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMTI3IDAiIHJlc3VsdD0iaGFyZEFscGhhIi8+CjxmZU9mZnNldCBkeT0iMSIvPgo8ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSIxIi8+CjxmZUNvbXBvc2l0ZSBpbjI9ImhhcmRBbHBoYSIgb3BlcmF0b3I9Im91dCIvPgo8ZmVDb2xvck1hdHJpeCB0eXBlPSJtYXRyaXgiIHZhbHVlcz0iMCAwIDAgMCAwLjUwOTgwNCAwIDAgMCAwIDAuMzY0NzA2IDAgMCAwIDAgMC43OTYwNzggMCAwIDAgMC40IDAiLz4KPGZlQmxlbmQgbW9kZT0ibm9ybWFsIiBpbjI9IkJhY2tncm91bmRJbWFnZUZpeCIgcmVzdWx0PSJlZmZlY3QxX2Ryb3BTaGFkb3dfNTQ2XzIzMTMiLz4KPGZlQmxlbmQgbW9kZT0ibm9ybWFsIiBpbj0iU291cmNlR3JhcGhpYyIgaW4yPSJlZmZlY3QxX2Ryb3BTaGFkb3dfNTQ2XzIzMTMiIHJlc3VsdD0ic2hhcGUiLz4KPC9maWx0ZXI+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhcl81NDZfMjMxMyIgeDE9Ii0yLjI1IiB5MT0iLTEuMjUiIHgyPSIxMC41IiB5Mj0iMTQuNSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjODI1RENCIi8+CjxzdG9wIG9mZnNldD0iMC41NDYzODkiIHN0b3AtY29sb3I9IiNFNjYzQzkiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkY3NTZCIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQxX2xpbmVhcl81NDZfMjMxMyIgeDE9IjEwLjUiIHkxPSItNi41MDIzMmUtMDgiIHgyPSI0IiB5Mj0iOCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjMEQ2NkQwIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0U2NjNDOSIgc3RvcC1vcGFjaXR5PSIwIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQyX2xpbmVhcl81NDZfMjMxMyIgeDE9IjYuMDAwMDIiIHkxPSIyLjQwMDAyIiB4Mj0iNi4wMDAwMiIgeTI9IjkuNjAwMDEiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0id2hpdGUiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkVDNUZGIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQzX2xpbmVhcl81NDZfMjMxMyIgeDE9IjguNDU0NTQiIHkxPSI4LjI0OTk5IiB4Mj0iMy41NDU0NiIgeTI9IjMuNTQ1NDUiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0id2hpdGUiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkVDNUZGIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxjbGlwUGF0aCBpZD0iY2xpcDBfNTQ2XzIzMTMiPgo8cmVjdCB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIGZpbGw9IndoaXRlIi8+CjwvY2xpcFBhdGg+CjwvZGVmcz4KPC9zdmc+Cg==");
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      flex-shrink: 0;
-    }
-
-    /* Subitem com badge IA: flex para badge sempre visível */
-    .sidebar-subitem--ia {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      overflow: hidden;
-    }
-    .sidebar-subitem--ia .sidebar-subitem-text {
-      flex: 1;
-      min-width: 0;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .sidebar-subitem--ia .sidebar-ia-badge {
-      flex-shrink: 0;
-    }
-
-    .sidebar-toggle-btn { display: flex; align-items: center; justify-content: flex-start; padding: 14px; cursor: pointer; background: none; border: none; width: 100%; transition: background 0.15s ease; gap: 6px; white-space: nowrap; }
     .sidebar-toggle-btn:hover { background: #f5f9fe; }
     .sidebar-toggle-btn:hover .sidebar-toggle-icon { color: #378ef0; }
     .sidebar-toggle-icon { font-size: 20px; color: #747474; transition: color 0.15s; flex-shrink: 0; }
 
-    /* ════ TOOLTIP ════ */
-    #sidebar-tooltip { position: fixed; background: #323232; color: #fff; font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 600; line-height: 18px; padding: 5px 10px; border-radius: 4px; pointer-events: none; z-index: 9999; white-space: nowrap; opacity: 0; transition: opacity 0.15s ease; box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+    /* ════════════════════════════════════
+       TOOLTIP
+    ════════════════════════════════════ */
+    #sidebar-tooltip {
+      position: fixed; background: #323232; color: #fff;
+      font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 600;
+      line-height: 18px; padding: 5px 10px; border-radius: 4px;
+      pointer-events: none; z-index: 9999; white-space: nowrap;
+      opacity: 0; transition: opacity 0.15s ease; box-shadow: 0 2px 8px rgba(0,0,0,.18);
+    }
     #sidebar-tooltip.visible { opacity: 1; }
-    #sidebar-tooltip::before { content: ''; position: absolute; right: 100%; top: 50%; transform: translateY(-50%); border: 5px solid transparent; border-right-color: #323232; }
+    #sidebar-tooltip::before {
+      content: ''; position: absolute; right: 100%; top: 50%;
+      transform: translateY(-50%); border: 5px solid transparent; border-right-color: #323232;
+    }
 
-    /* ════ MAIN CONTENT ════ */
+    /* ════════════════════════════════════
+       MAIN CONTENT
+    ════════════════════════════════════ */
     .main-content { flex: 1; min-width: 0; padding: 8px; display: flex; flex-direction: column; gap: 8px; }
 
-    /* ════ PAGE HEADER ════ */
-    .page-header { background: #fff; border-radius: 6px; padding: 12px 18px; display: flex; align-items: center; gap: 8px; }
-    .page-header-icon { background: #f5f9fe; border-radius: 22px; padding: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .page-header-icon .material-icons { font-size: 20px; color: #378ef0; }
+    /* ════════════════════════════════════
+       PAGE HEADER
+    ════════════════════════════════════ */
+    .page-header {
+      background: #fff; border-radius: 6px; padding: 18px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .page-header-icon {
+      background: #f5f9fe; border-radius: 22px; padding: 12px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .page-header-icon .material-icons-outlined { font-size: 20px; color: #378ef0; }
     .page-header-text { flex: 1; min-width: 0; }
+    .page-header-title-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     .page-header-title { font-weight: 600; font-size: 18px; line-height: 26px; color: #323232; }
-    .page-header-desc { font-weight: 400; font-size: 14px; line-height: 20px; color: #747474; }
-    .page-header-action { background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 0; flex-shrink: 0; font-family: 'Open Sans', sans-serif; font-size: 14px; color: #378ef0; text-decoration: none; }
-    .page-header-action:hover { text-decoration: underline; }
+    .page-header-badge {
+      display: inline-flex; align-items: center; padding: 2px 8px;
+      background: #33ab84; color: #fff; border-radius: 10px;
+      font-size: 10px; font-weight: 700; text-transform: uppercase; white-space: nowrap; flex-shrink: 0;
+    }
+    .page-header-desc { font-weight: 400; font-size: 14px; line-height: 20px; color: #747474; margin-top: 2px; }
 
-    /* ════ MAIN CARD ════ */
-    .main-card { background: #fff; border-radius: 6px; padding: 64px; display: flex; flex-direction: column; gap: 96px; align-items: center; }
+    /* ════════════════════════════════════
+       MAIN CARD
+    ════════════════════════════════════ */
+    .main-card {
+      background: #fff; border-radius: 6px; padding: 64px;
+      display: flex; flex-direction: column; gap: 96px; align-items: center;
+    }
 
     /* ── HERO ── */
     .hero { display: flex; align-items: center; gap: 48px; width: 100%; }
@@ -251,18 +303,40 @@
     .hero-title { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: 28px; line-height: 32px; color: #378ef0; }
     .hero-subtitle { font-weight: 400; font-size: 12px; line-height: 18px; color: #747474; }
     .hero-buttons { display: flex; gap: 8px; align-items: center; }
-    .btn-orange { background: #f29423; border: none; border-radius: 4px; padding: 6px 10px; font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 700; color: #fff; text-transform: uppercase; cursor: pointer; }
+
+    .btn-orange {
+      background: #f29423; border: none; border-radius: 4px; padding: 6px 10px;
+      font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 700;
+      color: #fff; text-transform: uppercase; cursor: pointer;
+    }
     .btn-orange:hover { background: #d97e1a; }
-    .btn-outline-blue { background: transparent; border: 1px solid #378ef0; border-radius: 4px; padding: 6px 10px; font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 700; color: #378ef0; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+    .btn-outline-blue {
+      background: transparent; border: 1px solid #378ef0; border-radius: 4px; padding: 6px 10px;
+      font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 700;
+      color: #378ef0; text-transform: uppercase; cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+    }
     .btn-outline-blue .material-icons-outlined { font-size: 18px; }
     .btn-outline-blue:hover { background: #f0f7ff; }
 
-    .hero-image { width: 600px; height: 291px; flex-shrink: 0; border-radius: 6px; overflow: hidden; position: relative; background: linear-gradient(to top, #002946, #378ef0); box-shadow: 0px 9px 28px 8px rgba(0,0,0,.05),0px 6px 16px rgba(0,0,0,.08),0px 3px 6px -4px rgba(0,0,0,.12); }
-    .hero-image-frame { position: absolute; border: 1.263px solid #559ff2; border-radius: 7.6px; mix-blend-mode: lighten; }
+    /* ── HERO IMAGE (vídeo player) ── */
+    .hero-image {
+      width: 600px; height: 291px; flex-shrink: 0; border-radius: 6px;
+      overflow: hidden; position: relative; background: linear-gradient(to top, #002946, #378ef0);
+      box-shadow: 0px 9px 28px 8px rgba(0,0,0,.05),0px 6px 16px rgba(0,0,0,.08),0px 3px 6px -4px rgba(0,0,0,.12);
+    }
+    .hero-image-frame {
+      position: absolute; border: 1.263px solid #559ff2; border-radius: 7.6px; mix-blend-mode: lighten;
+    }
     .hero-image-frame-1 { inset: 18px 13px -185px; }
     .hero-image-frame-2 { inset: 43px 34px -160px; }
     .hero-image-frame-3 { inset: 71px 55px -130px; }
-    .video-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,41,70,.55), rgba(55,142,240,.45)); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; cursor: pointer; z-index: 3; }
+    .video-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,41,70,.55), rgba(55,142,240,.45));
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 10px; cursor: pointer; z-index: 3;
+    }
     .play-btn { position: relative; width: 88px; height: 88px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .play-ring { position: absolute; border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%,-50%); }
     .play-ring-1 { width: 88px; height: 88px; border: 2px solid rgba(255,255,255,.5); background: rgba(255,255,255,.08); }
@@ -278,18 +352,28 @@
     .features-cols { flex: 1; min-width: 0; display: flex; gap: 48px; }
     .feature-card { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
     .feature-card-top { display: flex; flex-direction: column; gap: 8px; margin-bottom: 4px; }
-    .feature-icon-box { background: #eaeaea; border-radius: 4px; width: 27px; height: 27px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .feature-icon-box {
+      background: #eaeaea; border-radius: 4px; width: 27px; height: 27px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
     .feature-icon-box .material-icons-outlined { font-size: 16px; color: #378ef0; }
     .feature-title { font-weight: 600; font-size: 16px; line-height: 20px; color: #505050; }
     .feature-desc { font-weight: 400; font-size: 12px; line-height: 18px; color: #747474; }
 
     /* ── UPGRADE BANNER ── */
-    .upgrade-banner { background: linear-gradient(to bottom, #002946, #378ef0); border-radius: 6px; border-bottom: 4px solid #f29423; padding: 32px; display: flex; align-items: center; gap: 24px; }
+    .upgrade-banner {
+      background: linear-gradient(to bottom, #002946, #378ef0);
+      border-radius: 6px; border-bottom: 4px solid #f29423;
+      padding: 32px; display: flex; align-items: center; gap: 24px;
+    }
     .upgrade-left { display: flex; gap: 24px; align-items: center; }
     .upgrade-headline { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
     .upgrade-title-wrap { display: flex; flex-direction: column; }
     .upgrade-title { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: 22px; line-height: 28px; color: #fff; }
-    .upgrade-title-highlight { background: linear-gradient(85.56deg, #f29423 11.24%, #f9cf9c 126.22%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .upgrade-title-highlight {
+      background: linear-gradient(85.56deg, #f29423 11.24%, #f9cf9c 126.22%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
     .upgrade-sub { font-weight: 400; font-size: 14px; line-height: 20px; color: #fff; }
     .upgrade-features { display: flex; gap: 24px; }
     .upgrade-features-col { display: flex; flex-direction: column; gap: 8px; }
@@ -297,7 +381,11 @@
     .upgrade-feature-item .material-icons-outlined { font-size: 16px; color: #f29423; flex-shrink: 0; margin-top: 2px; }
     .upgrade-feature-text { font-weight: 400; font-size: 14px; line-height: 20px; color: #fff; }
     .upgrade-actions { display: flex; flex-direction: column; align-items: center; gap: 8px; flex-shrink: 0; }
-    .btn-orange-specialist { background: #f29423; border: none; border-radius: 4px; padding: 6px 10px; font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 700; color: #fff; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .btn-orange-specialist {
+      background: #f29423; border: none; border-radius: 4px; padding: 6px 10px;
+      font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 700; color: #fff;
+      text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 8px; white-space: nowrap;
+    }
     .btn-orange-specialist .material-icons-outlined { font-size: 18px; }
     .btn-orange-specialist:hover { background: #d97e1a; }
     .btn-link-white { background: none; border: none; color: #fff; font-family: 'Open Sans', sans-serif; font-size: 12px; cursor: pointer; text-decoration: none; }
@@ -366,7 +454,9 @@
       flex-shrink: 0;
     }
 
-    /* ════ USER DROPDOWN ════ */
+    /* ════════════════════════════════════
+       USER DROPDOWN
+    ════════════════════════════════════ */
     #user-dropdown { position: fixed; background: #fff; border-radius: 6px; box-shadow: 0px 9px 28px 8px rgba(0,0,0,.05),0px 6px 16px rgba(0,0,0,.08),0px 3px 6px -4px rgba(0,0,0,.12); min-width: 240px; z-index: 9999; display: none; overflow: hidden; }
     #user-dropdown.visible { display: block; }
     .udrop-profile { padding: 14px 16px 12px; }
@@ -381,7 +471,9 @@
     .udrop-sair { padding: 10px 16px 12px; font-size: 14px; color: #505050; cursor: pointer; display: block; text-decoration: none; font-family: 'Open Sans', sans-serif; transition: color .15s; }
     .udrop-sair:hover { color: #d93025; }
 
-    /* ════ APPS MENU ════ */
+    /* ════════════════════════════════════
+       APPS MENU
+    ════════════════════════════════════ */
     #apps-menu { position: fixed; top: 52px; left: 0; background: #fff; border-right: 1px solid #eaeaea; border-bottom: 1px solid #eaeaea; border-radius: 0 0 6px 0; min-width: 240px; z-index: 9998; display: none; padding: 12px 0 8px; box-shadow: 4px 4px 12px rgba(0,0,0,.08); }
     #apps-menu.open { display: block; }
     .apps-menu-title { font-weight: 700; font-size: 13px; color: #323232; padding: 0 16px 8px; }
@@ -394,7 +486,9 @@
 </head>
 <body>
 
-  <!-- MENU BAR -->
+  <!-- ══════════════════════════════════════
+       MENU BAR
+  ══════════════════════════════════════ -->
   <div class="menu-bar">
     <div class="menu-right">
       <div class="menu-logo-area">
@@ -405,15 +499,15 @@
         <span class="menu-product-name">Essential</span>
         <div class="view-picker" id="view-picker">
           <button class="view-picker-btn" id="view-picker-btn">
-            Visão Varejo
+            Visão Indústria
             <span class="material-icons-outlined">keyboard_arrow_down</span>
           </button>
           <div class="view-picker-dropdown" id="view-picker-dropdown">
-            <a class="view-picker-option active" href="#">
-              <span class="view-picker-dot"></span>Visão Varejo
+            <a class="view-picker-option" href="modulo-competitividade.html">
+              <span class="view-picker-dot-empty"></span>Visão Varejo
             </a>
-            <a class="view-picker-option" href="competitividade-free-industria.html">
-              <span class="view-picker-dot-empty"></span>Visão Indústria
+            <a class="view-picker-option active" href="#">
+              <span class="view-picker-dot"></span>Visão Indústria
             </a>
           </div>
         </div>
@@ -431,7 +525,7 @@
           </div>
         </div>
         <div class="menu-actions">
-        <a class="menu-icon-btn" href="gerenciar-usuarios.html"><span class="material-icons">person_add</span></a>
+        <a class="menu-icon-btn" href="gerenciar-usuarios-industria.html"><span class="material-icons">person_add</span></a>
         <div class="menu-user" id="user-menu-btn">
           <span class="menu-user-name">Olá, Marcus</span>
           <span class="material-icons-outlined">keyboard_arrow_down</span>
@@ -441,6 +535,9 @@
     </div>
   </div>
 
+  <!-- ══════════════════════════════════════
+       SIDEBAR + CONTEÚDO
+  ══════════════════════════════════════ -->
   <div class="below-menu">
 
     <!-- SIDEBAR -->
@@ -448,7 +545,7 @@
       <div class="sidebar-top">
 
         <!-- Preço e concorrência -->
-        <div class="sidebar-item expandable" id="cat-preco" data-page="Preço e concorrência" data-subs="subs-preco">
+        <div class="sidebar-item expandable has-active-child" id="cat-preco-ind" data-page="Preço e concorrência" data-subs="subs-preco-ind">
           <span class="sidebar-icon">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9.58331 14.7346H3.74998L3.74998 3.33594L12.0833 3.29507V8.62803C12.5 8.22093 13.3333 7.81384 13.75 7.81384V3.29507C13.75 2.39946 13 1.66669 12.0833 1.66669L3.74998 1.70756C2.83331 1.70756 2.08331 2.44033 2.08331 3.33594L2.08331 14.7346C2.08331 15.6302 2.83331 16.363 3.74998 16.363H7.91665L9.58331 14.7346ZM13.0083 15.7931C13.5916 16.1513 14.2666 16.363 15 16.363C17.075 16.363 18.75 14.7265 18.75 12.6991C18.75 10.6718 17.075 9.03528 15 9.03528C12.925 9.03528 11.25 10.6718 11.25 12.691C11.25 13.4075 11.4666 14.0751 11.8333 14.6369L9.23331 17.1772L10.4166 18.3334L13.0083 15.7931ZM12.9166 12.6991C12.9166 11.5756 13.85 10.6637 15 10.6637C16.15 10.6637 17.0833 11.5756 17.0833 12.6991C17.0833 13.8227 16.15 14.7346 15 14.7346C13.85 14.7346 12.9166 13.8227 12.9166 12.6991Z" fill="currentColor"/>
@@ -460,103 +557,62 @@
             <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
           </span>
         </div>
-        <div class="sidebar-subitems" id="subs-preco">
+        <div class="sidebar-subitems" id="subs-preco-ind">
           <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem sidebar-subitem--featured" data-href="painel-geral.html">Painel geral</div>
-            <div class="sidebar-subitem sidebar-subitem--featured" data-href="pesquisa-pdv.html">Pesquisa PDV</div>
+            <div class="sidebar-subitem sidebar-subitem--featured" data-href="painel-geral-industria.html">Painel geral</div>
+            <div class="sidebar-subitem sidebar-subitem--featured" data-href="pesquisa-pdv-industria.html">Pesquisa PDV</div>
             <div class="sidebar-subitems-divider"></div>
-            <div class="sidebar-subitem" data-href="competitividade-free.html">Módulo de competitividade</div>
-            <div class="sidebar-subitem" data-href="omnichannel-essential.html">Módulo omnichannel</div>
-            <div class="sidebar-subitem" data-href="analise-cobertura.html">Análise de cobertura</div>
-            <div class="sidebar-subitem" data-href="ondemand-essential.html">On demand</div>
+            <div class="sidebar-subitem" data-href="modulo-competitividade-industria.html">Módulo de competitividade</div>
+            <div class="sidebar-subitem" data-href="omnichannel-industria.html">Módulo omnichannel</div>
+            <div class="sidebar-subitem" data-href="analise-cobertura-industria.html">Análise de cobertura</div>
+            <div class="sidebar-subitem active" data-href="aderencia-de-precos-industria.html">Módulo de aderência</div>
+            <div class="sidebar-subitem" data-href="ondemand-industria.html">On demand</div>
           </div>
         </div>
 
         <!-- Inteligência -->
-        <div class="sidebar-item expandable has-active-child" id="cat-inteligencia" data-page="Inteligência" data-subs="subs-inteligencia">
+        <div class="sidebar-item expandable" id="cat-intel-ind" data-page="Inteligência" data-subs="subs-intel-ind">
           <span class="sidebar-icon material-icons">psychology</span>
           <span class="sidebar-inner-group">
             <span class="sidebar-label">Inteligência</span>
             <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
           </span>
         </div>
-        <div class="sidebar-subitems" id="subs-inteligencia">
+        <div class="sidebar-subitems" id="subs-intel-ind">
           <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem active sidebar-subitem--ia" data-href="lojas-concorrentes-essential.html"><span class="sidebar-subitem-text">Módulo de lojas concorrentes</span><span class="sidebar-ia-badge">IA</span></div>
-            <div class="sidebar-subitem sidebar-subitem--ia" data-href="previsao-demanda.html"><span class="sidebar-subitem-text">Previsão de demanda</span><span class="sidebar-ia-badge">IA</span></div>
-          </div>
-        </div>
-
-        <!-- Precificação estratégica -->
-        <div class="sidebar-item expandable" id="cat-precificacao" data-page="Precificação estratégica" data-subs="subs-precificacao">
-          <span class="sidebar-icon material-icons-round">price_change</span>
-          <span class="sidebar-inner-group">
-            <span class="sidebar-label">Precificação estratégica</span>
-            <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
-          </span>
-        </div>
-        <div class="sidebar-subitems" id="subs-precificacao">
-          <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem sidebar-subitem--featured" data-href="gerenciador-precos.html">Gerenciador de Preços</div>
-            <div class="sidebar-subitems-divider"></div>
-            <div class="sidebar-subitem" data-href="regras-preco.html">Regras de preço</div>
-            <div class="sidebar-subitem" data-href="limites-preco.html">Limites de preço</div>
-            <div class="sidebar-subitem" data-href="preco-psicologico.html">Preço psicológico</div>
-            <div class="sidebar-subitem" data-href="tabela-precos.html">Tabela de preços</div>
-            <div class="sidebar-subitem" data-href="margem-objetiva.html">Margem objetiva</div>
-            <div class="sidebar-subitem" data-href="preco-atacado.html">Preço atacado</div>
-            <div class="sidebar-subitem" data-href="simulador-demanda.html">Simulador de demanda</div>
-            <div class="sidebar-subitems-divider"></div>
-            <div class="sidebar-subitem" data-href="extracao-precos.html">Extração de preços</div>
-          </div>
-        </div>
-
-        <!-- Campanhas -->
-        <div class="sidebar-item expandable" id="cat-campanhas" data-page="Campanhas" data-subs="subs-campanhas">
-          <span class="sidebar-icon material-icons">campaign</span>
-          <span class="sidebar-inner-group">
-            <span class="sidebar-label">Campanhas</span>
-            <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
-          </span>
-        </div>
-        <div class="sidebar-subitems" id="subs-campanhas">
-          <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem" data-href="modulo-campanhas.html">Módulo de Campanhas</div>
-          </div>
-        </div>
-
-        <!-- Negociação -->
-        <div class="sidebar-item expandable" id="cat-negociacao" data-page="Negociação" data-subs="subs-negociacao">
-          <span class="sidebar-icon material-icons">handshake</span>
-          <span class="sidebar-inner-group">
-            <span class="sidebar-label">Negociação</span>
-            <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
-          </span>
-        </div>
-        <div class="sidebar-subitems" id="subs-negociacao">
-          <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem" data-href="modulo-negociacao.html">Módulo de negociação</div>
+            <div class="sidebar-subitem sidebar-subitem--ia" data-href="visao-geral-elasticidade.html"><span class="sidebar-subitem-text">Visão geral de elasticidade cruzada</span><span class="sidebar-ia-badge">IA</span></div>
+            <div class="sidebar-subitem sidebar-subitem--ia" data-href="analise-de-elasticidade.html"><span class="sidebar-subitem-text">Análise de elasticidade</span><span class="sidebar-ia-badge">IA</span></div>
           </div>
         </div>
 
         <!-- Análises e relatórios -->
-        <div class="sidebar-item expandable" id="cat-analises" data-page="Análises e relatórios" data-subs="subs-analises">
+        <div class="sidebar-item expandable" id="cat-analises-ind" data-page="Análises e relatórios" data-subs="subs-analises-ind">
           <span class="sidebar-icon material-icons">analytics</span>
           <span class="sidebar-inner-group">
             <span class="sidebar-label">Análises e relatórios</span>
             <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
           </span>
         </div>
-        <div class="sidebar-subitems" id="subs-analises">
+        <div class="sidebar-subitems" id="subs-analises-ind">
           <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem sidebar-subitem--featured" data-href="relatorios-essential.html">Módulo de relatórios</div>
-            <div class="sidebar-subitems-divider"></div>
-            <div class="sidebar-subitem" data-href="ipa-analytics.html">IPA Analytics</div>
+            <div class="sidebar-subitem sidebar-subitem--featured" data-href="relatorios-industria.html">Módulo de relatórios</div>
           </div>
         </div>
 
+        <!-- Central de Monitoramento -->
+        <div class="sidebar-item expandable" id="cat-monitoramento-ind" data-page="Central de Monitoramento" data-subs="subs-monitoramento-ind">
+          <span class="sidebar-icon material-icons">notifications</span>
+          <span class="sidebar-inner-group">
+            <span class="sidebar-label">Central de Monitoramento</span>
+            <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
+          </span>
+        </div>
+        <div class="sidebar-subitems" id="subs-monitoramento-ind">
+          <div class="sidebar-subitems-inner">
+            <div class="sidebar-subitem sidebar-subitem--featured" data-href="central-monitoramento-industria.html">Central de Monitoramento</div>
+          </div>
+        </div>
       </div>
-
       <div class="sidebar-bottom" style="flex-shrink:0;">
         <button class="sidebar-toggle-btn" id="sidebar-toggle">
           <span class="sidebar-toggle-icon material-icons-outlined" id="toggle-icon">keyboard_arrow_right</span>
@@ -573,19 +629,15 @@
       <!-- CABEÇALHO DA PÁGINA -->
       <div class="page-header">
         <div class="page-header-icon">
-          <span class="material-icons">store</span>
+          <span class="material-icons-outlined">price_check</span>
         </div>
         <div class="page-header-text">
-          <p class="page-header-title">Módulo de lojas concorrentes</p>
-          <p class="page-header-desc">Identifique os seus principais concorrentes por loja através do nosso score inteligente</p>
+          <div class="page-header-title-row">
+            <p class="page-header-title">Aderência de preços</p>
+            <span class="page-header-badge">ATUALIZADO EM 30/05/26</span>
+          </div>
+          <p class="page-header-desc">Monitore, analise e garanta que os preços praticados estejam alinhados com sua estratégia.</p>
         </div>
-        <a class="page-header-action" href="#">
-          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="30" height="30" rx="4" fill="#F5F9FE"/>
-            <path d="M21.75 8.25H8.25C7.4175 8.25 6.75 8.9175 6.75 9.75V18.75C6.75 19.575 7.4175 20.25 8.25 20.25H12V21.75H18V20.25H21.75C22.575 20.25 23.2425 19.575 23.2425 18.75L23.25 9.75C23.25 8.9175 22.575 8.25 21.75 8.25ZM21.75 18.75H8.25V9.75H21.75V18.75ZM18 14.25L12.75 17.25V11.25L18 14.25Z" fill="#378EF0"/>
-          </svg>
-          Veja como usar
-        </a>
       </div>
 
       <!-- CARD PRINCIPAL -->
@@ -631,66 +683,70 @@
           <div class="features-cols">
             <div class="feature-card">
               <div class="feature-card-top">
-                <div class="feature-icon-box"><span class="material-icons-outlined">store</span></div>
-                <p class="feature-title">Lorem ipsum dolor sit amet consectetur adipiscing</p>
+                <div class="feature-icon-box">
+                  <span class="material-icons-outlined">price_check</span>
+                </div>
+                <p class="feature-title">Lorem ipsum dolor sit adipiscing</p>
               </div>
               <p class="feature-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.</p>
             </div>
             <div class="feature-card">
               <div class="feature-card-top">
-                <div class="feature-icon-box"><span class="material-icons-outlined">insights</span></div>
-                <p class="feature-title">Duis aute irure dolor reprehenderit in voluptate</p>
+                <div class="feature-icon-box">
+                  <span class="material-icons-outlined">insights</span>
+                </div>
+                <p class="feature-title">Duis aute irure dolor</p>
               </div>
               <p class="feature-desc">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat.</p>
             </div>
           </div>
         </div>
 
-        <!-- BANNER DE UPGRADE — Pro Varejo -->
+        <!-- BANNER DE UPGRADE — Enterprise Indústria -->
         <div class="upgrade-banner">
           <div class="upgrade-left">
             <div class="upgrade-headline">
               <div class="upgrade-title-wrap">
                 <span class="upgrade-title">Evolua seu plano,</span>
-                <span class="upgrade-title">desbloqueie o <span class="upgrade-title-highlight">Pro</span></span>
+                <span class="upgrade-title">desbloqueie o <span class="upgrade-title-highlight">Enterprise</span></span>
               </div>
               <p class="upgrade-sub">Com o upgrade, você também garante:</p>
             </div>
             <div class="upgrade-features">
               <div class="upgrade-features-col">
                 <div class="upgrade-feature-item">
+                  <span class="material-icons-outlined">thermostat</span>
+                  <span class="upgrade-feature-text">Lorem ipsum dolor sit</span>
+                </div>
+                <div class="upgrade-feature-item">
+                  <span class="material-icons-outlined">trending_up</span>
+                  <span class="upgrade-feature-text">Adipiscing elit aliquam</span>
+                </div>
+                <div class="upgrade-feature-item">
                   <span class="material-icons-outlined">emoji_events</span>
-                  <span class="upgrade-feature-text">Competitividade de Redes e Produtos</span>
+                  <span class="upgrade-feature-text">Duis aute irure dolor</span>
                 </div>
                 <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">hub</span>
-                  <span class="upgrade-feature-text">Módulo Omnichannel</span>
-                </div>
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">assignment</span>
-                  <span class="upgrade-feature-text">Módulo de relatórios</span>
-                </div>
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">ads_click</span>
-                  <span class="upgrade-feature-text">500 solicitações sob demanda/semana</span>
+                  <span class="material-icons-outlined">account_tree</span>
+                  <span class="upgrade-feature-text">Excepteur sint occaecat</span>
                 </div>
               </div>
               <div class="upgrade-features-col">
                 <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">edit</span>
-                  <span class="upgrade-feature-text">Regras e limites ilimitados</span>
+                  <span class="material-icons-outlined">play_circle_outline</span>
+                  <span class="upgrade-feature-text">Officia deserunt mollit</span>
                 </div>
                 <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">attach_money</span>
-                  <span class="upgrade-feature-text">Preço regular, psicológico e atacado</span>
+                  <span class="material-icons-outlined">auto_awesome</span>
+                  <span class="upgrade-feature-text">Veniam quis nostrud</span>
+                </div>
+                <div class="upgrade-feature-item">
+                  <span class="material-icons-outlined">science</span>
+                  <span class="upgrade-feature-text">Lorem ipsum dolor sit</span>
                 </div>
                 <div class="upgrade-feature-item">
                   <span class="material-icons-outlined">tune</span>
-                  <span class="upgrade-feature-text">Gerenciador de preços ilimitado</span>
-                </div>
-                <div class="upgrade-feature-item">
-                  <span class="material-icons-outlined">handshake</span>
-                  <span class="upgrade-feature-text">Módulo de negociação</span>
+                  <span class="upgrade-feature-text">Adipiscing elit aliquam</span>
                 </div>
               </div>
             </div>
@@ -700,12 +756,14 @@
               <span class="material-icons-outlined">mode_comment</span>
               FALAR COM UM ESPECIALISTA
             </button>
-            <a class="btn-link-white" href="bundle-varejo.html">Ver todos os benefícios</a>
+            <a class="btn-link-white" href="bundle-industria.html">Ver todos os benefícios</a>
           </div>
         </div>
 
       </div><!-- /main-card -->
+
     </div><!-- /main-content -->
+
   </div><!-- /below-menu -->
 
   <!-- User dropdown -->
@@ -715,7 +773,7 @@
       <p class="udrop-email">marcus@infoprice.co</p>
     </div>
     <div class="udrop-divider"></div>
-    <a class="udrop-item" href="competitividade-free.html"><span class="material-icons">grid_view</span>Acessar produtos</a>
+    <a class="udrop-item" href="modulo-competitividade.html"><span class="material-icons">grid_view</span>Acessar produtos</a>
     <a class="udrop-item" href="configuracoes.html"><span class="material-icons">settings</span>Configurações</a>
     <a class="udrop-item" href="gerenciar-usuarios.html"><span class="material-icons">people</span>Pessoas<span class="udrop-badge">CONVIDAR</span></a>
     <a class="udrop-item" href="bundle-varejo.html"><span class="material-icons">work</span>Planos</a>
@@ -726,7 +784,7 @@
   <!-- Apps menu -->
   <div id="apps-menu">
     <p class="apps-menu-title">Produtos</p>
-    <a class="apps-menu-item" href="relatorios-essential.html"><span class="apps-badge apps-badge--isa">ISA</span> InfoPanel</a>
+    <a class="apps-menu-item" href="relatorios.html"><span class="apps-badge apps-badge--isa">ISA</span> InfoPanel</a>
     <a class="apps-menu-item" href="#"><span class="apps-badge apps-badge--isa">ISA</span> Monitoramento PDV</a>
     <a class="apps-menu-item" href="#"><span class="apps-badge apps-badge--ipa">IPA</span> Software de precificação</a>
     <a class="apps-menu-item" href="#"><span class="apps-badge apps-badge--ipa">IPA</span> Simulador de demanda</a>
@@ -751,8 +809,8 @@
       btn.style.cursor = 'pointer';
       btn.addEventListener('click', function(e){
         e.stopPropagation();
-        var v = menu.classList.contains('visible');
-        if(v){ menu.classList.remove('visible'); } else {
+        var isVisible = menu.classList.contains('visible');
+        if(isVisible){ menu.classList.remove('visible'); } else {
           var rect = btn.getBoundingClientRect();
           menu.style.right = (window.innerWidth - rect.right) + 'px';
           menu.style.top   = rect.bottom + 'px';
@@ -1038,6 +1096,8 @@
   </script>
 
 
+
+
   <style>
     .plan-gate-available { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:80px 32px; gap:16px; width:100%; text-align:center; }
     .plan-gate-available .gate-icon { font-size:56px; color:#378ef0; opacity:0.25; }
@@ -1046,25 +1106,43 @@
   </style>
   <script>
     (function() {
-      var PAGE_UNLOCKS_AT = 'pro';
+      var PAGE_UNLOCKS_AT = 'enterprise';
       var PLAN_ORDER = ['free', 'essential', 'pro', 'enterprise'];
       var planIdx = function(p) { var i = PLAN_ORDER.indexOf(p); return i === -1 ? 0 : i; };
-      var currentPlan = new URLSearchParams(window.location.search).get('plano')
-                        || sessionStorage.getItem('plano') || 'free';
-      if (!PLAN_ORDER.includes(currentPlan)) currentPlan = 'free';
-      var isBlocked = planIdx(currentPlan) < planIdx(PAGE_UNLOCKS_AT);
-      var banner = document.querySelector('.upgrade-banner');
-      if (banner) {
-        banner.style.display = isBlocked ? '' : 'none';
-        if (!isBlocked) {
+
+      function applyGating(currentPlan) {
+        if (!PLAN_ORDER.includes(currentPlan)) currentPlan = 'free';
+        var isBlocked = planIdx(currentPlan) < planIdx(PAGE_UNLOCKS_AT);
+        var banner = document.querySelector('.upgrade-banner');
+        if (!banner) return;
+        var mainCard = banner.parentNode;
+        var existing = mainCard.querySelector('.plan-gate-available');
+        if (existing) existing.remove();
+        if (isBlocked) {
+          Array.from(mainCard.children).forEach(function(el) { el.style.display = ''; });
+        } else {
+          Array.from(mainCard.children).forEach(function(el) { el.style.display = 'none'; });
           var card = document.createElement('div');
           card.className = 'plan-gate-available';
           card.innerHTML = '<span class="material-icons-outlined gate-icon">check_circle</span>'
-            + '<p class="gate-title">Módulo disponível no plano selecionado</p>'
-            + '<p class="gate-desc">Este módulo está incluso no seu plano atual. Acesse-o pelo sistema em produção.</p>';
-          banner.parentNode.insertBefore(card, banner);
+            + '<p class="gate-title">M\u00f3dulo dispon\u00edvel no plano selecionado</p>'
+            + '<p class="gate-desc">Este m\u00f3dulo est\u00e1 incluso no seu plano atual. Acesse-o pelo sistema em produ\u00e7\u00e3o.</p>';
+          mainCard.appendChild(card);
         }
       }
+
+      // Read plan: URL param > sessionStorage > default 'free'
+      var currentPlan = new URLSearchParams(window.location.search).get('plano');
+      try { currentPlan = currentPlan || sessionStorage.getItem('plano'); } catch(e) {}
+      currentPlan = currentPlan || 'free';
+      applyGating(currentPlan);
+
+      // Re-apply gating immediately when plan picker is clicked (no reload needed)
+      document.querySelectorAll('#plan-picker-dropdown .view-picker-option[data-plan]').forEach(function(opt) {
+        opt.addEventListener('click', function() {
+          applyGating(opt.dataset.plan);
+        });
+      });
     })();
   </script>
 </body>

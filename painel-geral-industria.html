@@ -86,8 +86,7 @@
 
     .menu-actions {
       display: flex;
-      align-items: center;
-    }
+      align-items: center; margin-left: auto; }
 
     .menu-icon-btn {
       width: 44px;
@@ -267,6 +266,7 @@
     }
 
     .sidebar-subitems.expanded { grid-template-rows: 1fr; }
+    .sidebar:not(.open) .sidebar-subitems { grid-template-rows: 0fr; }
 
     .sidebar-subitems-inner {
       overflow: hidden;
@@ -1136,11 +1136,11 @@
             <div class="sidebar-subitem sidebar-subitem--featured active" data-href="painel-geral-industria.html">Painel geral</div>
             <div class="sidebar-subitem sidebar-subitem--featured" data-href="pesquisa-pdv-industria.html">Pesquisa PDV</div>
             <div class="sidebar-subitems-divider"></div>
-            <div class="sidebar-subitem" data-href="competitividade-free-industria.html">Módulo de competitividade</div>
-            <div class="sidebar-subitem" data-href="omnichannel-essential-industria.html">Módulo omnichannel</div>
+            <div class="sidebar-subitem" data-href="modulo-competitividade-industria.html">Módulo de competitividade</div>
+            <div class="sidebar-subitem" data-href="omnichannel-industria.html">Módulo omnichannel</div>
             <div class="sidebar-subitem" data-href="analise-cobertura-industria.html">Análise de cobertura</div>
-            <div class="sidebar-subitem" data-href="aderencia-de-precos-industria-essential.html">Módulo de aderência</div>
-            <div class="sidebar-subitem" data-href="ondemand-essential-industria.html">On demand</div>
+            <div class="sidebar-subitem" data-href="aderencia-de-precos-industria.html">Módulo de aderência</div>
+            <div class="sidebar-subitem" data-href="ondemand-industria.html">On demand</div>
           </div>
         </div>
 
@@ -1154,8 +1154,8 @@
         </div>
         <div class="sidebar-subitems" id="subs-intel-ind">
           <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem" data-href="visao-geral-elasticidade.html">Visão geral de elasticidade cruzada</div>
-            <div class="sidebar-subitem" data-href="analise-de-elasticidade.html">Análise de elasticidade</div>
+            <div class="sidebar-subitem sidebar-subitem--ia" data-href="visao-geral-elasticidade.html"><span class="sidebar-subitem-text">Visão geral de elasticidade cruzada</span><span class="sidebar-ia-badge">IA</span></div>
+            <div class="sidebar-subitem sidebar-subitem--ia" data-href="analise-de-elasticidade.html"><span class="sidebar-subitem-text">Análise de elasticidade</span><span class="sidebar-ia-badge">IA</span></div>
           </div>
         </div>
 
@@ -1169,10 +1169,23 @@
         </div>
         <div class="sidebar-subitems" id="subs-analises-ind">
           <div class="sidebar-subitems-inner">
-            <div class="sidebar-subitem sidebar-subitem--featured" data-href="relatorios-essential-industria.html">Módulo de relatórios</div>
+            <div class="sidebar-subitem sidebar-subitem--featured" data-href="relatorios-industria.html">Módulo de relatórios</div>
           </div>
         </div>
 
+        <!-- Central de Monitoramento -->
+        <div class="sidebar-item expandable" id="cat-monitoramento-ind" data-page="Central de Monitoramento" data-subs="subs-monitoramento-ind">
+          <span class="sidebar-icon material-icons">notifications</span>
+          <span class="sidebar-inner-group">
+            <span class="sidebar-label">Central de Monitoramento</span>
+            <span class="sidebar-chevron material-icons-outlined">keyboard_arrow_down</span>
+          </span>
+        </div>
+        <div class="sidebar-subitems" id="subs-monitoramento-ind">
+          <div class="sidebar-subitems-inner">
+            <div class="sidebar-subitem sidebar-subitem--featured" data-href="central-monitoramento-industria.html">Central de Monitoramento</div>
+          </div>
+        </div>
       </div>
 
       <div class="sidebar-bottom" style="flex-shrink:0;">
@@ -1239,7 +1252,7 @@
                   <div class="feature-icon-box">
                     <span class="material-icons-outlined">store</span>
                   </div>
-                  <p class="feature-title">Lorem ipsum dolor sit amet consectetur adipiscing</p>
+                  <p class="feature-title">Lorem ipsum dolor sit adipiscing</p>
                 </div>
                 <p class="feature-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud.</p>
               </div>
@@ -1248,7 +1261,7 @@
                   <div class="feature-icon-box">
                     <span class="material-icons-outlined">search</span>
                   </div>
-                  <p class="feature-title">Sed do eiusmod tempor incididunt ut labore</p>
+                  <p class="feature-title">Lorem ipsum dolor sit adipiscing</p>
                 </div>
                 <p class="feature-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud.</p>
               </div>
@@ -1268,11 +1281,11 @@
               <div class="upgrade-features" id="banner-features">
                 <div class="upgrade-feature-item">
                   <span class="material-icons-outlined">people</span>
-                  <span class="upgrade-feature-text">Usuários ilimitados</span>
+                  <span class="upgrade-feature-text">Lorem ipsum dolor sit</span>
                 </div>
                 <div class="upgrade-feature-item">
                   <span class="material-icons-outlined">radar</span>
-                  <span class="upgrade-feature-text">Análise de cobertura</span>
+                  <span class="upgrade-feature-text">Adipiscing elit aliquam</span>
                 </div>
               </div>
             </div>
@@ -1301,7 +1314,7 @@
   <!-- Apps menu -->
   <div id="apps-menu">
     <p class="apps-menu-title">Produtos</p>
-    <a class="apps-menu-item" href="relatorios-essential.html">
+    <a class="apps-menu-item" href="relatorios.html">
       <span class="apps-badge apps-badge--isa">ISA</span>InfoPanel
     </a>
     <a class="apps-menu-item" href="#">
@@ -1322,7 +1335,7 @@
       <p class="udrop-email">marcus@infoprice.co</p>
     </div>
     <div class="udrop-divider"></div>
-    <a class="udrop-item" href="competitividade-free.html">
+    <a class="udrop-item" href="modulo-competitividade.html">
       <span class="material-icons">grid_view</span>Acessar produtos
     </a>
     <a class="udrop-item" href="configuracoes.html">
